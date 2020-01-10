@@ -1,6 +1,18 @@
+using System;
+using System.Globalization;
+using System.Reflection;
+using EventFlow.AspNetCore.Extensions;
+using EventFlow.DependencyInjection.Extensions;
+using EventFlow.EventStores.EventStore.Extensions;
+using EventFlow.Extensions;
+using EventStore.ClientAPI;
+using Infi.DojoEventSourcing.Configuration;
+using Infi.DojoEventSourcing.Domain.Bookings.Events;
+using Infi.DojoEventSourcing.Domain.CommandHandlers;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -8,10 +20,40 @@ namespace DojoEventSourcing
 {
     public class Startup
     {
+        private static readonly IConfigurationRoot Configuration = ConfigurationFactory.Create();
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddEventFlow(
+                cfg =>
+                {
+                    cfg
+                        .AddAspNetCore(
+                            o => o
+                                .RunBootstrapperOnHostStartup()
+                                .AddUriMetadata())
+                        .UseEventStoreEventStore(
+                            new Uri(Configuration["EventStore:Uri"]),
+                            ConnectionSettings.Create()
+                                .KeepReconnecting()
+                                .LimitReconnectionsTo(
+                                    int.Parse(
+                                        Configuration["EventStore:LimitReconnectionsTo"],
+                                        CultureInfo.InvariantCulture))
+                                .SetReconnectionDelayTo(
+                                    TimeSpan.FromSeconds(
+                                        int.Parse(
+                                            Configuration["EventStore:ReconnectionDelayInSeconds"],
+                                            CultureInfo.InvariantCulture))),
+                            Assembly.GetExecutingAssembly().GetName().Name)
+                        .AddEvents(typeof(BookingPlaced).Assembly)
+                        .AddCommandHandlers(typeof(PlaceBookingHandler).Assembly)
+                        // .AddSubscribers(readmodelUpdaters) // BS This order matters, as we use synchronous subscribers.
+                        // .AddSubscribers(eventSubscribers) // each subscriber waits for the other to finish.
+                        .UseLibLog(LibLogProviders.Serilog);
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
