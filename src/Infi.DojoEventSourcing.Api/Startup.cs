@@ -2,14 +2,18 @@ using System;
 using System.Globalization;
 using System.Reflection;
 using EventFlow.AspNetCore.Extensions;
+using EventFlow.Core;
 using EventFlow.DependencyInjection.Extensions;
 using EventFlow.EventStores.EventStore.Extensions;
 using EventFlow.Extensions;
+using EventFlow.SQLite.Connections;
+using EventFlow.SQLite.Extensions;
 using EventStore.ClientAPI;
 using Infi.DojoEventSourcing.Configuration;
 using Infi.DojoEventSourcing.Domain.CommandHandlers.Reservations;
 using Infi.DojoEventSourcing.Domain.EventSubscribers.Reservations;
 using Infi.DojoEventSourcing.Domain.Reservations.Events;
+using Infi.DojoEventSourcing.ReadModels.Api.Reservations;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -49,10 +53,12 @@ namespace DojoEventSourcing
                                             Configuration["EventStore:ReconnectionDelayInSeconds"],
                                             CultureInfo.InvariantCulture))),
                             Assembly.GetExecutingAssembly().GetName().Name)
+                        .ConfigureSQLite(
+                            SQLiteConfiguration.New.SetConnectionString(Configuration["SqlLite:ConnectionString"]))
                         .AddEvents(typeof(ReservationPlaced).Assembly)
                         .AddCommandHandlers(typeof(PlaceReservationHandler).Assembly)
-                        // .AddSubscribers(readmodelUpdaters) 
                         .AddSubscribers(typeof(ReservationPlacedHandler))
+                        .UseSQLiteReadModel<ReservationReadModel>()
                         .UseLibLog(LibLogProviders.Serilog);
                 });
         }
