@@ -7,8 +7,8 @@ using EventFlow.EventStores.EventStore.Extensions;
 using EventFlow.Extensions;
 using EventStore.ClientAPI;
 using Infi.DojoEventSourcing.Configuration;
-using Infi.DojoEventSourcing.Domain.CommandHandlers;
-using Infi.DojoEventSourcing.Domain.EventSubscribers;
+using Infi.DojoEventSourcing.Domain.CommandHandlers.Reservations;
+using Infi.DojoEventSourcing.Domain.EventSubscribers.Reservations;
 using Infi.DojoEventSourcing.Domain.Reservations.Events;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -49,10 +49,10 @@ namespace DojoEventSourcing
                                             Configuration["EventStore:ReconnectionDelayInSeconds"],
                                             CultureInfo.InvariantCulture))),
                             Assembly.GetExecutingAssembly().GetName().Name)
-                        .AddEvents(typeof(BookingPlaced).Assembly)
-                        .AddCommandHandlers(typeof(PlaceBookingHandler).Assembly)
+                        .AddEvents(typeof(ReservationPlaced).Assembly)
+                        .AddCommandHandlers(typeof(PlaceReservationHandler).Assembly)
                         // .AddSubscribers(readmodelUpdaters) 
-                        .AddSubscribers(typeof(BookingPlacedHandler))
+                        .AddSubscribers(typeof(ReservationPlacedHandler))
                         .UseLibLog(LibLogProviders.Serilog);
                 });
         }

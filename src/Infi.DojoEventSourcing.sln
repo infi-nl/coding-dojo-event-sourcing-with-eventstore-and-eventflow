@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infi.DojoEventSourcing.Doma
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infi.DojoEventSourcing.Domain.EventSubscribers", "Infi.DojoEventSourcing.Domain.EventSubscribers\Infi.DojoEventSourcing.Domain.EventSubscribers.csproj", "{AE4A79C8-8FAC-479D-92C5-DDF67279FEFB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infi.DojoEventSourcing.ReadModels", "Infi.DojoEventSourcing.ReadModels", "{6D0DFBFA-BCBD-4060-A3EA-670DFEB162D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

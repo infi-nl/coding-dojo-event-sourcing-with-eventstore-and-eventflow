@@ -5,10 +5,10 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="EventFlow" Version="0.77.4077"/>
+        <PackageReference Include="EventFlow" Version="0.77.4077" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Infi.DojoEventSourcing.Domain\Infi.DojoEventSourcing.Domain.csproj"/>
+        <ProjectReference Include="..\Infi.DojoEventSourcing.Domain\Infi.DojoEventSourcing.Domain.csproj" />
     </ItemGroup>
 </Project>
