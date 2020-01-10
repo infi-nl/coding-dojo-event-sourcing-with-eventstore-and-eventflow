@@ -1,0 +1,14 @@
+version: '2'
+
+services:
+  eventstore:
+    image: eventstore/eventstore
+    restart: always
+    volumes:
+      - eventstore-data:/var/lib/eventstore
+    ports:
+      - 1113:1113
+      - 2113:2113
+
+volumes:
+  eventstore-data:

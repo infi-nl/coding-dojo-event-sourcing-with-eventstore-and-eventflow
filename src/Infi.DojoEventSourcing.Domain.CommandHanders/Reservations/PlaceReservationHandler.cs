@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using EventFlow.Aggregates.ExecutionResults;
 using EventFlow.Commands;
@@ -12,12 +11,14 @@ namespace Infi.DojoEventSourcing.Domain.CommandHandlers.Reservations
     public class PlaceReservationHandler
         : CommandHandler<Reservation, ReservationId, IExecutionResult, PlaceReservation>
     {
-        public override Task<IExecutionResult> ExecuteCommandAsync(
+        public override async Task<IExecutionResult> ExecuteCommandAsync(
             Reservation reservation,
             PlaceReservation command,
             CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            reservation.Place();
+
+            return new SuccessExecutionResult();
         }
     }
 }

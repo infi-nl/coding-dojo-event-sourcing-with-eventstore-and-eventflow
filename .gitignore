@@ -4,5 +4,6 @@ obj/
 /packages/
 *.swp
 *.db
+*.db-journal
 
 appsettings.json
