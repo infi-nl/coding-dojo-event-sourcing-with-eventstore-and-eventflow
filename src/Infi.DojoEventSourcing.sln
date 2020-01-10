@@ -22,6 +22,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infi.DojoEventSourcing.Read
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infi.DojoEventSourcing.ReadModels.Api", "Infi.DojoEventSourcing.ReadModels.Api\Infi.DojoEventSourcing.ReadModels.Api.csproj", "{D34D715F-EB16-4FDE-AF44-43DB01FA230E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infi.DojoEventSourcing.ReadModelDbMigrator", "Infi.DojoEventSourcing.ReadModelDbMigrator\Infi.DojoEventSourcing.ReadModelDbMigrator.csproj", "{A4DD17D0-48E7-4B53-AC9E-D4BC8FF1A6DB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +58,10 @@ Global
 		{D34D715F-EB16-4FDE-AF44-43DB01FA230E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D34D715F-EB16-4FDE-AF44-43DB01FA230E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D34D715F-EB16-4FDE-AF44-43DB01FA230E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4DD17D0-48E7-4B53-AC9E-D4BC8FF1A6DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4DD17D0-48E7-4B53-AC9E-D4BC8FF1A6DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4DD17D0-48E7-4B53-AC9E-D4BC8FF1A6DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4DD17D0-48E7-4B53-AC9E-D4BC8FF1A6DB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{FAE50023-02F8-4BB1-8ADA-977738B01643} = {B9B18429-1994-454F-A60B-31D8FE2AB2D8}
@@ -65,5 +71,6 @@ Global
 		{5AD891D5-66CB-407A-BAD4-0B722FC4C781} = {B1CB0CED-A5AA-4639-A767-5E2FD9ECF299}
 		{AE4A79C8-8FAC-479D-92C5-DDF67279FEFB} = {B1CB0CED-A5AA-4639-A767-5E2FD9ECF299}
 		{D34D715F-EB16-4FDE-AF44-43DB01FA230E} = {6D0DFBFA-BCBD-4060-A3EA-670DFEB162D9}
+		{A4DD17D0-48E7-4B53-AC9E-D4BC8FF1A6DB} = {3877938D-D04B-4038-B830-BF93E3566E99}
 	EndGlobalSection
 EndGlobal
