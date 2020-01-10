@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>netcoreapp3.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="EventFlow" Version="0.77.4077"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Infi.DojoEventSourcing.Domain\Infi.DojoEventSourcing.Domain.csproj"/>
+    </ItemGroup>
+</Project>

@@ -1,7 +1,7 @@
 ﻿using EventFlow.Aggregates;
-using Infi.DojoEventSourcing.Domain.Bookings.ValueObjects;
+using Infi.DojoEventSourcing.Domain.Reservations.ValueObjects;
 
-namespace Infi.DojoEventSourcing.Domain.Bookings
+namespace Infi.DojoEventSourcing.Domain.Reservations
 {
     public class Booking : AggregateRoot<Booking, BookingId>
     {

@@ -7,8 +7,9 @@ using EventFlow.EventStores.EventStore.Extensions;
 using EventFlow.Extensions;
 using EventStore.ClientAPI;
 using Infi.DojoEventSourcing.Configuration;
-using Infi.DojoEventSourcing.Domain.Bookings.Events;
 using Infi.DojoEventSourcing.Domain.CommandHandlers;
+using Infi.DojoEventSourcing.Domain.EventSubscribers;
+using Infi.DojoEventSourcing.Domain.Reservations.Events;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -50,8 +51,8 @@ namespace DojoEventSourcing
                             Assembly.GetExecutingAssembly().GetName().Name)
                         .AddEvents(typeof(BookingPlaced).Assembly)
                         .AddCommandHandlers(typeof(PlaceBookingHandler).Assembly)
-                        // .AddSubscribers(readmodelUpdaters) // BS This order matters, as we use synchronous subscribers.
-                        // .AddSubscribers(eventSubscribers) // each subscriber waits for the other to finish.
+                        // .AddSubscribers(readmodelUpdaters) 
+                        .AddSubscribers(typeof(BookingPlacedHandler))
                         .UseLibLog(LibLogProviders.Serilog);
                 });
         }

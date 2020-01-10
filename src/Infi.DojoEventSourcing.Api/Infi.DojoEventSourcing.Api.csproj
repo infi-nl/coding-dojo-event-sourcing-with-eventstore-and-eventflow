@@ -15,6 +15,7 @@
     <ItemGroup>
       <ProjectReference Include="..\Infi.DojoEventSourcing.Configuration\Infi.DojoEventSourcing.Configuration.csproj" />
       <ProjectReference Include="..\Infi.DojoEventSourcing.Domain.CommandHanders\Infi.DojoEventSourcing.Domain.CommandHandlers.csproj" />
+      <ProjectReference Include="..\Infi.DojoEventSourcing.Domain.EventSubscribers\Infi.DojoEventSourcing.Domain.EventSubscribers.csproj" />
       <ProjectReference Include="..\Infi.DojoEventSourcing.Domain\Infi.DojoEventSourcing.Domain.csproj" />
     </ItemGroup>
 
