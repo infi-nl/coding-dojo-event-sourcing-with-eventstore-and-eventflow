@@ -9,10 +9,14 @@ using EventFlow.SQLite.Connections;
 using EventFlow.SQLite.Extensions;
 using EventStore.ClientAPI;
 using Infi.DojoEventSourcing.Configuration;
+using Infi.DojoEventSourcing.Db;
 using Infi.DojoEventSourcing.Domain.CommandHandlers.Reservations;
 using Infi.DojoEventSourcing.Domain.EventSubscribers.Reservations;
 using Infi.DojoEventSourcing.Domain.Reservations.Events;
+using Infi.DojoEventSourcing.ReadModels.Api;
+using Infi.DojoEventSourcing.ReadModels.Api.DAL;
 using Infi.DojoEventSourcing.ReadModels.Api.Reservations;
+using Infi.DojoEventSourcing.ReadModels.Api.Reservations.Queries;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -29,6 +33,8 @@ namespace DojoEventSourcing
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            var apiReadModelConnectionString = Configuration["ApiReadModel:ConnectionString"];
+
             services.AddControllers();
             services.AddEventFlow(
                 cfg =>
@@ -39,7 +45,7 @@ namespace DojoEventSourcing
                                 .RunBootstrapperOnHostStartup()
                                 .AddUriMetadata())
                         .UseEventStoreEventStore(
-                            new Uri(Configuration["EventStore:Uri"]),
+                            new Uri(Configuration["EventStore:ConnectionString"]),
                             ConnectionSettings.Create()
                                 .KeepReconnecting()
                                 .LimitReconnectionsTo(
@@ -53,13 +59,17 @@ namespace DojoEventSourcing
                                             CultureInfo.InvariantCulture))),
                             Assembly.GetExecutingAssembly().GetName().Name)
                         .ConfigureSQLite(
-                            SQLiteConfiguration.New.SetConnectionString(Configuration["SqlLite:ConnectionString"]))
+                            SQLiteConfiguration.New.SetConnectionString(apiReadModelConnectionString))
                         .AddEvents(typeof(ReservationPlaced).Assembly)
                         .AddCommandHandlers(typeof(PlaceReservationHandler).Assembly)
                         .AddSubscribers(typeof(ReservationPlacedHandler))
                         .UseSQLiteReadModel<ReservationReadModel>()
+                        .AddQueryHandlers(typeof(GetAllReservationsHandler))
                         .UseLibLog(LibLogProviders.Serilog);
                 });
+
+            var databaseReadContext = ApiReadContextFactory.Create(apiReadModelConnectionString);
+            services.AddScoped<IDatabaseContext<IApiReadModelRepositoryFactory>>(_ => databaseReadContext);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -71,10 +81,7 @@ namespace DojoEventSourcing
             }
 
             app.UseRouting();
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }

@@ -5,5 +5,7 @@ obj/
 *.swp
 *.db
 *.db-journal
+mono_crash.*
+*.DotSettings.user
 
 appsettings.json

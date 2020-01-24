@@ -5,6 +5,7 @@ using EventFlow.Commands;
 using Infi.DojoEventSourcing.Domain.Commands.Reservations;
 using Infi.DojoEventSourcing.Domain.Reservations;
 using Infi.DojoEventSourcing.Domain.Reservations.ValueObjects;
+using LanguageExt;
 
 namespace Infi.DojoEventSourcing.Domain.CommandHandlers.Reservations
 {
@@ -18,7 +19,7 @@ namespace Infi.DojoEventSourcing.Domain.CommandHandlers.Reservations
         {
             reservation.Place();
 
-            return new SuccessExecutionResult();
+            return await new SuccessExecutionResult().AsTask();
         }
     }
 }
