@@ -1,9 +1,12 @@
 ﻿using System;
+using System.Collections.Immutable;
 using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
+using Infi.DojoEventSourcing.Domain.Reservations.ValueObjects;
 using Infi.DojoEventSourcing.ReadModels.Api.Reservations;
+using LanguageExt;
 
 namespace Infi.DojoEventSourcing.ReadModels.Api.DAL.Reservations
 {
@@ -16,18 +19,40 @@ namespace Infi.DojoEventSourcing.ReadModels.Api.DAL.Reservations
             _connection = connection;
         }
 
-        public async Task<ReservationOffer> GetOfferById(
-            string reservationId,
+        public async Task<ReservationOffer> GetAvailableOffersForReservation(
+            ReservationId reservationId,
             DateTime arrival,
             DateTime departure)
         {
-            // FIXME ED Filter on query parameters
-            var reservationOffer =
+            var reservationOffers =
                 await _connection
                     .QueryAsync<ReservationOffer>(
-                        @"SELECT * FROM Offer");
+                        "SELECT * FROM Offer WHERE ReservationId = @ReservationId",
+                        new { ReservationId = reservationId.GetGuid().ToString() });
 
-            return reservationOffer.First(); // FIXME ED Error handling
+            var offerLookup = reservationOffers.ToImmutableDictionary(_ => _.Date);
+
+            // TODO ED Ported from the original example: consider just querying the database for relevant data; downside
+            //         is that it moves BL outside of the responsible object (i.e. PriceOffered.IsStillValid)
+            var totalPriceWithHack =
+                Enumerable
+                    .Range(0, departure.Subtract(arrival).Days)
+                    .Select(offset => arrival.AddDays(offset))
+                    .Aggregate(
+                        Option<decimal>.Some(0.0m),
+                        (maybePrice, date) =>
+                        {
+                            var a = offerLookup.ContainsKey(date);
+
+                            var isStillValid = a && offerLookup[date].IsStillValid(DateTime.Now);
+
+                            return (isStillValid)
+                                ? maybePrice.Map(p => p + offerLookup[date].Price)
+                                : Option<decimal>.None;
+                        })
+                    .IfNone(-1); // FIXME Hack ported from the original code
+
+            return new ReservationOffer(reservationId.Value, arrival, departure, totalPriceWithHack);
         }
     }
 }

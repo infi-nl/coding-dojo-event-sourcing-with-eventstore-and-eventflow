@@ -39,16 +39,13 @@ namespace DojoEventSourcing.Controllers
             DateTime arrival,
             DateTime departure)
         {
-            // FIXME ED Async
             var reservationId = ReservationId.New;
-            _commandBus
-                .Publish(new CreateOffer(reservationId, arrival, departure), CancellationToken.None);
-//                .ConfigureAwait(false);
+            await _commandBus
+                .PublishAsync(new CreateOffer(reservationId, arrival, departure), CancellationToken.None)
+                .ConfigureAwait(false);
 
-            var x = _queryProcessor
-                .Process(new GetOffers(reservationId.Value, arrival, departure), CancellationToken.None);
-
-            return x;
+            return _queryProcessor
+                .Process(new GetOffers(reservationId, arrival, departure), CancellationToken.None);
         }
 
 

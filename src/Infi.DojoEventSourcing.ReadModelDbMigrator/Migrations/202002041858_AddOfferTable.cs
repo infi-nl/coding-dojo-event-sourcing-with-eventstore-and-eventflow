@@ -9,9 +9,10 @@ namespace Infi.DojoEventSourcing.ReadModelDbMigrator.Migrations
         {
             Create.Table("Offer")
                 .WithColumn("AggregateId").AsString().PrimaryKey()
+                .WithColumn("ReservationId").AsString().NotNullable()
                 .WithColumn("Date").AsDateTime().NotNullable()
                 .WithColumn("Expires").AsDateTime().NotNullable()
-                .WithColumn("Price").AsDecimal(9,4).NotNullable();
+                .WithColumn("Price").AsDecimal(9, 4).NotNullable();
         }
 
         public override void Down()

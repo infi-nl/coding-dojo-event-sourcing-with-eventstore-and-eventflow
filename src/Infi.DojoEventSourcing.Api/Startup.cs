@@ -37,6 +37,9 @@ namespace DojoEventSourcing
             var apiReadModelConnectionString = Configuration["ApiReadModel:ConnectionString"];
 
             services.AddControllers();
+
+            services.AddSingleton(new OfferReadModelLocator()); // FIXME ED Used this to fix a DI issue
+
             services.AddEventFlow(
                 cfg =>
                 {
@@ -64,9 +67,9 @@ namespace DojoEventSourcing
                         .AddCommandHandlers(typeof(MakeReservationHandler).Assembly)
                         .AddEvents(typeof(ReservationCreated).Assembly)
                         .AddSubscribers(typeof(ReservationCreatedHandler))
-                        .UseSQLiteReadModel<OfferReadModel>()
                         .UseSQLiteReadModel<ReservationReadModel>()
-                        .AddQueryHandlers(typeof(GetAllReservationsHandler),typeof(GetOffersHandler))
+                        .UseSQLiteReadModel<OfferReadModel, OfferReadModelLocator>()
+                        .AddQueryHandlers(typeof(GetAllReservationsHandler), typeof(GetOffersHandler))
                         .UseLibLog(LibLogProviders.Serilog);
                 });
 
