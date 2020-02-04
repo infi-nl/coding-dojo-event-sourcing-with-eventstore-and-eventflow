@@ -6,24 +6,16 @@ namespace Infi.DojoEventSourcing.ReadModels.Api.Reservations
     [DataContract]
     public class ReservationOffer
     {
-//        public ReservationOffer(string reservationId, DateTime arrival, DateTime departure, decimal totalPrice)
-//        {
-//            ReservationId = reservationId;
-//            Arrival = arrival;
-//            Departure = departure;
-//            TotalPrice = totalPrice;
-//        }
+        [DataMember]
+        public string AggregateId { get; set; } // FIXME ED Rename column to ReservationId
 
         [DataMember]
-        public string ReservationId { get; set; }
+        public DateTime Date { get; set; }
 
         [DataMember]
-        public DateTime Arrival { get; set; }
+        public DateTime Expires { get; set; }
 
         [DataMember]
-        public DateTime Departure { get; set; }
-
-        [DataMember]
-        public decimal TotalPrice { get; set; }
+        public decimal Price { get; set; }
     }
 }
