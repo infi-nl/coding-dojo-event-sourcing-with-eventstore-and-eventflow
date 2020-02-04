@@ -1,12 +1,10 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using EventFlow.Aggregates;
-using EventFlow.Core;
 using EventFlow.ReadStores;
 using Infi.DojoEventSourcing.Domain.Reservations;
 using Infi.DojoEventSourcing.Domain.Reservations.Events;
 using Infi.DojoEventSourcing.Domain.Reservations.ValueObjects;
-using Infi.DojoEventSourcing.Domain.Rooms;
 
 namespace Infi.DojoEventSourcing.ReadModels.Api.Reservations
 {
@@ -22,7 +20,7 @@ namespace Infi.DojoEventSourcing.ReadModels.Api.Reservations
         public string Name { get; private set; }
         public string Status { get; set; }
         public string RoomNumber { get; set; }
-        public Room.RoomIdentity RoomId { get; set; }
+        public string RoomId { get; set; }
         public DateTime CheckOutTime { get; set; }
         public DateTime CheckInTime { get; set; }
         public DateTime Departure { get; set; }
@@ -49,7 +47,7 @@ namespace Infi.DojoEventSourcing.ReadModels.Api.Reservations
 
         public void Apply(IReadModelContext context, IDomainEvent<Reservation, ReservationId, RoomAssigned> domainEvent)
         {
-            RoomId = domainEvent.AggregateEvent.RoomId;
+            RoomId = domainEvent.AggregateEvent.RoomId.Value;
             RoomNumber = domainEvent.AggregateEvent.RoomNumber;
         }
     }

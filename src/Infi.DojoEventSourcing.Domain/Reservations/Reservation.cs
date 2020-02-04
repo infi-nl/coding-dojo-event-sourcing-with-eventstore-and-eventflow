@@ -12,6 +12,7 @@ namespace Infi.DojoEventSourcing.Domain.Reservations
     public class Reservation
         : AggregateRoot<Reservation, ReservationId>,
             IEmit<ContactInformationUpdated>,
+            IEmit<LineItemCreated>,
             IEmit<PriceOffered>,
             IEmit<ReservationCreated>
     {
@@ -115,22 +116,30 @@ namespace Infi.DojoEventSourcing.Domain.Reservations
 
         public void Apply(ReservationCreated aggregateEvent)
         {
+            // FIXME Implement
             // throw new NotImplementedException();
         }
 
         public void Apply(ContactInformationUpdated aggregateEvent)
         {
+            // FIXME Implement
             // throw new NotImplementedException();
         }
 
         public void Apply(PriceOffered priceOffered)
         {
+            // FIXME Add logging
             if (_priceOffersByDate.ContainsKey(priceOffered.Date))
             {
                 _priceOffersByDate.Remove(priceOffered.Date);
             }
 
             _priceOffersByDate.Add(priceOffered.Date, priceOffered);
+        }
+
+        public void Apply(LineItemCreated aggregateEvent)
+        {
+            // FIXME Implement
         }
     }
 }

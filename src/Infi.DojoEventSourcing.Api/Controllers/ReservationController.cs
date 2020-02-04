@@ -52,12 +52,13 @@ namespace DojoEventSourcing.Controllers
         }
 
 
-        [HttpPost]
-        public async Task<IActionResult> PlaceReservation()
+        [HttpPost("{reservationId}")]
+        public async Task<IActionResult> PlaceReservation(Guid reservationId)
         {
-            var reservationId = ReservationId.New;
+            var id = ReservationId.With(reservationId);
+
             var result = await _commandBus.PublishAsync(new MakeReservation(
-                    reservationId,
+                    id,
                     "name",
                     "email@example.com",
                     DateTime.Today,
@@ -66,7 +67,7 @@ namespace DojoEventSourcing.Controllers
 
             if (result.IsSuccess)
             {
-                return Json(reservationId.GetGuid());
+                return Json(reservationId);
             }
 
             return BadRequest();
