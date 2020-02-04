@@ -20,7 +20,6 @@ namespace Infi.DojoEventSourcing.Domain.Reservations.Events
             Departure = departure;
             CreateCheckInTimeFromDate = createCheckInTimeFromDate;
             CreateCheckOutTimeFromDate = createCheckOutTimeFromDate;
-            throw new NotImplementedException();
         }
 
         public ReservationId Id { get; }

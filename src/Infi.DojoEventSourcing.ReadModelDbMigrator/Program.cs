@@ -23,16 +23,13 @@ namespace Infi.DojoEventSourcing.ReadModelDbMigrator
             }
         }
 
-        private static void UpdateDatabase(IServiceProvider scopeServiceProvider)
-        {
+        private static void UpdateDatabase(IServiceProvider scopeServiceProvider) =>
             scopeServiceProvider
                 .GetRequiredService<IMigrationRunner>()
                 .MigrateUp();
-        }
 
-        private static IServiceProvider CreateServices()
-        {
-            return new ServiceCollection()
+        private static IServiceProvider CreateServices() =>
+            new ServiceCollection()
                 .AddFluentMigratorCore()
                 .ConfigureRunner(
                     rb => rb
@@ -42,6 +39,5 @@ namespace Infi.DojoEventSourcing.ReadModelDbMigrator
                         .For.Migrations())
                 .AddLogging(lb => lb.AddFluentMigratorConsole())
                 .BuildServiceProvider(false);
-        }
     }
 }

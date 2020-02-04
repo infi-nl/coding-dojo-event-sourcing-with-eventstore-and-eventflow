@@ -2,9 +2,11 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using EventFlow;
+using EventFlow.Extensions;
 using EventFlow.Queries;
 using Infi.DojoEventSourcing.Domain.Reservations.Commands;
 using Infi.DojoEventSourcing.Domain.Reservations.ValueObjects;
+using Infi.DojoEventSourcing.ReadModels.Api.Reservations;
 using Infi.DojoEventSourcing.ReadModels.Api.Reservations.Queries;
 using Microsoft.AspNetCore.Mvc;
 
@@ -32,7 +34,25 @@ namespace DojoEventSourcing.Controllers
             return Json(allReservations);
         }
 
-        [HttpPost("PlaceReservation")]
+        [HttpGet("Offers")]
+        public async Task<ReservationOffer> ShowOffer(
+            DateTime arrival,
+            DateTime departure)
+        {
+            // FIXME ED Async
+            var reservationId = ReservationId.New;
+            _commandBus
+                .Publish(new CreateOffer(reservationId, arrival, departure), CancellationToken.None);
+//                .ConfigureAwait(false);
+
+            var x = _queryProcessor
+                .Process(new GetOffers(reservationId.Value, arrival, departure), CancellationToken.None);
+
+            return x;
+        }
+
+
+        [HttpPost]
         public async Task<IActionResult> PlaceReservation()
         {
             var reservationId = ReservationId.New;
@@ -40,7 +60,7 @@ namespace DojoEventSourcing.Controllers
                     reservationId,
                     "name",
                     "email@example.com",
-                    DateTime.Today, 
+                    DateTime.Today,
                     DateTime.Today.AddDays(2)),
                 CancellationToken.None);
 

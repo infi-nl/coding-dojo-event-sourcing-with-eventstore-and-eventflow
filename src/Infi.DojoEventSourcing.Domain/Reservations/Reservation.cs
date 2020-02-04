@@ -11,11 +11,13 @@ namespace Infi.DojoEventSourcing.Domain.Reservations
 {
     public class Reservation
         : AggregateRoot<Reservation, ReservationId>,
-          IEmit<ReservationCreated>
+            IEmit<ContactInformationUpdated>,
+            IEmit<PriceOffered>,
+            IEmit<ReservationCreated>
     {
         private static readonly TimeSpan PriceValidityDuration = TimeSpan.FromMinutes(30);
 
-        private readonly IDictionary<DateTime, PriceOffered> priceOffersByDate =
+        private readonly IDictionary<DateTime, PriceOffered> _priceOffersByDate =
             new Dictionary<DateTime, PriceOffered>();
 
         private State _state = State.Prospective;
@@ -32,10 +34,8 @@ namespace Infi.DojoEventSourcing.Domain.Reservations
         {
         }
 
-        public void SearchForAccommodation(DateTime arrival, DateTime departure, IPricingEngine pricing)
+        public void CreateOffers(DateTime arrival, DateTime departure, IPricingEngine pricing)
         {
-            Emit(new SearchedForAccommodation(Id, arrival, departure));
-
             for (var date = arrival; date < departure; date = date.AddDays(1))
             {
                 MakePriceOffer(date, pricing);
@@ -59,7 +59,7 @@ namespace Infi.DojoEventSourcing.Domain.Reservations
         }
 
         private bool HasValidPriceOffer(DateTime date) =>
-            priceOffersByDate.ContainsKey(date) && priceOffersByDate[date].IsStillValid();
+            _priceOffersByDate.ContainsKey(date) && _priceOffersByDate[date].IsStillValid();
 
         public void UpdateContactInformation(string name, string email)
         {
@@ -85,12 +85,12 @@ namespace Infi.DojoEventSourcing.Domain.Reservations
 
         private PriceOffered GetValidPriceOffer(DateTime date)
         {
-            if (!priceOffersByDate.ContainsKey(date))
+            if (!_priceOffersByDate.ContainsKey(date))
             {
                 throw new ArgumentException("no price offer for date " + date);
             }
 
-            var offer = priceOffersByDate[date];
+            var offer = _priceOffersByDate[date];
             if (offer.HasExpired())
             {
                 throw new ArgumentException("price offer for date " + date + " has expired");
@@ -115,7 +115,22 @@ namespace Infi.DojoEventSourcing.Domain.Reservations
 
         public void Apply(ReservationCreated aggregateEvent)
         {
-            throw new NotImplementedException();
+            // throw new NotImplementedException();
+        }
+
+        public void Apply(ContactInformationUpdated aggregateEvent)
+        {
+            // throw new NotImplementedException();
+        }
+
+        public void Apply(PriceOffered priceOffered)
+        {
+            if (_priceOffersByDate.ContainsKey(priceOffered.Date))
+            {
+                _priceOffersByDate.Remove(priceOffered.Date);
+            }
+
+            _priceOffersByDate.Add(priceOffered.Date, priceOffered);
         }
     }
 }

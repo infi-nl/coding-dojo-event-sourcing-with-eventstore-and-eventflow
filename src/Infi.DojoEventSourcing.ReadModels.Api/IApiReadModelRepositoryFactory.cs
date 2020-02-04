@@ -6,5 +6,6 @@ namespace Infi.DojoEventSourcing.ReadModels.Api
     public interface IApiReadModelRepositoryFactory : IRepositoryFactory
     {
         IReservationReadRepository CreateReservationRepository();
+        IOfferReadRepository CreateOffersRepository();
     }
 }

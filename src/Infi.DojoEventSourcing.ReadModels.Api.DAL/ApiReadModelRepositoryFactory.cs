@@ -17,5 +17,10 @@ namespace Infi.DojoEventSourcing.ReadModels.Api.DAL
         {
            return new ReservationReadRepository(_connection);
         }
+
+        public IOfferReadRepository CreateOffersRepository()
+        {
+            return new OfferReadRepository(_connection);
+        }
     }
 }

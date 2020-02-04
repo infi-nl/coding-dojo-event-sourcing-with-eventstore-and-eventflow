@@ -5,8 +5,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Infi.DojoEventSourcing.Configuration\Infi.DojoEventSourcing.Configuration.csproj"/>
-        <ProjectReference Include="..\Infi.DojoEventSourcing.Db\Infi.DojoEventSourcing.Db.csproj"/>
-        <ProjectReference Include="..\Infi.DojoEventSourcing.ReadModels.Api\Infi.DojoEventSourcing.ReadModels.Api.csproj"/>
+        <ProjectReference Include="..\Infi.DojoEventSourcing.Configuration\Infi.DojoEventSourcing.Configuration.csproj" />
+        <ProjectReference Include="..\Infi.DojoEventSourcing.Db\Infi.DojoEventSourcing.Db.csproj" />
+        <ProjectReference Include="..\Infi.DojoEventSourcing.ReadModels.Api\Infi.DojoEventSourcing.ReadModels.Api.csproj" />
     </ItemGroup>
 </Project>
