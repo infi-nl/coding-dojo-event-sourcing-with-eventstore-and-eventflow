@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using EventFlow.Aggregates;
 using EventFlow.Core;
+using EventFlow.ValueObjects;
 using Infi.DojoEventSourcing.Domain.Rooms.Events;
+using Newtonsoft.Json;
 
 namespace Infi.DojoEventSourcing.Domain.Rooms
 {
@@ -11,14 +13,17 @@ namespace Infi.DojoEventSourcing.Domain.Rooms
     {
         private readonly IList<Range> _occupiedRanges = new List<Range>();
 
+        [JsonConverter(typeof(SingleValueObjectConverter))]
         public class RoomIdentity : Identity<RoomIdentity>
         {
-            public RoomIdentity(string value) : base(value)
+            public RoomIdentity(string value)
+                : base(value)
             {
             }
         }
 
-        public Room(RoomIdentity id) : base(id)
+        public Room(RoomIdentity id)
+            : base(id)
         {
         }
 

@@ -10,8 +10,8 @@ using EventFlow.SQLite.Extensions;
 using EventStore.ClientAPI;
 using Infi.DojoEventSourcing.Configuration;
 using Infi.DojoEventSourcing.Db;
-using Infi.DojoEventSourcing.Domain.CommandHandlers.Reservations;
 using Infi.DojoEventSourcing.Domain.EventSubscribers.Reservations;
+using Infi.DojoEventSourcing.Domain.Reservations.Commands;
 using Infi.DojoEventSourcing.Domain.Reservations.Events;
 using Infi.DojoEventSourcing.ReadModels.Api;
 using Infi.DojoEventSourcing.ReadModels.Api.DAL;
@@ -60,9 +60,9 @@ namespace DojoEventSourcing
                             Assembly.GetExecutingAssembly().GetName().Name)
                         .ConfigureSQLite(
                             SQLiteConfiguration.New.SetConnectionString(apiReadModelConnectionString))
-                        .AddEvents(typeof(ReservationPlaced).Assembly)
-                        .AddCommandHandlers(typeof(PlaceReservationHandler).Assembly)
-                        .AddSubscribers(typeof(ReservationPlacedHandler))
+                        .AddCommandHandlers(typeof(MakeReservationHandler).Assembly)
+                        .AddEvents(typeof(ReservationCreated).Assembly)
+                        .AddSubscribers(typeof(ReservationCreatedHandler))
                         .UseSQLiteReadModel<ReservationReadModel>()
                         .AddQueryHandlers(typeof(GetAllReservationsHandler))
                         .UseLibLog(LibLogProviders.Serilog);

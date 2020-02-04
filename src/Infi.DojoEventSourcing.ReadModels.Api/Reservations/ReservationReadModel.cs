@@ -10,13 +10,13 @@ namespace Infi.DojoEventSourcing.ReadModels.Api.Reservations
     [Table("Reservation")]
     public class ReservationReadModel
         : IReadModel,
-            IAmReadModelFor<Reservation, ReservationId, ReservationPlaced>
+            IAmReadModelFor<Reservation, ReservationId, ReservationCreated>
     {
         public string AggregateId { get; private set; }
 
         public void Apply(
             IReadModelContext context,
-            IDomainEvent<Reservation, ReservationId, ReservationPlaced> domainEvent)
+            IDomainEvent<Reservation, ReservationId, ReservationCreated> domainEvent)
         {
             AggregateId = domainEvent.AggregateIdentity.GetGuid().ToString();
         }

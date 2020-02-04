@@ -9,7 +9,7 @@ using Infi.DojoEventSourcing.Domain.Reservations.ValueObjects;
 
 namespace Infi.DojoEventSourcing.Domain.EventSubscribers.Reservations
 {
-    public class ReservationPlacedHandler
+    public class ReservationCreatedHandler
         : ISubscribeSynchronousTo<Reservation, ReservationId, ReservationPlaced>
     {
         public Task HandleAsync(

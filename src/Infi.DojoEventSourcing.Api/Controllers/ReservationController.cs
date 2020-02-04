@@ -1,8 +1,9 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using EventFlow;
 using EventFlow.Queries;
-using Infi.DojoEventSourcing.Domain.Commands.Reservations;
+using Infi.DojoEventSourcing.Domain.Reservations.Commands;
 using Infi.DojoEventSourcing.Domain.Reservations.ValueObjects;
 using Infi.DojoEventSourcing.ReadModels.Api.Reservations.Queries;
 using Microsoft.AspNetCore.Mvc;
@@ -35,7 +36,13 @@ namespace DojoEventSourcing.Controllers
         public async Task<IActionResult> PlaceReservation()
         {
             var reservationId = ReservationId.New;
-            var result = await _commandBus.PublishAsync(new PlaceReservation(reservationId), CancellationToken.None);
+            var result = await _commandBus.PublishAsync(new MakeReservation(
+                    reservationId,
+                    "name",
+                    "email@example.com",
+                    DateTime.Today, 
+                    DateTime.Today.AddDays(2)),
+                CancellationToken.None);
 
             if (result.IsSuccess)
             {
