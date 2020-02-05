@@ -3,20 +3,17 @@ using EventFlow.Aggregates;
 
 namespace Infi.DojoEventSourcing.Domain.Rooms.Events
 {
-    public class RoomOccupied : IAggregateEvent, IAggregateEvent<Room, Room.RoomIdentity>
+    public class RoomOccupied : IAggregateEvent<Room, Room.RoomIdentity>
     {
-        public RoomOccupied(DateTime start, DateTime end)
+        public RoomOccupied(DateTime startDateUtc, DateTime endDateUtc, Guid occupant)
         {
-            Start = start;
-            End = end;
+            StartDateUtc = startDateUtc;
+            EndDateUtc = endDateUtc;
+            Occupant = occupant;
         }
 
-        public RoomOccupied(Room.RoomIdentity start, in DateTime rangeStart, in DateTime rangeEnd, Guid occupant)
-        {
-            throw new NotImplementedException();
-        }
-
-        public DateTime End { get; }
-        public DateTime Start { get; }
+        public DateTime StartDateUtc { get; }
+        public DateTime EndDateUtc { get; }
+        public Guid Occupant { get; }
     }
 }

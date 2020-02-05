@@ -1,6 +1,8 @@
 using System.Data.Common;
 using Infi.DojoEventSourcing.ReadModels.Api.DAL.Reservations;
+using Infi.DojoEventSourcing.ReadModels.Api.DAL.Rooms;
 using Infi.DojoEventSourcing.ReadModels.Api.Reservations;
+using Infi.DojoEventSourcing.ReadModels.Api.Rooms;
 
 namespace Infi.DojoEventSourcing.ReadModels.Api.DAL
 {
@@ -15,7 +17,12 @@ namespace Infi.DojoEventSourcing.ReadModels.Api.DAL
 
         public IReservationReadRepository CreateReservationRepository()
         {
-           return new ReservationReadRepository(_connection);
+            return new ReservationReadRepository(_connection);
+        }
+
+        public IRoomReadRepository CreateRoomRepository()
+        {
+            return new RoomReadRepository(_connection);
         }
 
         public IOfferReadRepository CreateOffersRepository()

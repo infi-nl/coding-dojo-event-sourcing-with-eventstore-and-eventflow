@@ -2,11 +2,13 @@ using EventFlow.Aggregates;
 
 namespace Infi.DojoEventSourcing.Domain.Rooms.Events
 {
-    public class RoomCreated : IAggregateEvent, IAggregateEvent<Room, Room.RoomIdentity>
+    public class RoomCreated : IAggregateEvent<Room, Room.RoomIdentity>
     {
-        public RoomCreated(Room.RoomIdentity id, string number)
+        public RoomCreated(string roomNumber)
         {
-            throw new System.NotImplementedException();
+            RoomNumber = roomNumber;
         }
+
+        public string RoomNumber { get; }
     }
 }

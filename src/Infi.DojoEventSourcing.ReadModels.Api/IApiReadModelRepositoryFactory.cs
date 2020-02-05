@@ -1,5 +1,6 @@
 ﻿using Infi.DojoEventSourcing.Db;
 using Infi.DojoEventSourcing.ReadModels.Api.Reservations;
+using Infi.DojoEventSourcing.ReadModels.Api.Rooms;
 
 namespace Infi.DojoEventSourcing.ReadModels.Api
 {
@@ -7,5 +8,6 @@ namespace Infi.DojoEventSourcing.ReadModels.Api
     {
         IReservationReadRepository CreateReservationRepository();
         IOfferReadRepository CreateOffersRepository();
+        IRoomReadRepository CreateRoomRepository();
     }
 }

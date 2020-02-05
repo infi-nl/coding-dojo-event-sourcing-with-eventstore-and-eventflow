@@ -29,7 +29,7 @@ namespace Infi.DojoEventSourcing.Domain.Rooms
 
         public void Create(string number)
         {
-            Emit(new RoomCreated(Id, number));
+            Emit(new RoomCreated(number));
         }
 
         public void Occupy(Range range, Guid occupant)
@@ -39,14 +39,14 @@ namespace Infi.DojoEventSourcing.Domain.Rooms
                 throw new RoomAlreadyOccupiedException();
             }
 
-            Emit(new RoomOccupied(Id, range.Start, range.End, occupant));
+            Emit(new RoomOccupied(range.Start, range.End, occupant));
         }
 
         private bool IsOccupiedAt(Range range) => _occupiedRanges.Any(range.Overlaps);
 
         void IApply<RoomOccupied>.Apply(RoomOccupied @event)
         {
-            _occupiedRanges.Add(new Range(@event.Start, @event.End));
+            _occupiedRanges.Add(new Range(@event.StartDateUtc, @event.EndDateUtc));
         }
     }
 }

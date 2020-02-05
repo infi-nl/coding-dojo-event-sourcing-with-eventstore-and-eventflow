@@ -1,6 +1,7 @@
 using System;
 using System.Globalization;
 using System.Reflection;
+using Dapper;
 using EventFlow.AspNetCore.Extensions;
 using EventFlow.DependencyInjection.Extensions;
 using EventFlow.EventStores.EventStore.Extensions;
@@ -18,6 +19,7 @@ using Infi.DojoEventSourcing.ReadModels.Api;
 using Infi.DojoEventSourcing.ReadModels.Api.DAL;
 using Infi.DojoEventSourcing.ReadModels.Api.Reservations;
 using Infi.DojoEventSourcing.ReadModels.Api.Reservations.Queries;
+using Infi.DojoEventSourcing.ReadModels.Api.Rooms;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -66,10 +68,11 @@ namespace DojoEventSourcing
                             SQLiteConfiguration.New.SetConnectionString(apiReadModelConnectionString))
                         .AddCommandHandlers(typeof(MakeReservationHandler).Assembly)
                         .AddEvents(typeof(ReservationCreated).Assembly)
-                        .AddSubscribers(typeof(ReservationCreatedHandler))
+                        .AddSubscribers(typeof(ReservationCreatedHandler).Assembly)
                         .UseSQLiteReadModel<ReservationReadModel>()
                         .UseSQLiteReadModel<OfferReadModel, OfferReadModelLocator>()
-                        .AddQueryHandlers(typeof(GetAllReservationsHandler), typeof(GetOffersHandler))
+                        .UseSQLiteReadModel<RoomOccupationReadModel>()
+                        .AddQueryHandlers(typeof(GetAllReservationsHandler).Assembly)
                         .UseLibLog(LibLogProviders.Serilog);
                 });
 
