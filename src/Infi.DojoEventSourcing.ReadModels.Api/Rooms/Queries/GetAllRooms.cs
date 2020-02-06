@@ -21,13 +21,9 @@ namespace Infi.DojoEventSourcing.ReadModels.Api.Rooms.Queries
 
         public async Task<IReadOnlyList<RoomReadModel>> ExecuteQueryAsync(
             GetAllRooms query,
-            CancellationToken cancellationToken)
-        {
-            return await _dbReadContext.RunAsync(factory =>
-            {
-                var roomRepository = factory.CreateRoomRepository();
-                return roomRepository.GetAll();
-            });
-        }
+            CancellationToken cancellationToken) =>
+            await _dbReadContext
+                .RunAsync(factory => factory.CreateRoomRepository()
+                    .GetAll());
     }
 }

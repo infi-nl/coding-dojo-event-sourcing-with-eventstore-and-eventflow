@@ -9,7 +9,6 @@ using Infi.DojoEventSourcing.Domain.Reservations.ValueObjects;
 using Infi.DojoEventSourcing.ReadModels.Api.Reservations;
 using Infi.DojoEventSourcing.ReadModels.Api.Reservations.Queries;
 using Microsoft.AspNetCore.Mvc;
-using static Infi.DojoEventSourcing.Domain.Reservations.ValueObjects.ReservationId;
 
 namespace DojoEventSourcing.Controllers
 {

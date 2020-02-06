@@ -1,10 +1,15 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Threading;
 using System.Threading.Tasks;
+using EventFlow;
 using EventFlow.Queries;
+using Infi.DojoEventSourcing.Domain.Rooms.Commands;
+using Infi.DojoEventSourcing.ReadModels.Api.Rooms;
 using Infi.DojoEventSourcing.ReadModels.Api.Rooms.Queries;
 using Microsoft.AspNetCore.Mvc;
+using static Infi.DojoEventSourcing.Domain.Rooms.Room;
 
 namespace DojoEventSourcing.Controllers
 {
@@ -12,20 +17,36 @@ namespace DojoEventSourcing.Controllers
     public class RoomController : Controller
     {
         private readonly IQueryProcessor _queryProcessor;
+        private readonly ICommandBus _commandBus;
 
-        public RoomController(IQueryProcessor queryProcessor)
+        public RoomController(ICommandBus commandBus, IQueryProcessor queryProcessor)
         {
+            _commandBus = commandBus;
             _queryProcessor = queryProcessor;
         }
-        // @PostMapping("/api/create-room")
-        // public Map<?, ?> createRoom(@RequestBody CreateRoom command) {
-        //     return (Map<?, ?>) core.handle(command); // XXX: WriteObservedPositionToResponseHeaders works only for non-void controller methods
-        // }
 
-        // @GetMapping("/api/rooms")
-        // public RoomDto[] rooms() {
-        //     return (RoomDto[]) core.handle(new FindAllRooms());
-        // }
+        [HttpPost]
+        public async Task<IActionResult> CreateRoom([FromBody] CreateRoomDto createRoom)
+        {
+            var id = RoomIdentity.New;
+
+            var room = await _commandBus
+                .PublishAsync(new CreateRoom(id, createRoom.Number), CancellationToken.None)
+                .ConfigureAwait(false);
+
+            if (room.IsSuccess)
+            {
+                return Json(id.GetGuid());
+            }
+
+            return BadRequest();
+        }
+
+        [HttpGet]
+        public async Task<IReadOnlyList<RoomReadModel>> GetAllRooms() =>
+            await _queryProcessor
+                .ProcessAsync(new GetAllRooms(), CancellationToken.None)
+                .ConfigureAwait(false);
 
         [HttpGet("GetAvailabilityByDateRange")]
         public async Task<IActionResult> GetAvailabilityByDateRange([FromQuery] string startDate, string endDate)
@@ -38,6 +59,11 @@ namespace DojoEventSourcing.Controllers
                 CancellationToken.None);
 
             return Json(availability);
+        }
+
+        public class CreateRoomDto
+        {
+            public string Number { get; set; }
         }
     }
 }
