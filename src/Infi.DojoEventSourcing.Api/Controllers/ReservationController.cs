@@ -28,9 +28,7 @@ namespace DojoEventSourcing.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var allReservations = await _queryProcessor.ProcessAsync(
-                new GetAllReservations(),
-                CancellationToken.None);
+            var allReservations = await _queryProcessor.ProcessAsync(new GetAllReservations(), CancellationToken.None);
 
             return Json(allReservations);
         }
@@ -71,6 +69,17 @@ namespace DojoEventSourcing.Controllers
             }
 
             return BadRequest();
+        }
+
+        [HttpGet("{reservationId}")]
+        public ReservationReadModel GetReservationById(Guid reservationId)
+        {
+            var id = ReservationId.With(reservationId);
+
+            var reservation = _queryProcessor
+                .Process(new FindReservationById(id), CancellationToken.None);
+
+            return reservation;
         }
 
         public class PlaceReservationDto

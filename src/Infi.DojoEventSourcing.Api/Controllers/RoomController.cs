@@ -17,6 +17,15 @@ namespace DojoEventSourcing.Controllers
         {
             _queryProcessor = queryProcessor;
         }
+        // @PostMapping("/api/create-room")
+        // public Map<?, ?> createRoom(@RequestBody CreateRoom command) {
+        //     return (Map<?, ?>) core.handle(command); // XXX: WriteObservedPositionToResponseHeaders works only for non-void controller methods
+        // }
+
+        // @GetMapping("/api/rooms")
+        // public RoomDto[] rooms() {
+        //     return (RoomDto[]) core.handle(new FindAllRooms());
+        // }
 
         [HttpGet("GetAvailabilityByDateRange")]
         public async Task<IActionResult> GetAvailabilityByDateRange([FromQuery] string startDate, string endDate)

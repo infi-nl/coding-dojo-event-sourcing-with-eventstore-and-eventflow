@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Data.Common;
+using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
+using Infi.DojoEventSourcing.Domain.Reservations.ValueObjects;
 using Infi.DojoEventSourcing.ReadModels.Api.Reservations;
 
 namespace Infi.DojoEventSourcing.ReadModels.Api.DAL.Reservations
@@ -19,10 +22,19 @@ namespace Infi.DojoEventSourcing.ReadModels.Api.DAL.Reservations
         public async Task<IReadOnlyList<ReservationReadModel>> GetAll()
         {
             var reservations =
-                await _connection.QueryAsync<ReservationReadModel>(
-                    @"SELECT * FROM Reservation");
+                await _connection.QueryAsync<ReservationReadModel>("SELECT * FROM Reservation");
 
             return reservations.ToImmutableList();
+        }
+
+        public async Task<ReservationReadModel> GetById(ReservationId id)
+        {
+            var reservations =
+                await _connection.QueryAsync<ReservationReadModel>(
+                    "SELECT * FROM Reservation WHERE AggregateId = @ReservationId",
+                    new { ReservationId = id.GetGuid().ToString() });
+
+            return reservations.FirstOrDefault();
         }
     }
 }
