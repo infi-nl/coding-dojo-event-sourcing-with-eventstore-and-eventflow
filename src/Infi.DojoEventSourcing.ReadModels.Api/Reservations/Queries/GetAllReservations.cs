@@ -21,13 +21,7 @@ namespace Infi.DojoEventSourcing.ReadModels.Api.Reservations.Queries
 
         public async Task<IReadOnlyList<ReservationReadModel>> ExecuteQueryAsync(
             GetAllReservations query,
-            CancellationToken cancellationToken)
-        {
-            return await _dbReadContext.RunAsync(factory =>
-            {
-                var reservationRepo = factory.CreateReservationRepository();
-                return reservationRepo.GetAll();
-            });
-        }
+            CancellationToken cancellationToken) =>
+            await _dbReadContext.RunAsync(factory => factory.CreateReservationRepository().GetAll());
     }
 }
