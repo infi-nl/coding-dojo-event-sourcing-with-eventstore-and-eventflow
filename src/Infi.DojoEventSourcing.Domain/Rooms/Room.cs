@@ -1,15 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using EventFlow.Aggregates;
 using EventFlow.Core;
 using EventFlow.ValueObjects;
 using Infi.DojoEventSourcing.Domain.Rooms.Events;
+using LanguageExt.TypeClasses;
 using Newtonsoft.Json;
 
 namespace Infi.DojoEventSourcing.Domain.Rooms
 {
-    public class Room : AggregateRoot<Room, Room.RoomIdentity>, IApply<RoomOccupied>
+    public class Room : AggregateRoot<Room, Room.RoomIdentity>, IApply<RoomOccupied>, IApply<RoomCreated>
     {
         private readonly IList<Range> _occupiedRanges = new List<Range>();
 
@@ -26,6 +28,8 @@ namespace Infi.DojoEventSourcing.Domain.Rooms
             : base(id)
         {
         }
+
+        public string RoomNumber { get; set; }
 
         public void Create(string number)
         {
@@ -47,6 +51,11 @@ namespace Infi.DojoEventSourcing.Domain.Rooms
         void IApply<RoomOccupied>.Apply(RoomOccupied @event)
         {
             _occupiedRanges.Add(new Range(@event.StartDateUtc, @event.EndDateUtc));
+        }
+
+        public void Apply(RoomCreated aggregateEvent)
+        {
+            RoomNumber = aggregateEvent.RoomNumber;
         }
     }
 }
