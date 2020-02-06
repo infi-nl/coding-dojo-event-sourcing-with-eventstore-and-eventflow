@@ -36,5 +36,15 @@ namespace Infi.DojoEventSourcing.ReadModels.Api.DAL.Reservations
 
             return reservations.FirstOrDefault();
         }
+
+        public async Task<IEnumerable<ReservationReadModel>> GetByRange(DateTime arrival, DateTime departure)
+        {
+            var reservations =
+                await _connection.QueryAsync<ReservationReadModel>(
+                    "SELECT * FROM Reservation WHERE Arrival >= @Arrival AND Departure < @Departure",
+                    new { Arrival = arrival, Departure = departure });
+
+            return reservations;
+        }
     }
 }
