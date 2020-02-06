@@ -1,13 +1,14 @@
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using EventFlow.Queries;
 using Infi.DojoEventSourcing.Db;
+using Infi.DojoEventSourcing.ReadModels.Api.Reservations;
+using static Infi.DojoEventSourcing.ReadModels.Api.Capacity.Queries.CapacityUtils;
 
-namespace Infi.DojoEventSourcing.ReadModels.Api.Reservations.Queries
+namespace Infi.DojoEventSourcing.ReadModels.Api.Capacity.Queries
 {
     public class GetCapacityByTimeRange : IQuery<CapacityDto[]>
     {
@@ -44,14 +45,11 @@ namespace Infi.DojoEventSourcing.ReadModels.Api.Reservations.Queries
                             .GetByRange(arrival, departure))
                     .ConfigureAwait(false);
 
-            var dateToReservationCountLookup =
-                reservations
-                    .GroupBy(_ => _.Arrival)
-                    .ToImmutableDictionary(_ => _.Key, _ => _.Count());
 
-            return Enumerable
-                .Range(0, departure.Subtract(arrival).Days)
-                .Select(offset => arrival.AddDays(offset))
+            // TODO ED Consider creating dedicated CapacityPerDate-RM
+            var dateToReservationCountLookup = BuildReservationCountLookup(reservations);
+
+            return BuildDatesFrom(arrival, departure)
                 .Aggregate(
                     ImmutableList<CapacityDto>.Empty,
                     (capacities, date) =>
@@ -60,13 +58,5 @@ namespace Infi.DojoEventSourcing.ReadModels.Api.Reservations.Queries
                             : capacities)
                 .ToArray();
         }
-
-        private static CapacityDto MapToCapacity(DateTime date, IReadOnlyDictionary<DateTime, int> reservation) =>
-            new CapacityDto
-            {
-                Date = date,
-                Capacity = 42, // FIXME ED Read actual capacity
-                Reserved = reservation.GetValueOrDefault(date)
-            };
     }
 }

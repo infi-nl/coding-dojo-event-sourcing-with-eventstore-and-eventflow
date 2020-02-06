@@ -1,12 +1,12 @@
 using System;
-using System.Collections.Immutable;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using EventFlow.Queries;
 using Infi.DojoEventSourcing.Db;
+using Infi.DojoEventSourcing.ReadModels.Api.Reservations;
+using static Infi.DojoEventSourcing.ReadModels.Api.Capacity.Queries.CapacityUtils;
 
-namespace Infi.DojoEventSourcing.ReadModels.Api.Reservations.Queries
+namespace Infi.DojoEventSourcing.ReadModels.Api.Capacity.Queries
 {
     public class GetCapacityByDate : IQuery<CapacityDto>
     {
@@ -36,20 +36,12 @@ namespace Infi.DojoEventSourcing.ReadModels.Api.Reservations.Queries
         {
             var reservations =
                 await _dbReadContext
-                    .RunAsync(f => f.CreateReservationRepository().GetByRange(date, date))
+                    .RunAsync(f => f.CreateReservationRepository().GetByDate(date))
                     .ConfigureAwait(false);
 
-            var dateToReservationCountLookup =
-                reservations
-                    .GroupBy(_ => _.Arrival)
-                    .ToImmutableDictionary(_ => _.Key, _ => _.Count());
+            var dateToReservationCountLookup = BuildReservationCountLookup(reservations);
 
-            return new CapacityDto
-            {
-                Date = date,
-                Capacity = 42, // FIXME ED Read actual capacity
-                Reserved = dateToReservationCountLookup.GetValueOrDefault(date)
-            };
+            return MapToCapacity(date, dateToReservationCountLookup);
         }
     }
 }

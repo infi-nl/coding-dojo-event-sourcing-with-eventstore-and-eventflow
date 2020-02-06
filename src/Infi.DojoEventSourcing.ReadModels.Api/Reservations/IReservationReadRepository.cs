@@ -9,6 +9,7 @@ namespace Infi.DojoEventSourcing.ReadModels.Api.Reservations
     {
         Task<IReadOnlyList<ReservationReadModel>> GetAll();
         Task<ReservationReadModel> GetById(ReservationId id);
+        Task<IEnumerable<ReservationReadModel>> GetByDate(DateTime date);
         Task<IEnumerable<ReservationReadModel>> GetByRange(DateTime arrival, DateTime departure);
     }
 }
