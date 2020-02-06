@@ -69,6 +69,7 @@ namespace DojoEventSourcing
                         .AddCommandHandlers(typeof(MakeReservationHandler).Assembly)
                         .AddEvents(typeof(ReservationCreated).Assembly)
                         .AddSubscribers(typeof(ReservationCreatedHandler).Assembly)
+                        .UseSQLiteReadModel<RoomReadModel>()
                         .UseSQLiteReadModel<ReservationReadModel>()
                         .UseSQLiteReadModel<OfferReadModel, OfferReadModelLocator>()
                         .UseSQLiteReadModel<RoomOccupationReadModel>()
