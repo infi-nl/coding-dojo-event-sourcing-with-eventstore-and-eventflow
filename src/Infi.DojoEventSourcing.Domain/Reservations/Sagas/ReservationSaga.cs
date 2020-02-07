@@ -17,7 +17,8 @@ namespace Infi.DojoEventSourcing.Domain.Reservations.Sagas
             ISagaIsStartedBy<Reservation, ReservationId, ReservationCreated>,
             ISagaHandles<Reservation, ReservationId, RoomOccupyRequested>,
             ISagaHandles<Room, Room.RoomIdentity, RoomOccupied>,
-            ISagaHandles<Reservation, ReservationId, RoomAssigned>
+            ISagaHandles<Reservation, ReservationId, RoomAssigned>,
+            IApply<ReservationSaga.StartedReservationSaga>
     {
         private ReservationId _reservationId;
 
@@ -31,13 +32,12 @@ namespace Infi.DojoEventSourcing.Domain.Reservations.Sagas
             ISagaContext sagaContext,
             CancellationToken cancellationToken)
         {
+            Emit(new StartedReservationSaga(domainEvent.AggregateIdentity));
+
             Publish(new OccupyAnyAvailableRoom(
                 domainEvent.AggregateIdentity,
                 domainEvent.AggregateEvent.CheckInTime,
                 domainEvent.AggregateEvent.CheckOutTime));
-
-            _reservationId =
-                domainEvent.AggregateEvent.Id; // TODO ED Any other way to retrieve ReservationId in Apply?
 
             return Task.FromResult(0);
         }
@@ -47,6 +47,7 @@ namespace Infi.DojoEventSourcing.Domain.Reservations.Sagas
         {
             Publish(new OccupyRoom(
                 domainEvent.AggregateEvent.RoomId,
+                _reservationId,
                 new Range(domainEvent.AggregateEvent.Arrival, domainEvent.AggregateEvent.Departure)));
 
             return Task.FromResult(0);
@@ -66,6 +67,21 @@ namespace Infi.DojoEventSourcing.Domain.Reservations.Sagas
             Complete();
 
             return Task.FromResult(0);
+        }
+
+        public void Apply(StartedReservationSaga startedReservationSaga)
+        {
+            _reservationId = startedReservationSaga.ReservationIdentity;
+        }
+
+        public class StartedReservationSaga : IAggregateEvent<ReservationSaga, ReservationSagaId>
+        {
+            public StartedReservationSaga(ReservationId reservationIdentity)
+            {
+                ReservationIdentity = reservationIdentity;
+            }
+
+            public ReservationId ReservationIdentity { get; }
         }
     }
 }

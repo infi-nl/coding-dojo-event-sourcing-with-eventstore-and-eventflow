@@ -1,12 +1,14 @@
 using EventFlow.Commands;
 using EventFlow.Core;
+using Infi.DojoEventSourcing.Domain.Reservations.ValueObjects;
 
 namespace Infi.DojoEventSourcing.Domain.Rooms.Commands
 {
     public class OccupyRoom : Command<Room, Room.RoomIdentity>
     {
-        public OccupyRoom(Room.RoomIdentity aggregateId, Range range) : base(aggregateId)
+        public OccupyRoom(Room.RoomIdentity aggregateId, ReservationId reservationId, Range range) : base(aggregateId)
         {
+            ReservationId = reservationId;
             Range = range;
         }
 
@@ -16,5 +18,6 @@ namespace Infi.DojoEventSourcing.Domain.Rooms.Commands
         }
 
         public Range Range;
+        public ReservationId ReservationId;
     }
 }

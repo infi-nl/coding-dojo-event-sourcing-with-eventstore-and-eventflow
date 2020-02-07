@@ -9,7 +9,7 @@ namespace Infi.DojoEventSourcing.Domain.Rooms.Commands
     {
         public override Task ExecuteAsync(Room room, OccupyRoom command, CancellationToken cancellationToken)
         {
-            room.Occupy(command.Range, Guid.NewGuid()); // FIXME ED Add occupant
+            room.Occupy(command.ReservationId, command.Range, Guid.NewGuid()); // FIXME ED Add occupant
 
             return Task.FromResult(0);
         }

@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using EventFlow.Aggregates;
 using EventFlow.Core;
 using EventFlow.ValueObjects;
+using Infi.DojoEventSourcing.Domain.Reservations.ValueObjects;
 using Infi.DojoEventSourcing.Domain.Rooms.Events;
-using LanguageExt.TypeClasses;
 using Newtonsoft.Json;
 
 namespace Infi.DojoEventSourcing.Domain.Rooms
@@ -36,17 +34,18 @@ namespace Infi.DojoEventSourcing.Domain.Rooms
             Emit(new RoomCreated(number));
         }
 
-        public void Occupy(Range range, Guid occupant)
+        public void Occupy(ReservationId reservationId, Range range, Guid occupant)
         {
             if (IsOccupiedAt(range))
             {
                 throw new RoomAlreadyOccupiedException();
             }
 
-            Emit(new RoomOccupied(range.Start, range.End, occupant));
+            Emit(new RoomOccupied(reservationId, range.Start, range.End, occupant));
         }
 
-        private bool IsOccupiedAt(Range range) => _occupiedRanges.Any(range.Overlaps);
+        // FIXME ED Check occupied
+        private bool IsOccupiedAt(Range range) => false; //  _occupiedRanges.Any(range.Overlaps);
 
         void IApply<RoomOccupied>.Apply(RoomOccupied @event)
         {
