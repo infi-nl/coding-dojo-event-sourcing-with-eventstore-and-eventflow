@@ -9,7 +9,6 @@ using Infi.DojoEventSourcing.Domain.Reservations.Commands;
 using Infi.DojoEventSourcing.Domain.Reservations.Events;
 using Infi.DojoEventSourcing.Domain.Reservations.ValueObjects;
 using Infi.DojoEventSourcing.Domain.Rooms;
-using Infi.DojoEventSourcing.Domain.Rooms.Commands;
 using Xunit;
 
 namespace Infi.DojoEventSourcing.UnitTests.Domain.Reservations.Commands
@@ -24,7 +23,7 @@ namespace Infi.DojoEventSourcing.UnitTests.Domain.Reservations.Commands
             var reservation = new Reservation(reservationId);
             reservation.Apply(GetValidReservationCreatedEvent(reservationId));
 
-            var roomId = Room.RoomIdentity.New;
+            var roomId = Room.RoomId.New;
             var handler = new AssignRoomHandler();
 
             // When
@@ -46,12 +45,12 @@ namespace Infi.DojoEventSourcing.UnitTests.Domain.Reservations.Commands
             // Given
             var reservationId = ReservationId.New;
             var reservation = new Reservation(reservationId);
-            var roomId1 = Room.RoomIdentity.New;
+            var roomId1 = Room.RoomId.New;
 
             reservation.Apply(GetValidReservationCreatedEvent(reservationId));
             reservation.Apply(new RoomAssigned(reservationId, roomId1));
 
-            var roomId2 = Room.RoomIdentity.New;
+            var roomId2 = Room.RoomId.New;
             var handler = new AssignRoomHandler();
 
             // When
@@ -73,7 +72,7 @@ namespace Infi.DojoEventSourcing.UnitTests.Domain.Reservations.Commands
             // Given
             var reservationId = ReservationId.New;
             var reservation = new Reservation(reservationId);
-            var roomId = Room.RoomIdentity.New;
+            var roomId = Room.RoomId.New;
 
             var handler = new AssignRoomHandler();
 

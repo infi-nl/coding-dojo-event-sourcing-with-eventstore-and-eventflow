@@ -102,14 +102,14 @@ namespace Infi.DojoEventSourcing.Domain.Reservations
             return offer;
         }
 
-        public void AssignRoom(Room.RoomIdentity roomId)
+        public void AssignRoom(Room.RoomId roomId)
         {
             Emit(new RoomAssigned(Id, roomId));
         }
 
         public void RequestOccupyRoom(Guid roomId, DateTime arrival, DateTime departure)
         {
-            var roomIdentifier = Room.RoomIdentity.With(roomId);
+            var roomIdentifier = Room.RoomId.With(roomId);
             Emit(new RoomOccupyRequested(roomIdentifier, arrival, departure));
         }
 

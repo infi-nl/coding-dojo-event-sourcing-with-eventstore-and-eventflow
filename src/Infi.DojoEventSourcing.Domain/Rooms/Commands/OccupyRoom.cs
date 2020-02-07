@@ -4,15 +4,15 @@ using Infi.DojoEventSourcing.Domain.Reservations.ValueObjects;
 
 namespace Infi.DojoEventSourcing.Domain.Rooms.Commands
 {
-    public class OccupyRoom : Command<Room, Room.RoomIdentity>
+    public class OccupyRoom : Command<Room, Room.RoomId>
     {
-        public OccupyRoom(Room.RoomIdentity aggregateId, ReservationId reservationId, Range range) : base(aggregateId)
+        public OccupyRoom(Room.RoomId aggregateId, ReservationId reservationId, Range range) : base(aggregateId)
         {
             ReservationId = reservationId;
             Range = range;
         }
 
-        public OccupyRoom(Room.RoomIdentity aggregateId, Range range, ISourceId sourceId) : base(aggregateId, sourceId)
+        public OccupyRoom(Room.RoomId aggregateId, Range range, ISourceId sourceId) : base(aggregateId, sourceId)
         {
             Range = range;
         }

@@ -17,7 +17,7 @@ namespace Infi.DojoEventSourcing.UnitTests.Domain.Reservations.Commands
     public class CreateOfferTests
     {
         [Fact]
-        public async Task creates_offer_for_every_day_of_staying_at_hote()
+        public async Task creates_offer_for_every_day_of_staying_at_hotel()
         {
             // Given
             var id = ReservationId.New;

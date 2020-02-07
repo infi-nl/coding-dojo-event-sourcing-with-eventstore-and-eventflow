@@ -1,5 +1,6 @@
 using System;
 using NodaMoney;
+using TimeZoneConverter;
 
 namespace Infi.DojoEventSourcing.Domain.Hotels
 {
@@ -7,7 +8,7 @@ namespace Infi.DojoEventSourcing.Domain.Hotels
     {
         public static Currency Currency => Currency.FromCode("EUR");
 
-        public static TimeZoneInfo Timezone => TimeZoneInfo.FindSystemTimeZoneById("Europe/Amsterdam");
+        public static TimeZoneInfo Timezone => TZConvert.GetTimeZoneInfo("Europe/Amsterdam");
 
         private static readonly TimeSpan CheckInTime = TimeSpan.FromHours(14);
         private static readonly TimeSpan CheckOutTime = TimeSpan.FromHours(12);

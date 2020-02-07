@@ -9,7 +9,7 @@ namespace Infi.DojoEventSourcing.Domain.Reservations.Events
     [EventVersion("RoomOccupyRequested", 1)]
     public class RoomOccupyRequested : AggregateEvent<Reservation, ReservationId>
     {
-        public RoomOccupyRequested(Room.RoomIdentity roomId, DateTime arrival, DateTime departure)
+        public RoomOccupyRequested(Room.RoomId roomId, DateTime arrival, DateTime departure)
         {
             RoomId = roomId;
             Arrival = arrival;
@@ -20,6 +20,6 @@ namespace Infi.DojoEventSourcing.Domain.Reservations.Events
 
         public DateTime Arrival { get; }
 
-        public Room.RoomIdentity RoomId { get; }
+        public Room.RoomId RoomId { get; }
     }
 }

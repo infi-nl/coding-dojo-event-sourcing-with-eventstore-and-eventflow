@@ -9,13 +9,13 @@ namespace Infi.DojoEventSourcing.Domain.Rooms.Queries
     [Table("RoomOccupation")]
     public class RoomOccupationReadModel
         : IReadModel,
-          IAmReadModelFor<Room, Room.RoomIdentity, RoomOccupied>
+          IAmReadModelFor<Room, Room.RoomId, RoomOccupied>
     {
         public string AggregateId { get; private set; }
         public DateTime StartDate { get; private set; }
         public DateTime EndDate { get; private set; }
 
-        public void Apply(IReadModelContext context, IDomainEvent<Room, Room.RoomIdentity, RoomOccupied> domainEvent)
+        public void Apply(IReadModelContext context, IDomainEvent<Room, Room.RoomId, RoomOccupied> domainEvent)
         {
             AggregateId = domainEvent.AggregateIdentity.GetGuid().ToString();
             StartDate = domainEvent.AggregateEvent.StartDateUtc;

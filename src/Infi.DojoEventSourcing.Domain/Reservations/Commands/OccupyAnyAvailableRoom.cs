@@ -1,10 +1,9 @@
 using System;
 using EventFlow.Commands;
 using EventFlow.Core;
-using Infi.DojoEventSourcing.Domain.Reservations;
 using Infi.DojoEventSourcing.Domain.Reservations.ValueObjects;
 
-namespace Infi.DojoEventSourcing.Domain.Rooms.Commands
+namespace Infi.DojoEventSourcing.Domain.Reservations.Commands
 {
     public class OccupyAnyAvailableRoom : Command<Reservation, ReservationId>
     {

@@ -4,7 +4,7 @@ using Infi.DojoEventSourcing.Domain.Reservations.ValueObjects;
 
 namespace Infi.DojoEventSourcing.Domain.Rooms.Events
 {
-    public class RoomOccupied : IAggregateEvent<Room, Room.RoomIdentity>
+    public class RoomOccupied : IAggregateEvent<Room, Room.RoomId>
     {
         public RoomOccupied(ReservationId reservationId, DateTime startDateUtc, DateTime endDateUtc, Guid occupant)
         {

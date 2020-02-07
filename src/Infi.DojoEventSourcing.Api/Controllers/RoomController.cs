@@ -27,7 +27,7 @@ namespace DojoEventSourcing.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateRoom([FromBody] CreateRoomDto createRoom)
         {
-            var id = RoomIdentity.New;
+            var id = RoomId.New;
 
             var room = await _commandBus
                 .PublishAsync(new CreateRoom(id, createRoom.Number), CancellationToken.None)

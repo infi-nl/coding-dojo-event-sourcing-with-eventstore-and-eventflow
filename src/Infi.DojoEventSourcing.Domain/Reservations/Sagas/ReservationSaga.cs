@@ -16,7 +16,7 @@ namespace Infi.DojoEventSourcing.Domain.Reservations.Sagas
         : AggregateSaga<ReservationSaga, ReservationSagaId, ReservationSagaLocator>,
             ISagaIsStartedBy<Reservation, ReservationId, ReservationCreated>,
             ISagaHandles<Reservation, ReservationId, RoomOccupyRequested>,
-            ISagaHandles<Room, Room.RoomIdentity, RoomOccupied>,
+            ISagaHandles<Room, Room.RoomId, RoomOccupied>,
             ISagaHandles<Reservation, ReservationId, RoomAssigned>,
             IApply<ReservationSaga.StartedReservationSaga>
     {
@@ -53,7 +53,7 @@ namespace Infi.DojoEventSourcing.Domain.Reservations.Sagas
             return Task.FromResult(0);
         }
 
-        public Task HandleAsync(IDomainEvent<Room, Room.RoomIdentity, RoomOccupied> domainEvent,
+        public Task HandleAsync(IDomainEvent<Room, Room.RoomId, RoomOccupied> domainEvent,
             ISagaContext sagaContext, CancellationToken cancellationToken)
         {
             Publish(new AssignRoom(_reservationId, domainEvent.AggregateIdentity));

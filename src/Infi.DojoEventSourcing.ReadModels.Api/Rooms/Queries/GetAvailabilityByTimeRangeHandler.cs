@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,7 +22,10 @@ namespace Infi.DojoEventSourcing.ReadModels.Api.Rooms.Queries
             GetAvailabilityByTimeRange query,
             CancellationToken cancellationToken)
         {
-            var rooms = await _dbReadContext.RunAsync(f => f.CreateRoomRepository().GetAll()).ConfigureAwait(false);
+            // FIXME Actually use query parameters to filter
+            var rooms = await _dbReadContext
+                .RunAsync(f => f.CreateRoomRepository().GetAll())
+                .ConfigureAwait(false);
 
             return rooms.Select(MapToRoomAvailabilityDto).ToArray();
         }

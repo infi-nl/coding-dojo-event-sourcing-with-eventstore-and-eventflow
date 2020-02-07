@@ -8,12 +8,12 @@ namespace Infi.DojoEventSourcing.Domain.Reservations.Commands
     {
         public AssignRoom(
             ReservationId reservationId,
-            Room.RoomIdentity roomIdentity)
+            Room.RoomId roomId)
             : base(reservationId)
         {
-            RoomId = roomIdentity;
+            RoomId = roomId;
         }
 
-        public Room.RoomIdentity RoomId { get; }
+        public Room.RoomId RoomId { get; }
     }
 }
