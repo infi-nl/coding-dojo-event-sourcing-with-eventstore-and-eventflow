@@ -1,7 +1,6 @@
 using System;
 using System.Globalization;
 using System.Reflection;
-using Dapper;
 using EventFlow.AspNetCore.Extensions;
 using EventFlow.DependencyInjection.Extensions;
 using EventFlow.EventStores.EventStore.Extensions;
@@ -11,7 +10,6 @@ using EventFlow.SQLite.Extensions;
 using EventStore.ClientAPI;
 using Infi.DojoEventSourcing.Configuration;
 using Infi.DojoEventSourcing.Db;
-using Infi.DojoEventSourcing.Domain.EventSubscribers.Reservations;
 using Infi.DojoEventSourcing.Domain.Pricings;
 using Infi.DojoEventSourcing.Domain.Reservations.Commands;
 using Infi.DojoEventSourcing.Domain.Reservations.Events;
@@ -20,9 +18,7 @@ using Infi.DojoEventSourcing.Domain.Reservations.Sagas;
 using Infi.DojoEventSourcing.Domain.Rooms.Queries;
 using Infi.DojoEventSourcing.ReadModels.Api;
 using Infi.DojoEventSourcing.ReadModels.Api.DAL;
-using Infi.DojoEventSourcing.ReadModels.Api.Reservations;
 using Infi.DojoEventSourcing.ReadModels.Api.Reservations.Queries;
-using Infi.DojoEventSourcing.ReadModels.Api.Rooms;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -49,6 +45,7 @@ namespace DojoEventSourcing
                 cfg =>
                 {
                     cfg
+                        .Configure(c => c.ThrowSubscriberExceptions = true)
                         .AddAspNetCore(
                             o => o
                                 .RunBootstrapperOnHostStartup()
@@ -71,7 +68,6 @@ namespace DojoEventSourcing
                             SQLiteConfiguration.New.SetConnectionString(apiReadModelConnectionString))
                         .AddCommandHandlers(typeof(MakeReservationHandler).Assembly)
                         .AddEvents(typeof(ReservationCreated).Assembly)
-                        .AddSubscribers(typeof(ReservationCreatedHandler).Assembly)
                         .UseSQLiteReadModel<RoomReadModel>()
                         .UseSQLiteReadModel<ReservationReadModel>()
                         .UseSQLiteReadModel<OfferReadModel, OfferReadModelLocator>()

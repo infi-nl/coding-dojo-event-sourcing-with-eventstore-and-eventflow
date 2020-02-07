@@ -4,11 +4,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using EventFlow.Commands;
 using EventFlow.Queries;
+using Infi.DojoEventSourcing.Domain.Reservations;
+using Infi.DojoEventSourcing.Domain.Reservations.ValueObjects;
 using Infi.DojoEventSourcing.Domain.Rooms.Queries;
 
 namespace Infi.DojoEventSourcing.Domain.Rooms.Commands
 {
-    public class OccupyAnyAvailableRoomHandler : CommandHandler<Room, Room.RoomIdentity, OccupyAnyAvailableRoom>
+    public class OccupyAnyAvailableRoomHandler : CommandHandler<Reservation, ReservationId, OccupyAnyAvailableRoom>
     {
         private readonly IQueryProcessor _queryProcessor;
 
@@ -18,15 +20,14 @@ namespace Infi.DojoEventSourcing.Domain.Rooms.Commands
         }
 
         public override async Task ExecuteAsync(
-            Room room,
+            Reservation reservation,
             OccupyAnyAvailableRoom command,
             CancellationToken cancellationToken)
         {
             var anyAvailableRoom =
                 await GetAnyAvailableRoom(command.Start, command.End, cancellationToken).ConfigureAwait(false);
 
-            // FIXME ED Occupy room.
-            // room.Occupy();
+            reservation.RequestOccupyRoom(anyAvailableRoom.RoomId, command.Start, command.End);
         }
 
         private async Task<RoomAvailabilityDto> GetAnyAvailableRoom(
@@ -39,14 +40,12 @@ namespace Infi.DojoEventSourcing.Domain.Rooms.Commands
                     .ProcessAsync(new GetAvailabilityByTimeRange(start, end), cancellationToken)
                     .ConfigureAwait(false);
 
-            var firstAvailableRoom = rooms.FirstOrDefault(room => room.IsAvailable);
-
-            if (firstAvailableRoom == null)
+            if (rooms.Length() == 0)
             {
                 throw new NoRoomsAvailableException();
             }
 
-            return firstAvailableRoom;
+            return rooms.First(room => room.IsAvailable);
         }
     }
 }

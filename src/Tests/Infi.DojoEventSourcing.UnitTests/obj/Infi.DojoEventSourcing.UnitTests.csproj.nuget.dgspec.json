@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "/home/bryan/Projects/DojoEventSourcing/src/Tests/Infi.DojoEventSourcing.UnitTests/Infi.DojoEventSourcing.UnitTests.csproj": {}
+    "/home/ely/Projects/DojoEventSourcing/src/Tests/Infi.DojoEventSourcing.UnitTests/Infi.DojoEventSourcing.UnitTests.csproj": {}
   },
   "projects": {
-    "/home/bryan/Projects/DojoEventSourcing/src/Infi.DojoEventSourcing.Domain/Infi.DojoEventSourcing.Domain.csproj": {
+    "/home/ely/Projects/DojoEventSourcing/src/Infi.DojoEventSourcing.Domain/Infi.DojoEventSourcing.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/bryan/Projects/DojoEventSourcing/src/Infi.DojoEventSourcing.Domain/Infi.DojoEventSourcing.Domain.csproj",
+        "projectUniqueName": "/home/ely/Projects/DojoEventSourcing/src/Infi.DojoEventSourcing.Domain/Infi.DojoEventSourcing.Domain.csproj",
         "projectName": "Infi.DojoEventSourcing.Domain",
-        "projectPath": "/home/bryan/Projects/DojoEventSourcing/src/Infi.DojoEventSourcing.Domain/Infi.DojoEventSourcing.Domain.csproj",
-        "packagesPath": "/home/bryan/.nuget/packages/",
-        "outputPath": "/home/bryan/Projects/DojoEventSourcing/src/Infi.DojoEventSourcing.Domain/obj/",
+        "projectPath": "/home/ely/Projects/DojoEventSourcing/src/Infi.DojoEventSourcing.Domain/Infi.DojoEventSourcing.Domain.csproj",
+        "packagesPath": "/home/ely/.nuget/packages/",
+        "outputPath": "/home/ely/Projects/DojoEventSourcing/src/Infi.DojoEventSourcing.Domain/obj/",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "/usr/share/dotnet/sdk/NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "/home/bryan/.config/NuGet/NuGet.Config"
+          "/home/ely/.config/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.0"
@@ -68,6 +68,10 @@
           "warn": true,
           "downloadDependencies": [
             {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[3.0.1, 3.0.1]"
+            },
+            {
               "name": "Microsoft.NETCore.App.Ref",
               "version": "[3.0.0, 3.0.0]"
             }
@@ -77,24 +81,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/3.0.102/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/3.1.101/RuntimeIdentifierGraph.json"
         }
       }
     },
-    "/home/bryan/Projects/DojoEventSourcing/src/Tests/Infi.DojoEventSourcing.UnitTests/Infi.DojoEventSourcing.UnitTests.csproj": {
+    "/home/ely/Projects/DojoEventSourcing/src/Tests/Infi.DojoEventSourcing.UnitTests/Infi.DojoEventSourcing.UnitTests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/bryan/Projects/DojoEventSourcing/src/Tests/Infi.DojoEventSourcing.UnitTests/Infi.DojoEventSourcing.UnitTests.csproj",
+        "projectUniqueName": "/home/ely/Projects/DojoEventSourcing/src/Tests/Infi.DojoEventSourcing.UnitTests/Infi.DojoEventSourcing.UnitTests.csproj",
         "projectName": "Infi.DojoEventSourcing.UnitTests",
-        "projectPath": "/home/bryan/Projects/DojoEventSourcing/src/Tests/Infi.DojoEventSourcing.UnitTests/Infi.DojoEventSourcing.UnitTests.csproj",
-        "packagesPath": "/home/bryan/.nuget/packages/",
-        "outputPath": "/home/bryan/Projects/DojoEventSourcing/src/Tests/Infi.DojoEventSourcing.UnitTests/obj/",
+        "projectPath": "/home/ely/Projects/DojoEventSourcing/src/Tests/Infi.DojoEventSourcing.UnitTests/Infi.DojoEventSourcing.UnitTests.csproj",
+        "packagesPath": "/home/ely/.nuget/packages/",
+        "outputPath": "/home/ely/Projects/DojoEventSourcing/src/Tests/Infi.DojoEventSourcing.UnitTests/obj/",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "/usr/share/dotnet/sdk/NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "/home/bryan/.config/NuGet/NuGet.Config"
+          "/home/ely/.config/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.0"
@@ -105,8 +109,8 @@
         "frameworks": {
           "netcoreapp3.0": {
             "projectReferences": {
-              "/home/bryan/Projects/DojoEventSourcing/src/Infi.DojoEventSourcing.Domain/Infi.DojoEventSourcing.Domain.csproj": {
-                "projectPath": "/home/bryan/Projects/DojoEventSourcing/src/Infi.DojoEventSourcing.Domain/Infi.DojoEventSourcing.Domain.csproj"
+              "/home/ely/Projects/DojoEventSourcing/src/Infi.DojoEventSourcing.Domain/Infi.DojoEventSourcing.Domain.csproj": {
+                "projectPath": "/home/ely/Projects/DojoEventSourcing/src/Infi.DojoEventSourcing.Domain/Infi.DojoEventSourcing.Domain.csproj"
               }
             }
           }
@@ -149,6 +153,10 @@
           "warn": true,
           "downloadDependencies": [
             {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[3.0.1, 3.0.1]"
+            },
+            {
               "name": "Microsoft.NETCore.App.Ref",
               "version": "[3.0.0, 3.0.0]"
             }
@@ -158,7 +166,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/3.0.102/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/3.1.101/RuntimeIdentifierGraph.json"
         }
       }
     }

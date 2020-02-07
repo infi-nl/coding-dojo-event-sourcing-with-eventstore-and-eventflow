@@ -5,12 +5,16 @@ namespace Infi.DojoEventSourcing.Domain.Rooms.Commands
 {
     public class OccupyRoom : Command<Room, Room.RoomIdentity>
     {
-        public OccupyRoom(Room.RoomIdentity aggregateId) : base(aggregateId)
+        public OccupyRoom(Room.RoomIdentity aggregateId, Range range) : base(aggregateId)
         {
+            Range = range;
         }
 
-        public OccupyRoom(Room.RoomIdentity aggregateId, ISourceId sourceId) : base(aggregateId, sourceId)
+        public OccupyRoom(Room.RoomIdentity aggregateId, Range range, ISourceId sourceId) : base(aggregateId, sourceId)
         {
+            Range = range;
         }
+
+        public Range Range;
     }
 }

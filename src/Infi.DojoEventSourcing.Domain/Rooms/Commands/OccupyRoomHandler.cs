@@ -7,16 +7,11 @@ namespace Infi.DojoEventSourcing.Domain.Rooms.Commands
 {
     public class OccupyRoomHandler : CommandHandler<Room, Room.RoomIdentity, OccupyRoom>
     {
-        private readonly IRoomRepository _roomRepository;
-
-        public OccupyRoomHandler(IRoomRepository roomRepository)
-        {
-            _roomRepository = roomRepository;
-        }
-
         public override Task ExecuteAsync(Room room, OccupyRoom command, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            room.Occupy(command.Range, Guid.NewGuid()); // FIXME ED Add occupant
+
+            return Task.FromResult(0);
         }
     }
 }

@@ -1,18 +1,20 @@
 using System;
 using EventFlow.Commands;
 using EventFlow.Core;
+using Infi.DojoEventSourcing.Domain.Reservations;
+using Infi.DojoEventSourcing.Domain.Reservations.ValueObjects;
 
 namespace Infi.DojoEventSourcing.Domain.Rooms.Commands
 {
-    public class OccupyAnyAvailableRoom : Command<Room, Room.RoomIdentity>
+    public class OccupyAnyAvailableRoom : Command<Reservation, ReservationId>
     {
-        public OccupyAnyAvailableRoom(Room.RoomIdentity aggregateId, DateTime start, DateTime end) : base(aggregateId)
+        public OccupyAnyAvailableRoom(ReservationId aggregateId, DateTime start, DateTime end) : base(aggregateId)
         {
             Start = start;
             End = end;
         }
 
-        public OccupyAnyAvailableRoom(Room.RoomIdentity aggregateId, DateTime start, DateTime end, ISourceId sourceId) :
+        public OccupyAnyAvailableRoom(ReservationId aggregateId, DateTime start, DateTime end, ISourceId sourceId) :
             base(aggregateId, sourceId)
         {
             Start = start;
