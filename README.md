@@ -47,3 +47,15 @@ Now it's time to create our first stream. Make sure you started the `Infi.DojoEv
 
 Refresh the Stream Browser in the ES GUI, and you'll see a newly created room stream. Click on it to see all the events that belong to that stream. You'll see one event: `RoomCreated`. If you expand it, you'll see the data for that event in json format. Each room will have it's own event stream and all events for that specific room will be collected in its event stream. So when we make a reservation that occupies this room, a `RoomOccupied` event will be stored in this stream.
 
+## Getting familiar with EventFlow
+EventFlow is a CQRS + EventSourcing framework that can use a variety of event stores (i.e. EventStore) and read stores (i.e. Sqlite). It makes it easy to manage aggregates, apply events on them and maintain different event versions. The best way to understand the basics, is to walk through the code that created our first room.
+1. Open the `RoomController` and go to the `CreateRoom` method.
+   We use the EF `CommandBus` to publish a `CreateRoom` _command_ with a newly generated room command.
+   If this command succeeds, we return the id, otherwise something went wrong and we return a BadRequest
+2. Let's find out where this command is processed. Go to the `CreateRoomHandler`.
+   Everytime the `CommandBus` retrieves a `CreateRoom` command it will:
+      * Instantiate a new `Room` object with that room id
+      * Retrieve and apply all existing events for that room id from ES, none in this case
+      * Instantiate a `CreateRoomHandler` and call `ExecuteAsync` with the hydrated `Room` object and the published command.
+3. Follow the `room.Create` call into the Room aggregate, you'll see there's a `RoomCreated` event emitted here. Typically this is the place where you'd first do some validation. Emitting the event won't be committed to the event store yet. This will only happen once the calling command handler end with a succesful result.
+4. Open the `RoomCreated` event. This class corresponds with the data that we found in the EventStore GUI.
