@@ -12,14 +12,14 @@ namespace Infi.DojoEventSourcing.Domain.Reservations.Events
             ReservationId id,
             in DateTime arrival,
             in DateTime departure,
-            DateTime createCheckInTimeFromDate,
-            DateTime createCheckOutTimeFromDate)
+            DateTime checkInTime,
+            DateTime checkOutTime)
         {
             Id = id;
             Arrival = arrival;
             Departure = departure;
-            CreateCheckInTimeFromDate = createCheckInTimeFromDate;
-            CreateCheckOutTimeFromDate = createCheckOutTimeFromDate;
+            CheckInTime = checkInTime;
+            CheckOutTime = checkOutTime;
         }
 
         public ReservationId Id { get; }
@@ -28,8 +28,8 @@ namespace Infi.DojoEventSourcing.Domain.Reservations.Events
 
         public DateTime Departure { get; }
 
-        public DateTime CreateCheckInTimeFromDate { get; }
+        public DateTime CheckInTime { get; }
 
-        public DateTime CreateCheckOutTimeFromDate { get; }
+        public DateTime CheckOutTime { get; }
     }
 }

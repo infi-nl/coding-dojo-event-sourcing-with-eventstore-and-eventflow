@@ -8,17 +8,14 @@ namespace Infi.DojoEventSourcing.Domain.Reservations.Events
     [EventVersion("RoomAssigned", 1)]
     public class RoomAssigned : AggregateEvent<Reservation, ReservationId>
     {
-        public RoomAssigned(ReservationId id, Room.RoomIdentity roomId, string roomNumber)
+        public RoomAssigned(ReservationId id, Room.RoomIdentity roomId)
         {
             Id = id;
             RoomId = roomId;
-            RoomNumber = roomNumber;
         }
 
         public ReservationId Id { get; }
 
         public Room.RoomIdentity RoomId { get; }
-
-        public string RoomNumber { get; }
     }
 }

@@ -11,10 +11,11 @@ namespace Infi.DojoEventSourcing.Domain.Reservations
 {
     public class Reservation
         : AggregateRoot<Reservation, ReservationId>,
-            IEmit<ContactInformationUpdated>,
-            IEmit<LineItemCreated>,
-            IEmit<PriceOffered>,
-            IEmit<ReservationCreated>
+          IEmit<ContactInformationUpdated>,
+          IEmit<LineItemCreated>,
+          IEmit<PriceOffered>,
+          IEmit<ReservationCreated>,
+          IEmit<RoomAssigned>
     {
         private static readonly TimeSpan PriceValidityDuration = TimeSpan.FromMinutes(30);
 
@@ -100,10 +101,10 @@ namespace Infi.DojoEventSourcing.Domain.Reservations
             return offer;
         }
 
-        public void AssignRoom(Room.RoomIdentity roomId, string roomNumber)
+        public void AssignRoom(Room.RoomIdentity roomId)
         {
             CheckStateIs(State.Reserved);
-            Emit(new RoomAssigned(Id, roomId, roomNumber));
+            Emit(new RoomAssigned(Id, roomId));
         }
 
         private void CheckStateIs(State expected)
@@ -116,8 +117,7 @@ namespace Infi.DojoEventSourcing.Domain.Reservations
 
         public void Apply(ReservationCreated aggregateEvent)
         {
-            // FIXME Implement
-            // throw new NotImplementedException();
+            _state = State.Reserved;
         }
 
         public void Apply(ContactInformationUpdated aggregateEvent)
@@ -139,7 +139,12 @@ namespace Infi.DojoEventSourcing.Domain.Reservations
 
         public void Apply(LineItemCreated aggregateEvent)
         {
-            // FIXME Implement
+            _lineItems++;
+        }
+
+        public void Apply(RoomAssigned aggregateEvent)
+        {
+            // BS Do nothing for now
         }
     }
 }

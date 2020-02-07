@@ -24,7 +24,7 @@ namespace Infi.DojoEventSourcing.Domain.Reservations.Commands
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return ExecutionResult.Failed().AsTask();
+                return ExecutionResult.Failed(e.Message).AsTask();
             }
         }
     }

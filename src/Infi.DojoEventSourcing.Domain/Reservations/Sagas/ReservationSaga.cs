@@ -14,24 +14,27 @@ namespace Infi.DojoEventSourcing.Domain.Reservations.Sagas
 {
     public class ReservationSaga
         : AggregateSaga<ReservationSaga, ReservationSagaId, ReservationSagaLocator>,
-            ISagaIsStartedBy<Reservation, ReservationId, ReservationCreated>,
-            IApply<RoomOccupied>,
-            IApply<RoomAssigned>
+          ISagaIsStartedBy<Reservation, ReservationId, ReservationCreated>,
+          IApply<RoomOccupied>,
+          IApply<RoomAssigned>
 
     {
         private ReservationId _reservationId;
 
-        public ReservationSaga(ReservationSagaId id) : base(id)
+        public ReservationSaga(ReservationSagaId id)
+            : base(id)
         {
         }
 
-        public Task HandleAsync(IDomainEvent<Reservation, ReservationId, ReservationCreated> domainEvent,
-            ISagaContext sagaContext, CancellationToken cancellationToken)
+        public Task HandleAsync(
+            IDomainEvent<Reservation, ReservationId, ReservationCreated> domainEvent,
+            ISagaContext sagaContext,
+            CancellationToken cancellationToken)
         {
             Publish(new OccupyAnyAvailableRoom(
                 Room.RoomIdentity.New, // TODO ED Reconsider this: only providing it, b/c EventFlow forces me to
-                domainEvent.AggregateEvent.CreateCheckInTimeFromDate,
-                domainEvent.AggregateEvent.CreateCheckOutTimeFromDate));
+                domainEvent.AggregateEvent.CheckInTime,
+                domainEvent.AggregateEvent.CheckOutTime));
 
             _reservationId = domainEvent.AggregateEvent.Id; // TODO ED Any other way to retrieve ReservationId in Apply?
 
@@ -40,10 +43,7 @@ namespace Infi.DojoEventSourcing.Domain.Reservations.Sagas
 
         public void Apply(RoomOccupied roomOccupied)
         {
-            Publish(new AssignRoom(
-                _reservationId,
-                roomOccupied.Id,
-                roomOccupied.Occupant));
+            Publish(new AssignRoom(_reservationId, roomOccupied.Id));
         }
 
         public void Apply(RoomAssigned aggregateEvent)

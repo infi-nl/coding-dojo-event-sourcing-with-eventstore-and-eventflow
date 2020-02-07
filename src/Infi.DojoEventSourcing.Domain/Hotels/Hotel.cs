@@ -16,6 +16,6 @@ namespace Infi.DojoEventSourcing.Domain.Hotels
             TimeZoneInfo.ConvertTimeFromUtc((arrival.Date + CheckInTime).ToUniversalTime(), Timezone);
 
         public static DateTime CreateCheckOutTimeFromDate(DateTime departure) =>
-            TimeZoneInfo.ConvertTimeFromUtc((departure + CheckOutTime).ToUniversalTime(), Timezone);
+            TimeZoneInfo.ConvertTimeFromUtc((departure.Date + CheckOutTime).ToUniversalTime(), Timezone);
     }
 }
