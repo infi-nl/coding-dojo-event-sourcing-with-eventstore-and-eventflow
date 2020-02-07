@@ -7,8 +7,6 @@ using EventFlow;
 using EventFlow.Queries;
 using Infi.DojoEventSourcing.Domain.Rooms.Commands;
 using Infi.DojoEventSourcing.Domain.Rooms.Queries;
-using Infi.DojoEventSourcing.ReadModels.Api.Rooms;
-using Infi.DojoEventSourcing.ReadModels.Api.Rooms.Queries;
 using Microsoft.AspNetCore.Mvc;
 using static Infi.DojoEventSourcing.Domain.Rooms.Room;
 
@@ -26,7 +24,7 @@ namespace DojoEventSourcing.Controllers
             _queryProcessor = queryProcessor;
         }
 
-        [HttpPost("CreateRoom")]
+        [HttpPost]
         public async Task<IActionResult> CreateRoom([FromBody] CreateRoomDto createRoom)
         {
             var id = RoomIdentity.New;
@@ -43,7 +41,7 @@ namespace DojoEventSourcing.Controllers
             return BadRequest();
         }
 
-        [HttpGet("GetAllRooms")]
+        [HttpGet]
         public async Task<IReadOnlyList<RoomReadModel>> GetAllRooms() =>
             await _queryProcessor
                 .ProcessAsync(new GetAllRooms(), CancellationToken.None)

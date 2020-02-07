@@ -56,3 +56,22 @@ EventFlow is a CQRS + EventSourcing framework that can use a variety of event st
       * Instantiate a `CreateRoomHandler` and call `ExecuteAsync` with the hydrated `Room` object and the published command.
 3. Follow the `room.Create` call into the Room aggregate, you'll see there's a `RoomCreated` event emitted here. Typically this is the place where you'd first do some validation. Emitting the event won't be committed to the event store yet. This will only happen once the calling command handler end with a succesful result.
 4. Open the `RoomCreated` event. This class corresponds with the data that we found in the EventStore GUI.
+
+## Getting familiar with the application
+This application is a simple booking system for a Hotel. In this step we'll explain the booking flow, so you can start with the real assignements afterwards.
+1. As you've seen you can create rooms. These are of course required in order to make any reservations
+2. You start a new reservation by calling `[GET]  http://localhost:5000/Reservation/New`. This won't do anything except returning a newly generated `reservationId` that you can use in subsequent calls.
+3. Call `[GET] http://localhost:5000/Reservation/Offers?reservationId=<guid>&&arrival=YYYY-MM-dd&departure=YYYY-MM-dd` to get a priceoffer for the requested period. This will generate a price offer event for each day in that period. You can locate it in the ES GUI. The offer will be valid for 30 minutes.
+4. If you created offers for every day of your intended stay, you can make the reservation final by calling:
+```
+[POST] http://localhost:5000/Reservation
+{
+   "ReservationId": "<guid>",
+   "Arrival": "YYYY-MM-dd",
+   "Departure": "YYYY-MM-dd",
+   "Name": "<string>",
+   "Email": "<string>"
+}
+```
+This will generate some more events that you can explore.
+5. TODO !!!!!! Something about the room saga here? 

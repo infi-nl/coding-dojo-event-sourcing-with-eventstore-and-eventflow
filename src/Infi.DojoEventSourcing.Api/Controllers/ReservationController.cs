@@ -1,4 +1,5 @@
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
 using EventFlow;
@@ -10,6 +11,7 @@ using Infi.DojoEventSourcing.Domain.Reservations.ValueObjects;
 using Infi.DojoEventSourcing.ReadModels.Api.Reservations;
 using Infi.DojoEventSourcing.ReadModels.Api.Reservations.Queries;
 using Microsoft.AspNetCore.Mvc;
+using TaskExtensions = LanguageExt.TaskExtensions;
 
 namespace DojoEventSourcing.Controllers
 {
@@ -33,25 +35,42 @@ namespace DojoEventSourcing.Controllers
             return Json(allReservations);
         }
 
-        [HttpGet("Offers")]
-        public async Task<OfferDto> FindOffer(
-            DateTime arrival,
-            DateTime departure)
+        [HttpGet("New")]
+        public async Task<ActionResult> GetNewReservation()
         {
-            var reservationId = Identity<ReservationId>.New;
+            return await Task.FromResult(Json(ReservationId.New.GetGuid()));
+        }
 
+        [HttpGet("Offers")]
+        public async Task<IActionResult> FindOffer(
+            [Required] Guid reservationId,
+            [Required] DateTime arrival,
+            [Required] DateTime departure)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var id = ReservationId.With(reservationId);
             await _commandBus
-                .PublishAsync(new CreateOffer(reservationId, arrival, departure), CancellationToken.None)
+                .PublishAsync(new CreateOffer(id, arrival, departure), CancellationToken.None)
                 .ConfigureAwait(false);
 
             var offer = _queryProcessor
-                .Process(new GetOffers(reservationId, arrival, departure), CancellationToken.None);
+                .Process(new GetOffers(id, arrival, departure), CancellationToken.None);
 
-            return OfferDto.FromReservationOffer(offer);
+            return Json(OfferDto.FromReservationOffer(offer));
         }
 
+        [HttpPost]
         public async Task<IActionResult> PlaceReservation([FromBody] PlaceReservationDto reservationDto)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             var id = ReservationId.With(reservationDto.ReservationId);
 
             var result =
@@ -65,7 +84,7 @@ namespace DojoEventSourcing.Controllers
 
             if (result.IsSuccess)
             {
-                return Json(id.GetGuid());
+                return NoContent();
             }
 
             return BadRequest();
@@ -95,13 +114,10 @@ namespace DojoEventSourcing.Controllers
         {
             public static OfferDto FromReservationOffer(ReservationOffer offer) => new OfferDto
             {
-                ReservationId = Identity<ReservationId>.With(offer.AggregateId).GetGuid(),
                 Date = offer.Date,
                 Expires = offer.Expires,
                 Price = offer.Price
             };
-
-            public Guid ReservationId { get; set; }
 
             public DateTime Date { get; set; }
 
