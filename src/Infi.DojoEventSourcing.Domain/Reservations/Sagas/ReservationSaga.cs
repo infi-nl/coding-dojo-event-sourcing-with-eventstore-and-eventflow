@@ -15,9 +15,9 @@ namespace Infi.DojoEventSourcing.Domain.Reservations.Sagas
     public class ReservationSaga
         : AggregateSaga<ReservationSaga, ReservationSagaId, ReservationSagaLocator>,
             ISagaIsStartedBy<Reservation, ReservationId, ReservationCreated>,
-            IApply<RoomOccupyRequested>,
-            IApply<RoomOccupied>,
-            IApply<RoomAssigned>
+            ISagaHandles<Reservation, ReservationId, RoomOccupyRequested>,
+            ISagaHandles<Room, Room.RoomIdentity, RoomOccupied>,
+            ISagaHandles<Reservation, ReservationId, RoomAssigned>
     {
         private ReservationId _reservationId;
 
@@ -42,21 +42,30 @@ namespace Infi.DojoEventSourcing.Domain.Reservations.Sagas
             return Task.FromResult(0);
         }
 
-        public void Apply(RoomOccupyRequested roomOccupyRequested)
+        public Task HandleAsync(IDomainEvent<Reservation, ReservationId, RoomOccupyRequested> domainEvent,
+            ISagaContext sagaContext, CancellationToken cancellationToken)
         {
             Publish(new OccupyRoom(
-                roomOccupyRequested.RoomId,
-                new Range(roomOccupyRequested.Arrival, roomOccupyRequested.Departure)));
+                domainEvent.AggregateEvent.RoomId,
+                new Range(domainEvent.AggregateEvent.Arrival, domainEvent.AggregateEvent.Departure)));
+
+            return Task.FromResult(0);
         }
 
-        public void Apply(RoomOccupied roomOccupied)
+        public Task HandleAsync(IDomainEvent<Room, Room.RoomIdentity, RoomOccupied> domainEvent,
+            ISagaContext sagaContext, CancellationToken cancellationToken)
         {
-            Publish(new AssignRoom(_reservationId, roomOccupied.Id));
+            Publish(new AssignRoom(_reservationId, domainEvent.AggregateIdentity));
+
+            return Task.FromResult(0);
         }
 
-        public void Apply(RoomAssigned aggregateEvent)
+        public Task HandleAsync(IDomainEvent<Reservation, ReservationId, RoomAssigned> domainEvent,
+            ISagaContext sagaContext, CancellationToken cancellationToken)
         {
             Complete();
+
+            return Task.FromResult(0);
         }
     }
 }

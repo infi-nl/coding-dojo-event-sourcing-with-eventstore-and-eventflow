@@ -74,8 +74,8 @@ namespace DojoEventSourcing
                         .UseSQLiteReadModel<RoomOccupationReadModel>()
                         .AddQueryHandlers(typeof(GetAllReservationsHandler).Assembly)
                         .AddSagaLocators(typeof(ReservationSagaLocator))
-                        .AddSagas(typeof(ReservationSaga))
-                        .UseLibLog(LibLogProviders.Serilog);
+                        .AddSagas(typeof(ReservationSaga));
+                    // .UseLibLog(LibLogProviders.Serilog);
                 });
 
             var databaseReadContext = ApiReadContextFactory.Create(apiReadModelConnectionString);
