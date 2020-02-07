@@ -26,7 +26,7 @@ namespace DojoEventSourcing.Controllers
             _queryProcessor = queryProcessor;
         }
 
-        [HttpPost]
+        [HttpPost("CreateRoom")]
         public async Task<IActionResult> CreateRoom([FromBody] CreateRoomDto createRoom)
         {
             var id = RoomIdentity.New;
@@ -43,7 +43,7 @@ namespace DojoEventSourcing.Controllers
             return BadRequest();
         }
 
-        [HttpGet]
+        [HttpGet("GetAllRooms")]
         public async Task<IReadOnlyList<RoomReadModel>> GetAllRooms() =>
             await _queryProcessor
                 .ProcessAsync(new GetAllRooms(), CancellationToken.None)

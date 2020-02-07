@@ -30,14 +30,11 @@ This application is largely inspired by: https://github.com/luontola/cqrs-hotel
 n.b. To use the api something like [Postman](https://www.postman.com/) could come in handy.
 
 ## Getting familiar with EventStore
-=> Go to the EventStore GUI http://localhost:2113
+1. Go to the EventStore GUI http://localhost:2113
 You'll see the dashboard, which shows some technical information and the current open connections.
-
-=> Go to the Stream Browser page. You wont see much here yet, but this will be you're main entry point to peek inside the EventStore.
-
-=> Go to the Projections page. In order to browse streams, we first need to enable the `$streams` projection, by clicking on `$streams` and then on `start` in the right corner.
-
-Now it's time to create our first stream. Make sure you started the `Infi.DojoEventSourcing.Api` and make the following call 
+2. Go to the Stream Browser page. You wont see much here yet, but this will be you're main entry point to peek inside the EventStore.
+3. Go to the Projections page. In order to browse streams, we first need to enable the `$streams` projection, by clicking on `$streams` and then on `start` in the right corner.
+4. Now it's time to create our first stream. Make sure you started the `Infi.DojoEventSourcing.Api` and make the following call 
 ```
 [POST] http://localhost:5000/Room/CreateRoom
 {
