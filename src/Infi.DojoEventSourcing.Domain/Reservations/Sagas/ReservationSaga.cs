@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using EventFlow.Aggregates;
 using EventFlow.Sagas;
 using EventFlow.Sagas.AggregateSagas;
-using Infi.DojoEventSourcing.Domain.Reservations;
 using Infi.DojoEventSourcing.Domain.Reservations.Commands;
 using Infi.DojoEventSourcing.Domain.Reservations.Events;
 using Infi.DojoEventSourcing.Domain.Reservations.ValueObjects;
@@ -11,10 +10,10 @@ using Infi.DojoEventSourcing.Domain.Rooms;
 using Infi.DojoEventSourcing.Domain.Rooms.Commands;
 using Infi.DojoEventSourcing.Domain.Rooms.Events;
 
-namespace Infi.DojoEventSourcing.ReadModels.Api.Reservations.Sagas
+namespace Infi.DojoEventSourcing.Domain.Reservations.Sagas
 {
     public class ReservationSaga
-        : AggregateSaga<ReservationSaga, ReservationSagaId, OrderSagaLocator>,
+        : AggregateSaga<ReservationSaga, ReservationSagaId, ReservationSagaLocator>,
             ISagaIsStartedBy<Reservation, ReservationId, ReservationCreated>,
             IApply<RoomOccupied>,
             IApply<RoomAssigned>

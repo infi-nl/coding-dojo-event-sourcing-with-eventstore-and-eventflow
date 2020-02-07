@@ -1,0 +1,40 @@
+using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using EventFlow.Queries;
+using Infi.DojoEventSourcing.Db;
+using Infi.DojoEventSourcing.Domain.Rooms.Queries;
+
+namespace Infi.DojoEventSourcing.ReadModels.Api.Rooms.Queries
+{
+    public class GetAvailabilityByTimeRangeHandler : IQueryHandler<GetAvailabilityByTimeRange, RoomAvailabilityDto[]>
+    {
+        private readonly IDatabaseContext<IApiReadModelRepositoryFactory> _dbReadContext;
+
+        public GetAvailabilityByTimeRangeHandler(IDatabaseContext<IApiReadModelRepositoryFactory> dbReadContext)
+        {
+            _dbReadContext = dbReadContext;
+        }
+
+        public async Task<RoomAvailabilityDto[]> ExecuteQueryAsync(
+            GetAvailabilityByTimeRange query,
+            CancellationToken cancellationToken)
+        {
+            var rooms = await _dbReadContext.RunAsync(f => f.CreateRoomRepository().GetAll()).ConfigureAwait(false);
+
+            return rooms.Select(MapToRoomAvailabilityDto).ToArray();
+        }
+
+        private static RoomAvailabilityDto MapToRoomAvailabilityDto(RoomReadModel roomReadModel) =>
+            new RoomAvailabilityDto
+            {
+                Details = new List<RoomAvailabilityIntervalDto>(), // FIXME ED Return actual intervals
+                IsAvailable = true,
+                RoomId = Guid.Parse(roomReadModel.AggregateId),
+                RoomNumber = roomReadModel.RoomNumber
+            };
+    }
+}

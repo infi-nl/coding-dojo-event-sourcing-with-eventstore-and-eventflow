@@ -15,6 +15,8 @@ using Infi.DojoEventSourcing.Domain.EventSubscribers.Reservations;
 using Infi.DojoEventSourcing.Domain.Pricings;
 using Infi.DojoEventSourcing.Domain.Reservations.Commands;
 using Infi.DojoEventSourcing.Domain.Reservations.Events;
+using Infi.DojoEventSourcing.Domain.Reservations.Sagas;
+using Infi.DojoEventSourcing.Domain.Rooms.Queries;
 using Infi.DojoEventSourcing.ReadModels.Api;
 using Infi.DojoEventSourcing.ReadModels.Api.DAL;
 using Infi.DojoEventSourcing.ReadModels.Api.Reservations;
@@ -74,6 +76,8 @@ namespace DojoEventSourcing
                         .UseSQLiteReadModel<OfferReadModel, OfferReadModelLocator>()
                         .UseSQLiteReadModel<RoomOccupationReadModel>()
                         .AddQueryHandlers(typeof(GetAllReservationsHandler).Assembly)
+                        .AddSagaLocators(typeof(ReservationSagaLocator))
+                        .AddSagas(typeof(ReservationSaga))
                         .UseLibLog(LibLogProviders.Serilog);
                 });
 

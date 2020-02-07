@@ -3,17 +3,18 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using EventFlow.Commands;
+using EventFlow.Queries;
 using Infi.DojoEventSourcing.Domain.Rooms.Queries;
 
 namespace Infi.DojoEventSourcing.Domain.Rooms.Commands
 {
     public class OccupyAnyAvailableRoomHandler : CommandHandler<Room, Room.RoomIdentity, OccupyAnyAvailableRoom>
     {
-        private readonly GetAvailabilityByTimeRangeHandler _getAvailabilityByTimeRangeHandler;
+        private readonly IQueryProcessor _queryProcessor;
 
-        public OccupyAnyAvailableRoomHandler(GetAvailabilityByTimeRangeHandler getAvailabilityByTimeRangeHandler)
+        public OccupyAnyAvailableRoomHandler(IQueryProcessor queryProcessor)
         {
-            _getAvailabilityByTimeRangeHandler = getAvailabilityByTimeRangeHandler;
+            _queryProcessor = queryProcessor;
         }
 
         public override async Task ExecuteAsync(
@@ -24,16 +25,18 @@ namespace Infi.DojoEventSourcing.Domain.Rooms.Commands
             var anyAvailableRoom =
                 await GetAnyAvailableRoom(command.Start, command.End, cancellationToken).ConfigureAwait(false);
 
-            // FIXME Occupy.
-            // PublishAsync(new OccupyRoom(anyAvailableRoom., command.start, command.end, command.occupant));
+            // FIXME ED Occupy room.
+            // room.Occupy();
         }
 
-        private async Task<RoomAvailabilityDto> GetAnyAvailableRoom(DateTime start, DateTime end,
+        private async Task<RoomAvailabilityDto> GetAnyAvailableRoom(
+            DateTime start,
+            DateTime end,
             CancellationToken cancellationToken)
         {
             var rooms =
-                await _getAvailabilityByTimeRangeHandler
-                    .ExecuteQueryAsync(new GetAvailabilityByTimeRange(start, end), cancellationToken)
+                await _queryProcessor
+                    .ProcessAsync(new GetAvailabilityByTimeRange(start, end), cancellationToken)
                     .ConfigureAwait(false);
 
             var firstAvailableRoom = rooms.FirstOrDefault(room => room.IsAvailable);
