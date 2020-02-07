@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
-using Infi.DojoEventSourcing.ReadModels.Api.Reservations;
+using Infi.DojoEventSourcing.Domain.Reservations.Queries;
 
 namespace Infi.DojoEventSourcing.ReadModels.Api.Capacity.Queries
 {

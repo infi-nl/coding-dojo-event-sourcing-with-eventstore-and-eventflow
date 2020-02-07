@@ -5,6 +5,7 @@ using EventFlow;
 using EventFlow.Core;
 using EventFlow.Queries;
 using Infi.DojoEventSourcing.Domain.Reservations.Commands;
+using Infi.DojoEventSourcing.Domain.Reservations.Queries;
 using Infi.DojoEventSourcing.Domain.Reservations.ValueObjects;
 using Infi.DojoEventSourcing.ReadModels.Api.Reservations;
 using Infi.DojoEventSourcing.ReadModels.Api.Reservations.Queries;

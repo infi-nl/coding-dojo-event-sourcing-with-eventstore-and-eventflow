@@ -4,6 +4,7 @@ using System.Collections.Immutable;
 using System.Data.Common;
 using System.Threading.Tasks;
 using Dapper;
+using Infi.DojoEventSourcing.Domain.Rooms.Queries;
 using Infi.DojoEventSourcing.ReadModels.Api.Rooms;
 
 namespace Infi.DojoEventSourcing.ReadModels.Api.DAL.Rooms

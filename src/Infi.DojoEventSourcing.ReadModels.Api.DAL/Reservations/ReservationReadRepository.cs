@@ -5,8 +5,10 @@ using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
+using Infi.DojoEventSourcing.Domain.Reservations.Queries;
 using Infi.DojoEventSourcing.Domain.Reservations.ValueObjects;
 using Infi.DojoEventSourcing.ReadModels.Api.Reservations;
+using Infi.DojoEventSourcing.ReadModels.Api.Reservations.Repositories;
 
 namespace Infi.DojoEventSourcing.ReadModels.Api.DAL.Reservations
 {

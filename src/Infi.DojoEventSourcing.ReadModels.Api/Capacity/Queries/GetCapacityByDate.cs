@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using EventFlow.Queries;
 using Infi.DojoEventSourcing.Db;
+using Infi.DojoEventSourcing.Domain.Reservations.Queries;
 using Infi.DojoEventSourcing.ReadModels.Api.Reservations;
 using static Infi.DojoEventSourcing.ReadModels.Api.Capacity.Queries.CapacityUtils;
 

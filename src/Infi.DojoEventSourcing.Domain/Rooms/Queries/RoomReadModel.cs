@@ -1,10 +1,9 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using EventFlow.Aggregates;
 using EventFlow.ReadStores;
-using Infi.DojoEventSourcing.Domain.Rooms;
 using Infi.DojoEventSourcing.Domain.Rooms.Events;
 
-namespace Infi.DojoEventSourcing.ReadModels.Api.Rooms
+namespace Infi.DojoEventSourcing.Domain.Rooms.Queries
 {
     [Table("Room")]
     public class RoomReadModel

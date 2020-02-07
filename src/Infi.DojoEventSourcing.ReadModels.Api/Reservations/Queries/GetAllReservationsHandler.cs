@@ -3,13 +3,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using EventFlow.Queries;
 using Infi.DojoEventSourcing.Db;
+using Infi.DojoEventSourcing.Domain.Reservations.Queries;
 
 namespace Infi.DojoEventSourcing.ReadModels.Api.Reservations.Queries
 {
-    public class GetAllReservations : IQuery<IReadOnlyList<ReservationReadModel>>
-    {
-    }
-
     public class GetAllReservationsHandler : IQueryHandler<GetAllReservations, IReadOnlyList<ReservationReadModel>>
     {
         private readonly IDatabaseContext<IApiReadModelRepositoryFactory> _dbReadContext;

@@ -1,22 +1,11 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using EventFlow.Queries;
 using Infi.DojoEventSourcing.Db;
-using Infi.DojoEventSourcing.Domain.Reservations.ValueObjects;
+using Infi.DojoEventSourcing.Domain.Reservations.Queries;
 
 namespace Infi.DojoEventSourcing.ReadModels.Api.Reservations.Queries
 {
-    public class FindReservationById : IQuery<ReservationReadModel>
-    {
-        public FindReservationById(ReservationId id)
-        {
-            ReservationId = id;
-        }
-
-        public ReservationId ReservationId { get; }
-    }
-
     public class FindReservationByIdHandler : IQueryHandler<FindReservationById, ReservationReadModel>
     {
         private readonly IDatabaseContext<IApiReadModelRepositoryFactory> _dbReadContext;

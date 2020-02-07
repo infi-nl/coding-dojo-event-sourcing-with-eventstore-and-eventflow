@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace Infi.DojoEventSourcing.ReadModels.Api.Reservations
+namespace Infi.DojoEventSourcing.Domain.Reservations.Queries
 {
     [DataContract]
     public class CapacityDto

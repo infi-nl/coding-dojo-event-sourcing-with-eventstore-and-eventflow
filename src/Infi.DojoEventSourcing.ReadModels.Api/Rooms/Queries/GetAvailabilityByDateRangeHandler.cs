@@ -10,18 +10,6 @@ using Infi.DojoEventSourcing.Domain.Rooms.Queries;
 
 namespace Infi.DojoEventSourcing.ReadModels.Api.Rooms.Queries
 {
-    public class GetAvailabilityByDateRange : IQuery<IReadOnlyList<RoomAvailabilityDto>>
-    {
-        public GetAvailabilityByDateRange(DateTime startDateUtc, DateTime endDateUtc)
-        {
-            StartDateUtc = startDateUtc;
-            EndDateUtc = endDateUtc;
-        }
-
-        public DateTime StartDateUtc { get; }
-        public DateTime EndDateUtc { get; }
-    }
-
     public class GetAvailabilityByDateRangeHandler
         : IQueryHandler<GetAvailabilityByDateRange, IReadOnlyList<RoomAvailabilityDto>>
     {

@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Infi.DojoEventSourcing.Domain.Reservations.Queries;
 using Infi.DojoEventSourcing.Domain.Reservations.ValueObjects;
 
-namespace Infi.DojoEventSourcing.ReadModels.Api.Reservations
+namespace Infi.DojoEventSourcing.ReadModels.Api.Reservations.Repositories
 {
     public interface IReservationReadRepository
     {

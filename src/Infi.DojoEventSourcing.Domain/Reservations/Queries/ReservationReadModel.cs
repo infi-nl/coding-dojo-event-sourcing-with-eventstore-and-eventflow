@@ -2,11 +2,10 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using EventFlow.Aggregates;
 using EventFlow.ReadStores;
-using Infi.DojoEventSourcing.Domain.Reservations;
 using Infi.DojoEventSourcing.Domain.Reservations.Events;
 using Infi.DojoEventSourcing.Domain.Reservations.ValueObjects;
 
-namespace Infi.DojoEventSourcing.ReadModels.Api.Reservations
+namespace Infi.DojoEventSourcing.Domain.Reservations.Queries
 {
     [Table("Reservation")]
     public class ReservationReadModel

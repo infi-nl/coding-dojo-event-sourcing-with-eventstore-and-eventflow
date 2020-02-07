@@ -3,13 +3,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using EventFlow.Queries;
 using Infi.DojoEventSourcing.Db;
+using Infi.DojoEventSourcing.Domain.Rooms.Queries;
 
 namespace Infi.DojoEventSourcing.ReadModels.Api.Rooms.Queries
 {
-    public class GetAllRooms : IQuery<IReadOnlyList<RoomReadModel>>
-    {
-    }
-
     public class GetAllRoomsHandler : IQueryHandler<GetAllRooms, IReadOnlyList<RoomReadModel>>
     {
         private readonly IDatabaseContext<IApiReadModelRepositoryFactory> _dbReadContext;

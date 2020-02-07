@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using EventFlow;
 using EventFlow.Queries;
 using Infi.DojoEventSourcing.Domain.Rooms.Commands;
+using Infi.DojoEventSourcing.Domain.Rooms.Queries;
 using Infi.DojoEventSourcing.ReadModels.Api.Rooms;
 using Infi.DojoEventSourcing.ReadModels.Api.Rooms.Queries;
 using Microsoft.AspNetCore.Mvc;

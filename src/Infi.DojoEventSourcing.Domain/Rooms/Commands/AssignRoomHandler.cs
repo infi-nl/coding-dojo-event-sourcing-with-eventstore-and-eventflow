@@ -5,7 +5,7 @@ using Infi.DojoEventSourcing.Domain.Reservations;
 using Infi.DojoEventSourcing.Domain.Reservations.Commands;
 using Infi.DojoEventSourcing.Domain.Reservations.ValueObjects;
 
-namespace Infi.DojoEventSourcing.Domain.Rooms.Queries
+namespace Infi.DojoEventSourcing.Domain.Rooms.Commands
 {
     public class AssignRoomHandler : CommandHandler<Reservation, ReservationId, AssignRoom>
     {

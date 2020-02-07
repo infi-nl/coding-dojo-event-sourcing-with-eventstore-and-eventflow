@@ -2,6 +2,7 @@ using System.Data.Common;
 using Infi.DojoEventSourcing.ReadModels.Api.DAL.Reservations;
 using Infi.DojoEventSourcing.ReadModels.Api.DAL.Rooms;
 using Infi.DojoEventSourcing.ReadModels.Api.Reservations;
+using Infi.DojoEventSourcing.ReadModels.Api.Reservations.Repositories;
 using Infi.DojoEventSourcing.ReadModels.Api.Rooms;
 
 namespace Infi.DojoEventSourcing.ReadModels.Api.DAL

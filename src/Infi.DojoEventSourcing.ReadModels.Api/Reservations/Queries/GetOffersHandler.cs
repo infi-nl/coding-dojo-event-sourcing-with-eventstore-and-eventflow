@@ -1,26 +1,11 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using EventFlow.Queries;
 using Infi.DojoEventSourcing.Db;
-using Infi.DojoEventSourcing.Domain.Reservations.ValueObjects;
+using Infi.DojoEventSourcing.Domain.Reservations.Queries;
 
 namespace Infi.DojoEventSourcing.ReadModels.Api.Reservations.Queries
 {
-    public class GetOffers : IQuery<ReservationOffer>
-    {
-        public GetOffers(ReservationId reservationId, DateTime arrival, DateTime departure)
-        {
-            ReservationId = reservationId;
-            Arrival = arrival;
-            Departure = departure;
-        }
-
-        public ReservationId ReservationId { get; }
-        public DateTime Arrival { get; }
-        public DateTime Departure { get; }
-    }
-
     public class GetOffersHandler : IQueryHandler<GetOffers, ReservationOffer>
     {
         private readonly IDatabaseContext<IApiReadModelRepositoryFactory> _dbReadContext;
