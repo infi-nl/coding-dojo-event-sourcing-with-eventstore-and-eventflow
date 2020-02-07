@@ -17,7 +17,7 @@ This application is largely inspired by: https://github.com/luontola/cqrs-hotel
     * The easiest way to do this is running `docker-compose up` from the root directory in this repository. 
     * You can also manually install EventStore by following the instuctions [here](https://eventstore.com/docs/getting-started/?tabs=tabid-3%2Ctabid-dotnet-client%2Ctabid-dotnet-client-connect%2Ctabid-4).
     * We also provide a shared instance. Ask us for the credentials. This is less ideal, because you'll see the events of other participants mixed up with yours.
-    * EventStores comes with a UI, which can be found at http://localhost:2113. You can login with the default username _admin_  and password _changeit_
+    * EventStores comes with a GUI, which can be found at http://localhost:2113. You can login with the default username _admin_  and password _changeit_
 3. Once you have an EventStore instance running, you must provide the connection credentials in the `Infi.DojoEventSourcing.Api/appsettings.json`. If you've used the default settings, you're ok already.
 4. Besides EventStore we'll also need a database for our read models. In this exercise we'll use SQLite.
     * Create a `readmodel.db` file somewhere
@@ -26,4 +26,24 @@ This application is largely inspired by: https://github.com/luontola/cqrs-hotel
 5. Build and run the `Infi.DojoEventSourcing.ReadModelDbMigrator` program to generate the required schema for your readmodels.
 6. It would be nice if you could inspect the database somehow. Rider has build in support for SQLite databases. Another client can be found [here](https://sqlitebrowser.org/)
 7. Build and run the `Infi.DojoEventSourcing.Api` program, you sould be ready for the exercise now.
+
+n.b. To use the api something like [Postman](https://www.postman.com/) could come in handy.
+
+## Getting familiar with EventStore
+=> Go to the EventStore GUI http://localhost:2113
+You'll see the dashboard, which shows some technical information and the current open connections.
+
+=> Go to the Stream Browser page. You wont see much here yet, but this will be you're main entry point to peek inside the EventStore.
+
+=> Go to the Projections page. In order to browse streams, we first need to enable the `$streams` projection, by clicking on `$streams` and then on `start` in the right corner.
+
+Now it's time to create our first stream. Make sure you started the `Infi.DojoEventSourcing.Api` and make the following call 
+```
+[POST] http://localhost:5000/Room/CreateRoom
+{
+   "Number": "1"
+}
+```
+
+Refresh the Stream Browser in the ES GUI, and you'll see a newly created room stream. Click on it to see all the events that belong to that stream. You'll see one event: `RoomCreated`. If you expand it, you'll see the data for that event in json format. Each room will have it's own event stream and all events for that specific room will be collected in its event stream. So when we make a reservation that occupies this room, a `RoomOccupied` event will be stored in this stream.
 
