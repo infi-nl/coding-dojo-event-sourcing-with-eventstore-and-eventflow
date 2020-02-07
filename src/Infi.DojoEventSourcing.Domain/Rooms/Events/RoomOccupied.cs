@@ -15,5 +15,6 @@ namespace Infi.DojoEventSourcing.Domain.Rooms.Events
         public DateTime StartDateUtc { get; }
         public DateTime EndDateUtc { get; }
         public Guid Occupant { get; }
+        public Room.RoomIdentity Id { get; set; }
     }
 }

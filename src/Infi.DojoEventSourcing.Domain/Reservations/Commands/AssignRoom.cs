@@ -1,27 +1,26 @@
 using System;
 using EventFlow.Commands;
-using EventFlow.Core;
+using Infi.DojoEventSourcing.Domain.Reservations.ValueObjects;
 using Infi.DojoEventSourcing.Domain.Rooms;
 
 namespace Infi.DojoEventSourcing.Domain.Reservations.Commands
 {
-    public class AssignRoom : Command<Room, Room.RoomIdentity>
+    public class AssignRoom : Command<Reservation, ReservationId>
     {
-        public AssignRoom(Room.RoomIdentity aggregateId, DateTime start, DateTime end) : base(aggregateId)
+        public AssignRoom(
+            ReservationId reservationId,
+            Room.RoomIdentity roomIdentity,
+            Guid occupant) : base(reservationId)
         {
-            Start = start;
-            End = end;
+            ReservationId = ReservationId;
+            RoomId = roomIdentity;
+            Occupant = occupant;
         }
 
-        public AssignRoom(Room.RoomIdentity aggregateId, DateTime start, DateTime end, ISourceId sourceId) :
-            base(aggregateId, sourceId)
-        {
-            Start = start;
-            End = end;
-        }
+        public ReservationId ReservationId { get; }
 
-        public DateTime End { get; }
+        public Room.RoomIdentity RoomId { get; }
 
-        public DateTime Start { get; }
+        public Guid Occupant { get; }
     }
 }

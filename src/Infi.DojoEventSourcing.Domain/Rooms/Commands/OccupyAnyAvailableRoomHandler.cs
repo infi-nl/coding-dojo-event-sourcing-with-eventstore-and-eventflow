@@ -16,13 +16,16 @@ namespace Infi.DojoEventSourcing.Domain.Rooms.Commands
             _getAvailabilityByTimeRangeHandler = getAvailabilityByTimeRangeHandler;
         }
 
-        public override async Task ExecuteAsync(Room room, OccupyAnyAvailableRoom command,
+        public override async Task ExecuteAsync(
+            Room room,
+            OccupyAnyAvailableRoom command,
             CancellationToken cancellationToken)
         {
             var anyAvailableRoom =
                 await GetAnyAvailableRoom(command.Start, command.End, cancellationToken).ConfigureAwait(false);
 
-            // publisher.publish(new OccupyRoom(anyAvailableRoom., command.start, command.end, command.occupant));
+            // FIXME Occupy.
+            // PublishAsync(new OccupyRoom(anyAvailableRoom., command.start, command.end, command.occupant));
         }
 
         private async Task<RoomAvailabilityDto> GetAnyAvailableRoom(DateTime start, DateTime end,
