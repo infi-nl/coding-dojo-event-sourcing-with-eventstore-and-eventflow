@@ -8,8 +8,8 @@ namespace Infi.DojoEventSourcing.ReadModelDbMigrator.Migrations
         public override void Up()
         {
             Create.Table("Offer")
+                .WithColumn("OfferId").AsString().PrimaryKey()
                 .WithColumn("AggregateId").AsString().PrimaryKey()
-                .WithColumn("ReservationId").AsString().NotNullable()
                 .WithColumn("Date").AsDateTime().NotNullable()
                 .WithColumn("Expires").AsDateTime().NotNullable()
                 .WithColumn("Price").AsDecimal(9, 4).NotNullable();

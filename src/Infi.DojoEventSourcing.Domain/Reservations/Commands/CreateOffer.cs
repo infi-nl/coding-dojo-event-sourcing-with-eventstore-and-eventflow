@@ -5,7 +5,6 @@ using Infi.DojoEventSourcing.Domain.Reservations.ValueObjects;
 
 namespace Infi.DojoEventSourcing.Domain.Reservations.Commands
 {
-    [EventVersion("CreateOffer", 1)]
     public class CreateOffer : Command<Reservation, ReservationId>
     {
         public CreateOffer(ReservationId id, in DateTime arrival, in DateTime departure) : base(id)

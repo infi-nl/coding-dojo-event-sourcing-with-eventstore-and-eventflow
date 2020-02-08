@@ -31,7 +31,7 @@ namespace Infi.DojoEventSourcing.UnitTests.Domain.Reservations.Commands
             var offeredPrice = Money.Euro(101);
             var offerExpiresInFuture = DateTime.UtcNow.AddHours(1);
 
-            reservation.Apply(new PriceOffered(id, arrivalDate, offeredPrice, offerExpiresInFuture));
+            reservation.Apply(new PriceOffered(arrivalDate, offeredPrice, offerExpiresInFuture));
 
             var handler = new MakeReservationHandler();
 
@@ -121,9 +121,9 @@ namespace Infi.DojoEventSourcing.UnitTests.Domain.Reservations.Commands
             var date3 = new DateTime(2020, 02, 03);
             var departureDate = new DateTime(2020, 02, 04);
 
-            reservation.Apply(new PriceOffered(id, arrivalDate, offeredPrice1, offerExpiresInFuture));
-            reservation.Apply(new PriceOffered(id, date2, offeredPrice2, offerExpiresInFuture));
-            reservation.Apply(new PriceOffered(id, date3, offeredPrice3, offerExpiresInFuture));
+            reservation.Apply(new PriceOffered(arrivalDate, offeredPrice1, offerExpiresInFuture));
+            reservation.Apply(new PriceOffered(date2, offeredPrice2, offerExpiresInFuture));
+            reservation.Apply(new PriceOffered( date3, offeredPrice3, offerExpiresInFuture));
 
             var handler = new MakeReservationHandler();
 
@@ -174,8 +174,8 @@ namespace Infi.DojoEventSourcing.UnitTests.Domain.Reservations.Commands
             var offeredPrice2 = Money.Euro(102);
             var offerExpiresInFuture = DateTime.UtcNow.AddHours(1);
 
-            reservation.Apply(new PriceOffered(id, arrivalDate, offeredPrice1, offerExpiresInFuture));
-            reservation.Apply(new PriceOffered(id, date2, offeredPrice2, offerExpiresInFuture));
+            reservation.Apply(new PriceOffered( arrivalDate, offeredPrice1, offerExpiresInFuture));
+            reservation.Apply(new PriceOffered( date2, offeredPrice2, offerExpiresInFuture));
 
             var handler = new MakeReservationHandler();
 
@@ -209,8 +209,8 @@ namespace Infi.DojoEventSourcing.UnitTests.Domain.Reservations.Commands
             var offerExpiresInFuture = DateTime.UtcNow.AddHours(1);
             var offerExpiresNow = DateTime.UtcNow;
 
-            reservation.Apply(new PriceOffered(id, arrivalDate, offeredPrice1, offerExpiresInFuture));
-            reservation.Apply(new PriceOffered(id, date2, offeredPrice2, offerExpiresNow));
+            reservation.Apply(new PriceOffered( arrivalDate, offeredPrice1, offerExpiresInFuture));
+            reservation.Apply(new PriceOffered(date2, offeredPrice2, offerExpiresNow));
 
             var handler = new MakeReservationHandler();
 
@@ -245,9 +245,9 @@ namespace Infi.DojoEventSourcing.UnitTests.Domain.Reservations.Commands
             var offerExpiresInFuture = DateTime.UtcNow.AddHours(1);
             var offerExpiresNow = DateTime.UtcNow;
 
-            reservation.Apply(new PriceOffered(id, arrivalDate, offeredPrice1, offerExpiresInFuture));
-            reservation.Apply(new PriceOffered(id, date2, offeredPrice2, offerExpiresNow));
-            reservation.Apply(new PriceOffered(id, date2, newOfferedPrice2, offerExpiresInFuture));
+            reservation.Apply(new PriceOffered(arrivalDate, offeredPrice1, offerExpiresInFuture));
+            reservation.Apply(new PriceOffered(date2, offeredPrice2, offerExpiresNow));
+            reservation.Apply(new PriceOffered(date2, newOfferedPrice2, offerExpiresInFuture));
 
             var handler = new MakeReservationHandler();
 

@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using EventFlow.Aggregates;
 using EventFlow.ReadStores;
+using EventFlow.Sql.ReadModels.Attributes;
 using Infi.DojoEventSourcing.Domain.Reservations.Events;
 using Infi.DojoEventSourcing.Domain.Reservations.ValueObjects;
 
@@ -14,6 +15,8 @@ namespace Infi.DojoEventSourcing.Domain.Reservations.Queries
             IAmReadModelFor<Reservation, ReservationId, ContactInformationUpdated>,
             IAmReadModelFor<Reservation, ReservationId, RoomAssigned>
     {
+        [SqlReadModelIgnoreColumn]
+        public ReservationId Id => ReservationId.With(AggregateId);
         public string AggregateId { get; private set; }
         public string Email { get; private set; }
         public string Name { get; private set; }
@@ -28,12 +31,11 @@ namespace Infi.DojoEventSourcing.Domain.Reservations.Queries
             IReadModelContext context,
             IDomainEvent<Reservation, ReservationId, ReservationCreated> domainEvent)
         {
-            AggregateId = domainEvent.AggregateIdentity.GetGuid().ToString();
+            AggregateId = domainEvent.AggregateIdentity.Value;
             Arrival = domainEvent.AggregateEvent.Arrival;
             Departure = domainEvent.AggregateEvent.Departure;
             CheckInTime = domainEvent.AggregateEvent.CheckInTime;
             CheckOutTime = domainEvent.AggregateEvent.CheckOutTime;
-            Status = "initiated";
         }
 
         public void Apply(IReadModelContext context,
@@ -46,6 +48,7 @@ namespace Infi.DojoEventSourcing.Domain.Reservations.Queries
         public void Apply(IReadModelContext context, IDomainEvent<Reservation, ReservationId, RoomAssigned> domainEvent)
         {
             RoomId = domainEvent.AggregateEvent.RoomId.Value;
+            Status = Reservation.State.Reserved.ToString();
         }
     }
 }

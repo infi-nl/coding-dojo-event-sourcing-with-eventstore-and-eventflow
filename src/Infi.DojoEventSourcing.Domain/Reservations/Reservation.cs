@@ -57,7 +57,7 @@ namespace Infi.DojoEventSourcing.Domain.Reservations
                 .IfSome(price =>
                 {
                     var expires = DateTime.UtcNow + PriceValidityDuration;
-                    Emit(new PriceOffered(Id, date, price, expires));
+                    Emit(new PriceOffered(date, price, expires));
                 });
         }
 
@@ -123,7 +123,6 @@ namespace Infi.DojoEventSourcing.Domain.Reservations
 
         public void Apply(ReservationCreated aggregateEvent)
         {
-            _state = State.Reserved;
         }
 
         public void Apply(ContactInformationUpdated aggregateEvent)
@@ -150,7 +149,7 @@ namespace Infi.DojoEventSourcing.Domain.Reservations
 
         public void Apply(RoomAssigned aggregateEvent)
         {
-            // BS Do nothing for now
+            _state = State.Reserved;
         }
 
         public void Apply(RoomOccupyRequested aggregateEvent)

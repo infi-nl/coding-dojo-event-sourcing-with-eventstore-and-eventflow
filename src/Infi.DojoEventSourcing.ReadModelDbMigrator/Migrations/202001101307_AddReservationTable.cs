@@ -8,7 +8,7 @@ namespace Infi.DojoEventSourcing.ReadModelDbMigrator.Migrations
         public override void Up()
         {
             Create.Table("Reservation")
-                .WithColumn("AggregateId").AsGuid().PrimaryKey();
+                .WithColumn("AggregateId").AsString().PrimaryKey();
         }
 
         public override void Down()

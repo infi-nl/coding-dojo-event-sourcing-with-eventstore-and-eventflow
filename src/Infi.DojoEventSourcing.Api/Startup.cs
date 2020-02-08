@@ -15,6 +15,7 @@ using Infi.DojoEventSourcing.Domain.Reservations.Commands;
 using Infi.DojoEventSourcing.Domain.Reservations.Events;
 using Infi.DojoEventSourcing.Domain.Reservations.Queries;
 using Infi.DojoEventSourcing.Domain.Reservations.Sagas;
+using Infi.DojoEventSourcing.Domain.Rooms.Events;
 using Infi.DojoEventSourcing.Domain.Rooms.Queries;
 using Infi.DojoEventSourcing.ReadModels.Api;
 using Infi.DojoEventSourcing.ReadModels.Api.DAL;
@@ -24,6 +25,8 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Serilog;
+using Serilog.Events;
 
 namespace DojoEventSourcing
 {
@@ -31,15 +34,24 @@ namespace DojoEventSourcing
     {
         private static readonly IConfigurationRoot Configuration = ConfigurationFactory.Create();
 
+        private const string DefaultLogOutputFormat =
+            "[{Timestamp:o} {Level:u3}] {ThreadId} {Message:lj} {Properties}{NewLine}{Exception}";
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Verbose()
+                .WriteTo.Console(LogEventLevel.Verbose, DefaultLogOutputFormat)
+                .CreateLogger();
+
             var apiReadModelConnectionString = Configuration["ApiReadModel:ConnectionString"];
 
             services.AddControllers();
 
             services.AddSingleton(new OfferReadModelLocator()); // FIXME ED Used this to fix a DI issue
+            services.AddSingleton(new RoomOccupationReadModelLocator()); // FIXME ED Used this to fix a DI issue
 
             services.AddEventFlow(
                 cfg =>
@@ -71,11 +83,11 @@ namespace DojoEventSourcing
                         .UseSQLiteReadModel<RoomReadModel>()
                         .UseSQLiteReadModel<ReservationReadModel>()
                         .UseSQLiteReadModel<OfferReadModel, OfferReadModelLocator>()
-                        .UseSQLiteReadModel<RoomOccupationReadModel>()
+                        .UseSQLiteReadModel<RoomOccupationReadModel, RoomOccupationReadModelLocator>()
                         .AddQueryHandlers(typeof(GetAllReservationsHandler).Assembly)
                         .AddSagaLocators(typeof(ReservationSagaLocator))
-                        .AddSagas(typeof(ReservationSaga));
-                    // .UseLibLog(LibLogProviders.Serilog);
+                        .AddSagas(typeof(ReservationSaga))
+                        .UseLibLog(LibLogProviders.Serilog);
                 });
 
             var databaseReadContext = ApiReadContextFactory.Create(apiReadModelConnectionString);

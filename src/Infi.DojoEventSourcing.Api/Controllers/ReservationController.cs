@@ -101,11 +101,45 @@ namespace DojoEventSourcing.Controllers
             return reservation;
         }
 
+        [HttpPost("UpdateContactInformation")]
+        public async Task<IActionResult> UpdateContactInformation(
+            [FromBody] ContactInformationDto newContactInformation)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var id = ReservationId.With(newContactInformation.ReservationId);
+
+            var result =
+                await _commandBus.PublishAsync(
+                    new UpdateContactInformation(
+                        id,
+                        newContactInformation.Name,
+                        newContactInformation.Email),
+                    CancellationToken.None);
+
+            if (result.IsSuccess)
+            {
+                return NoContent();
+            }
+
+            return BadRequest();
+        }
+
         public class PlaceReservationDto
         {
             public Guid ReservationId { get; set; }
             public DateTime Arrival { get; set; }
             public DateTime Departure { get; set; }
+            public string Name { get; set; }
+            public string Email { get; set; }
+        }
+
+        public class ContactInformationDto
+        {
+            public Guid ReservationId { get; set; }
             public string Name { get; set; }
             public string Email { get; set; }
         }

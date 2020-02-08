@@ -8,12 +8,12 @@ namespace Infi.DojoEventSourcing.ReadModelDbMigrator.Migrations
         public override void Up()
         {
             Create.Table("Room")
-                .WithColumn("AggregateId").AsGuid().PrimaryKey()
+                .WithColumn("AggregateId").AsString().PrimaryKey()
                 .WithColumn("RoomNumber").AsInt32();
                 
             Create.Table("RoomOccupation")
-                .WithColumn("OccupationId").AsInt32().Identity().PrimaryKey()
-                .WithColumn("AggregateId").AsGuid()
+                .WithColumn("OccupationId").AsString().PrimaryKey()
+                .WithColumn("AggregateId").AsString().Indexed()
                 .WithColumn("StartDate").AsDateTime2()
                 .WithColumn("EndDate").AsDateTime2();
         }

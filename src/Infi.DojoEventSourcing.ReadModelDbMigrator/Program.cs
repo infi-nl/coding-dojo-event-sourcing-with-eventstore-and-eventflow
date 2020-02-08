@@ -4,7 +4,6 @@ using FluentMigrator.Runner;
 using Infi.DojoEventSourcing.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Serilog;
 
 namespace Infi.DojoEventSourcing.ReadModelDbMigrator
 {
@@ -14,7 +13,6 @@ namespace Infi.DojoEventSourcing.ReadModelDbMigrator
 
         public static void Main()
         {
-            Log.Information("Started Infi.DojoEventSourcing.ReadModelDbMigrator");
             var serviceProvider = CreateServices();
 
             using (var scope = serviceProvider.CreateScope())

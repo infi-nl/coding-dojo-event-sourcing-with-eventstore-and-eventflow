@@ -29,8 +29,8 @@ namespace Infi.DojoEventSourcing.ReadModels.Api.DAL.Reservations
             var reservationOffers =
                 await _connection
                     .QueryAsync<ReservationOffer>(
-                        "SELECT * FROM Offer WHERE ReservationId = @ReservationId",
-                        new { ReservationId = reservationId.GetGuid().ToString() });
+                        "SELECT * FROM Offer WHERE AggregateId = @ReservationId",
+                        new { ReservationId = reservationId.Value });
 
             var offerLookup = reservationOffers.ToImmutableDictionary(_ => _.Date);
 

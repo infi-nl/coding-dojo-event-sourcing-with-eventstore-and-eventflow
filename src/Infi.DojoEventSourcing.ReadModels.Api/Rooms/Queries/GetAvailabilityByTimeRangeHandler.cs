@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using EventFlow.Queries;
 using Infi.DojoEventSourcing.Db;
+using Infi.DojoEventSourcing.Domain.Rooms;
 using Infi.DojoEventSourcing.Domain.Rooms.Queries;
 
 namespace Infi.DojoEventSourcing.ReadModels.Api.Rooms.Queries
@@ -35,7 +36,7 @@ namespace Infi.DojoEventSourcing.ReadModels.Api.Rooms.Queries
             {
                 Details = new List<RoomAvailabilityIntervalDto>(), // FIXME ED Return actual intervals
                 IsAvailable = true,
-                RoomId = Guid.Parse(roomReadModel.AggregateId),
+                RoomId = roomReadModel.Id.GetGuid(),
                 RoomNumber = roomReadModel.RoomNumber
             };
     }

@@ -103,7 +103,7 @@ namespace Infi.DojoEventSourcing.UnitTests.Domain.Reservations.Commands
             var irrelevantOfferedPrice2 = Money.Euro(101);
 
             reservation.Apply(
-                new PriceOffered(id, arrivalDate, irrelevantOfferedPrice1, DateTime.UtcNow.AddMinutes(30)));
+                new PriceOffered(arrivalDate, irrelevantOfferedPrice1, DateTime.UtcNow.AddMinutes(30)));
 
             var mockPriceEngine = new Mock<IPricingEngine>();
             SetupPriceEngineReturnsPriceForDate(mockPriceEngine, arrivalDate, irrelevantOfferedPrice1);
@@ -136,7 +136,7 @@ namespace Infi.DojoEventSourcing.UnitTests.Domain.Reservations.Commands
             var offeredPrice = Money.Euro(101);
             var newPrice = Money.Euro(102);
 
-            reservation.Apply(new PriceOffered(id, arrivalDate, offeredPrice, DateTime.UtcNow.AddSeconds(-1)));
+            reservation.Apply(new PriceOffered(arrivalDate, offeredPrice, DateTime.UtcNow.AddSeconds(-1)));
 
             var mockPriceEngine = new Mock<IPricingEngine>();
             SetupPriceEngineReturnsPriceForDate(mockPriceEngine, arrivalDate, newPrice);

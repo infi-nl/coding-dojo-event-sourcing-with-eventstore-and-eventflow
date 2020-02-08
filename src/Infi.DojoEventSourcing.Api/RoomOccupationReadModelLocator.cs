@@ -2,17 +2,16 @@ using System;
 using System.Collections.Generic;
 using EventFlow.Aggregates;
 using EventFlow.ReadStores;
-using Infi.DojoEventSourcing.Domain.Reservations;
-using Infi.DojoEventSourcing.Domain.Reservations.Events;
-using Infi.DojoEventSourcing.Domain.Reservations.ValueObjects;
+using Infi.DojoEventSourcing.Domain.Rooms;
+using Infi.DojoEventSourcing.Domain.Rooms.Events;
 
 namespace DojoEventSourcing
 {
-    public class OfferReadModelLocator : IReadModelLocator
+    public class RoomOccupationReadModelLocator : IReadModelLocator
     {
         public IEnumerable<string> GetReadModelIds(IDomainEvent domainEvent)
         {
-            if (!(domainEvent is IDomainEvent<Reservation, ReservationId, PriceOffered>))
+            if (!(domainEvent is IDomainEvent<Room, Room.RoomId, RoomOccupied>))
             {
                 yield break;
             }

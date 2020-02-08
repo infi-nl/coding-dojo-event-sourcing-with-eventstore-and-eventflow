@@ -20,7 +20,7 @@ namespace Infi.DojoEventSourcing.Domain.Reservations.Queries
         }
 
         [DataMember]
-        public string AggregateId { get; set; } // FIXME ED Rename column to ReservationId
+        public string AggregateId { get; set; }
 
         [DataMember]
         public DateTime Date { get; set; }
