@@ -33,7 +33,7 @@ namespace Infi.DojoEventSourcing.ReadModels.Api.Rooms.Queries
         private RoomAvailabilityDto GetAvailabilityForRoom(GetAvailabilityByDateRange query, RoomReadModel room)
         {
             var occupiedIntervalsForRoom = _roomOccupations
-                .Where(o => o.AggregateId == room.Id.Value)
+                .Where(o => o.AggregateId == room.AggregateId)
                 .Map(occupation => new RoomAvailabilityIntervalDto
                 {
                     Start = occupation.StartDate,
@@ -46,7 +46,7 @@ namespace Infi.DojoEventSourcing.ReadModels.Api.Rooms.Queries
 
             return new RoomAvailabilityDto
             {
-                RoomId = room.Id.GetGuid(),
+                RoomId = room.GetIdentity().GetGuid(),
                 RoomNumber = room.RoomNumber,
                 Details = roomAvailabilityIntervals.OrderBy(r => r.Start).ToList(),
                 IsAvailable = roomAvailabilityIntervals.Count == 1 && !roomAvailabilityIntervals.Single().IsOccupied,

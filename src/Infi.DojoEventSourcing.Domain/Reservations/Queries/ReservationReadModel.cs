@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
 using EventFlow.Aggregates;
 using EventFlow.ReadStores;
 using EventFlow.Sql.ReadModels.Attributes;
@@ -11,12 +12,10 @@ namespace Infi.DojoEventSourcing.Domain.Reservations.Queries
     [Table("Reservation")]
     public class ReservationReadModel
         : IReadModel,
-            IAmReadModelFor<Reservation, ReservationId, ReservationCreated>,
-            IAmReadModelFor<Reservation, ReservationId, ContactInformationUpdated>,
-            IAmReadModelFor<Reservation, ReservationId, RoomAssigned>
+          IAmReadModelFor<Reservation, ReservationId, ReservationCreated>,
+          IAmReadModelFor<Reservation, ReservationId, ContactInformationUpdated>,
+          IAmReadModelFor<Reservation, ReservationId, RoomAssigned>
     {
-        [SqlReadModelIgnoreColumn]
-        public ReservationId Id => ReservationId.With(AggregateId);
         public string AggregateId { get; private set; }
         public string Email { get; private set; }
         public string Name { get; private set; }
@@ -26,6 +25,8 @@ namespace Infi.DojoEventSourcing.Domain.Reservations.Queries
         public DateTime CheckInTime { get; set; }
         public DateTime Departure { get; set; }
         public DateTime Arrival { get; set; }
+
+        public ReservationId GetIdentity() => ReservationId.With(AggregateId);
 
         public void Apply(
             IReadModelContext context,
@@ -39,7 +40,8 @@ namespace Infi.DojoEventSourcing.Domain.Reservations.Queries
             Status = Reservation.State.Reserved.ToString();
         }
 
-        public void Apply(IReadModelContext context,
+        public void Apply(
+            IReadModelContext context,
             IDomainEvent<Reservation, ReservationId, ContactInformationUpdated> domainEvent)
         {
             Name = domainEvent.AggregateEvent.Name;

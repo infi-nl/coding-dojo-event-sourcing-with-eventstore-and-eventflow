@@ -1,0 +1,251 @@
+{
+	"info": {
+		"_postman_id": "24898225-3a5c-4e44-92c6-6022c8aea995",
+		"name": "DojoEventSourcing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Reservation",
+			"item": [
+				{
+					"name": "GetAll",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/Reservation",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"Reservation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "New",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "31c81f09-bb2e-4f48-8179-2c9347960cea",
+								"exec": [
+									"var jsonData = JSON.parse(responseBody);",
+									"postman.setEnvironmentVariable(\"reservationId\", jsonData);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/Reservation/New",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"Reservation",
+								"New"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Offers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/Reservation/Offers?arrival=2020-07-25&departure=2020-07-26&reservationId={{reservationId}}",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"Reservation",
+								"Offers"
+							],
+							"query": [
+								{
+									"key": "arrival",
+									"value": "2020-07-25"
+								},
+								{
+									"key": "departure",
+									"value": "2020-07-26"
+								},
+								{
+									"key": "reservationId",
+									"value": "{{reservationId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PlaceReservation",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"ReservationId\": \"{{reservationId}}\",\n    \"Arrival\": \"2020-02-07\",\n    \"Departure\": \"2020-02-09\",\n    \"Name\": \"{{$randomFirstName}} {{$randomLastName}}\",\n    \"Email\": \"{{$randomEmail}}\"\n }  ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/Reservation",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"Reservation"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update contact information",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"ReservationId\": \"{{reservationId}}\",\n    \"Name\": \"{{$randomFirstName}} {{$randomLastName}}\",\n    \"Email\": \"{{$randomEmail}}\"\n }  ",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:5000/Reservation/UpdateContactInformation",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "5000",
+							"path": [
+								"Reservation",
+								"UpdateContactInformation"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Room",
+			"item": [
+				{
+					"name": "GetAllRooms",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/Room",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"Room"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAvailabilityByDateRange",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{apiUrl}}/Room/GetAvailabilityByDateRange?startDate=2020-07-24&endDate=2020-07-26",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"Room",
+								"GetAvailabilityByDateRange"
+							],
+							"query": [
+								{
+									"key": "startDate",
+									"value": "2020-07-24"
+								},
+								{
+									"key": "endDate",
+									"value": "2020-07-26"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreateRoom",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"Number\": \"2\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{apiUrl}}/Room",
+							"host": [
+								"{{apiUrl}}"
+							],
+							"path": [
+								"Room"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}

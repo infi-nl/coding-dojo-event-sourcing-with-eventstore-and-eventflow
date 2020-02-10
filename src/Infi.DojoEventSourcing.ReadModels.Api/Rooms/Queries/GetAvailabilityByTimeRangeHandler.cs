@@ -34,7 +34,7 @@ namespace Infi.DojoEventSourcing.ReadModels.Api.Rooms.Queries
             {
                 Details = new List<RoomAvailabilityIntervalDto>(), // FIXME ED Return actual intervals
                 IsAvailable = true,
-                RoomId = roomReadModel.Id.GetGuid(),
+                RoomId = roomReadModel.GetIdentity().GetGuid(),
                 RoomNumber = roomReadModel.RoomNumber
             };
     }

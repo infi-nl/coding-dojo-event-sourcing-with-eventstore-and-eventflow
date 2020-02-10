@@ -3,6 +3,7 @@ using EventFlow.Aggregates;
 using EventFlow.ReadStores;
 using EventFlow.Sql.ReadModels.Attributes;
 using Infi.DojoEventSourcing.Domain.Rooms.Events;
+using Newtonsoft.Json;
 
 namespace Infi.DojoEventSourcing.Domain.Rooms.Queries
 {
@@ -11,11 +12,9 @@ namespace Infi.DojoEventSourcing.Domain.Rooms.Queries
         : IReadModel,
           IAmReadModelFor<Room, Room.RoomId, RoomCreated>
     {
-        [SqlReadModelIgnoreColumn]
-        public Room.RoomId Id => Room.RoomId.With(AggregateId);
-
         public string AggregateId { get; private set; }
         public string RoomNumber { get; private set; }
+        public Room.RoomId GetIdentity() => Room.RoomId.With(AggregateId);
 
         public void Apply(IReadModelContext context, IDomainEvent<Room, Room.RoomId, RoomCreated> domainEvent)
         {
