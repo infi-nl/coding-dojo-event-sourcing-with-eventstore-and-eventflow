@@ -6,17 +6,15 @@ namespace Infi.DojoEventSourcing.Domain.Rooms.Events
 {
     public class RoomOccupied : IAggregateEvent<Room, Room.RoomId>
     {
-        public RoomOccupied(ReservationId reservationId, DateTime startDateUtc, DateTime endDateUtc, Guid occupant)
+        public RoomOccupied(ReservationId reservationId, DateTime startDateUtc, DateTime endDateUtc)
         {
             ReservationId = reservationId;
             StartDateUtc = startDateUtc;
             EndDateUtc = endDateUtc;
-            Occupant = occupant;
         }
 
         public DateTime StartDateUtc { get; }
         public DateTime EndDateUtc { get; }
-        public Guid Occupant { get; }
         public ReservationId ReservationId { get; }
     }
 }

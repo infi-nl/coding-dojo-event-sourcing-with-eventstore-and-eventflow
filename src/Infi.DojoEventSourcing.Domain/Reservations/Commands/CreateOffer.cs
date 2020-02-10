@@ -1,6 +1,5 @@
 using System;
 using EventFlow.Commands;
-using EventFlow.EventStores;
 using Infi.DojoEventSourcing.Domain.Reservations.ValueObjects;
 
 namespace Infi.DojoEventSourcing.Domain.Reservations.Commands

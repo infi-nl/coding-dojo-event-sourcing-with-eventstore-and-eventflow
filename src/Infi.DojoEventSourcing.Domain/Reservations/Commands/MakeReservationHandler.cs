@@ -5,6 +5,7 @@ using EventFlow.Aggregates.ExecutionResults;
 using EventFlow.Commands;
 using Infi.DojoEventSourcing.Domain.Reservations.ValueObjects;
 using LanguageExt;
+using Serilog;
 
 namespace Infi.DojoEventSourcing.Domain.Reservations.Commands
 {
@@ -23,7 +24,10 @@ namespace Infi.DojoEventSourcing.Domain.Reservations.Commands
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Log.Error(e,
+                    "Failed to make reservation for {reservationId}: {error}",
+                    reservation.Id,
+                    e.Message);
                 return ExecutionResult.Failed(e.Message).AsTask();
             }
         }

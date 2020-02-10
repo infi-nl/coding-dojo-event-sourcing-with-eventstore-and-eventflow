@@ -60,7 +60,6 @@ namespace Infi.DojoEventSourcing.UnitTests.Domain.Rooms.Commands
         {
             // Given
             var irrelevantRoomId = Room.RoomId.New;
-            var irrelevantPreviousOccupant = Guid.NewGuid();
             var irrelevantPreviousReservationId = ReservationId.New;
             var irrelevantNewReservationId = ReservationId.New;
 
@@ -71,8 +70,7 @@ namespace Infi.DojoEventSourcing.UnitTests.Domain.Rooms.Commands
             var irrelevantPreviousOccupiedEvent = new RoomOccupied(
                 irrelevantPreviousReservationId,
                 DateTime.ParseExact(alreadyOccupiedDateRangeStartDate, "yyyy-MM-dd", CultureInfo.InvariantCulture),
-                DateTime.ParseExact(alreadyOccupiedDateRangeEndDate, "yyyy-MM-dd", CultureInfo.InvariantCulture),
-                irrelevantPreviousOccupant);
+                DateTime.ParseExact(alreadyOccupiedDateRangeEndDate, "yyyy-MM-dd", CultureInfo.InvariantCulture));
 
             var room = new Room(irrelevantRoomId);
             var handler = new OccupyRoomHandler();

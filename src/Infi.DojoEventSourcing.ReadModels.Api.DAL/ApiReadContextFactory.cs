@@ -1,6 +1,4 @@
-﻿﻿using Infi.DojoEventSourcing.Configuration;
- using Infi.DojoEventSourcing.Db;
- using Microsoft.Extensions.Configuration;
+﻿﻿using Infi.DojoEventSourcing.Db;
 
  namespace Infi.DojoEventSourcing.ReadModels.Api.DAL
 {

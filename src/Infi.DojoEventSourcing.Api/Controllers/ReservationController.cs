@@ -3,15 +3,11 @@ using System.ComponentModel.DataAnnotations;
 using System.Threading;
 using System.Threading.Tasks;
 using EventFlow;
-using EventFlow.Core;
 using EventFlow.Queries;
 using Infi.DojoEventSourcing.Domain.Reservations.Commands;
 using Infi.DojoEventSourcing.Domain.Reservations.Queries;
 using Infi.DojoEventSourcing.Domain.Reservations.ValueObjects;
-using Infi.DojoEventSourcing.ReadModels.Api.Reservations;
-using Infi.DojoEventSourcing.ReadModels.Api.Reservations.Queries;
 using Microsoft.AspNetCore.Mvc;
-using TaskExtensions = LanguageExt.TaskExtensions;
 
 namespace DojoEventSourcing.Controllers
 {
@@ -53,9 +49,14 @@ namespace DojoEventSourcing.Controllers
             }
 
             var id = ReservationId.With(reservationId);
-            await _commandBus
+            var offersCreatedOrError = await _commandBus
                 .PublishAsync(new CreateOffer(id, arrival, departure), CancellationToken.None)
                 .ConfigureAwait(false);
+
+            if (!offersCreatedOrError.IsSuccess)
+            {
+                return BadRequest(offersCreatedOrError);
+            }
 
             var offer = _queryProcessor
                 .Process(new GetOffers(id, arrival, departure), CancellationToken.None);
@@ -64,7 +65,7 @@ namespace DojoEventSourcing.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PlaceReservation([FromBody] PlaceReservationDto reservationDto)
+        public async Task<IActionResult> MakeReservation([FromBody] MakeReservationDto reservationDto)
         {
             if (!ModelState.IsValid)
             {
@@ -73,7 +74,7 @@ namespace DojoEventSourcing.Controllers
 
             var id = ReservationId.With(reservationDto.ReservationId);
 
-            var result =
+            var reservationPlacedOrError =
                 await _commandBus.PublishAsync(new MakeReservation(
                         id,
                         reservationDto.Name,
@@ -82,12 +83,12 @@ namespace DojoEventSourcing.Controllers
                         reservationDto.Departure),
                     CancellationToken.None);
 
-            if (result.IsSuccess)
+            if (reservationPlacedOrError.IsSuccess)
             {
                 return NoContent();
             }
 
-            return BadRequest();
+            return BadRequest(reservationPlacedOrError);
         }
 
         [HttpGet("{reservationId}")]
@@ -95,10 +96,7 @@ namespace DojoEventSourcing.Controllers
         {
             var id = ReservationId.With(reservationId);
 
-            var reservation = _queryProcessor
-                .Process(new FindReservationById(id), CancellationToken.None);
-
-            return reservation;
+            return _queryProcessor.Process(new FindReservationById(id), CancellationToken.None);
         }
 
         [HttpPost("UpdateContactInformation")]
@@ -112,7 +110,7 @@ namespace DojoEventSourcing.Controllers
 
             var id = ReservationId.With(newContactInformation.ReservationId);
 
-            var result =
+            var contactInformationUpdatedOrError =
                 await _commandBus.PublishAsync(
                     new UpdateContactInformation(
                         id,
@@ -120,15 +118,15 @@ namespace DojoEventSourcing.Controllers
                         newContactInformation.Email),
                     CancellationToken.None);
 
-            if (result.IsSuccess)
+            if (contactInformationUpdatedOrError.IsSuccess)
             {
                 return NoContent();
             }
 
-            return BadRequest();
+            return BadRequest(contactInformationUpdatedOrError);
         }
 
-        public class PlaceReservationDto
+        public class MakeReservationDto
         {
             public Guid ReservationId { get; set; }
             public DateTime Arrival { get; set; }

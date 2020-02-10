@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using EventFlow.Aggregates;
@@ -35,18 +34,17 @@ namespace Infi.DojoEventSourcing.Domain.Rooms
             Emit(new RoomCreated(number));
         }
 
-        public void Occupy(ReservationId reservationId, Range range, Guid occupant)
+        public void Occupy(ReservationId reservationId, Range range)
         {
             if (IsOccupiedAt(range))
             {
-                throw new RoomAlreadyOccupiedException("Room already occupied");
+                throw new RoomAlreadyOccupiedException($"Room {Id} already occupied");
             }
 
-            Emit(new RoomOccupied(reservationId, range.Start, range.End, occupant));
+            Emit(new RoomOccupied(reservationId, range.Start, range.End));
         }
 
-        // FIXME ED Check occupied
-        private bool IsOccupiedAt(Range range) => false; //  _occupiedRanges.Any(range.Overlaps);
+        private bool IsOccupiedAt(Range range) => _occupiedRanges.Any(range.Overlaps);
 
         public void Apply(RoomOccupied @event)
         {

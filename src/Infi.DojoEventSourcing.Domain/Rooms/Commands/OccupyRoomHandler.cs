@@ -1,8 +1,8 @@
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using EventFlow.Aggregates.ExecutionResults;
 using EventFlow.Commands;
+using LanguageExt;
 
 namespace Infi.DojoEventSourcing.Domain.Rooms.Commands
 {
@@ -15,12 +15,12 @@ namespace Infi.DojoEventSourcing.Domain.Rooms.Commands
         {
             try
             {
-                room.Occupy(command.ReservationId, command.Range, Guid.NewGuid()); // FIXME ED Add occupant
-                return Task.FromResult((IExecutionResult)new SuccessExecutionResult());
+                room.Occupy(command.ReservationId, command.Range);
+                return ExecutionResult.Success().AsTask();
             }
             catch (RoomAlreadyOccupiedException e)
             {
-                return Task.FromResult((IExecutionResult)new FailedExecutionResult(new[] { e.Message }));
+                return ExecutionResult.Failed(e.Message).AsTask();
             }
         }
     }

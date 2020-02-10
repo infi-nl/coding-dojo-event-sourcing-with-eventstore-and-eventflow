@@ -1,3 +1,4 @@
+using System;
 using FluentMigrator;
 
 namespace Infi.DojoEventSourcing.ReadModelDbMigrator.Migrations
@@ -17,7 +18,7 @@ namespace Infi.DojoEventSourcing.ReadModelDbMigrator.Migrations
 
         public override void Down()
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

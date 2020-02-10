@@ -36,6 +36,7 @@ namespace Infi.DojoEventSourcing.Domain.Reservations.Queries
             Departure = domainEvent.AggregateEvent.Departure;
             CheckInTime = domainEvent.AggregateEvent.CheckInTime;
             CheckOutTime = domainEvent.AggregateEvent.CheckOutTime;
+            Status = Reservation.State.Reserved.ToString();
         }
 
         public void Apply(IReadModelContext context,
@@ -48,7 +49,6 @@ namespace Infi.DojoEventSourcing.Domain.Reservations.Queries
         public void Apply(IReadModelContext context, IDomainEvent<Reservation, ReservationId, RoomAssigned> domainEvent)
         {
             RoomId = domainEvent.AggregateEvent.RoomId.Value;
-            Status = Reservation.State.Reserved.ToString();
         }
     }
 }

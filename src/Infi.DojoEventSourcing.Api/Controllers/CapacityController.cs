@@ -4,8 +4,6 @@ using System.Threading.Tasks;
 using EventFlow.Queries;
 using Infi.DojoEventSourcing.Domain.Reservations.Queries;
 using Infi.DojoEventSourcing.ReadModels.Api.Capacity.Queries;
-using Infi.DojoEventSourcing.ReadModels.Api.Reservations;
-using Infi.DojoEventSourcing.ReadModels.Api.Reservations.Queries;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DojoEventSourcing.Controllers

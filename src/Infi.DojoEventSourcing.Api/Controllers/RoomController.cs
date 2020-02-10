@@ -29,16 +29,16 @@ namespace DojoEventSourcing.Controllers
         {
             var id = RoomId.New;
 
-            var room = await _commandBus
+            var roomCreatedOrError = await _commandBus
                 .PublishAsync(new CreateRoom(id, createRoom.Number), CancellationToken.None)
                 .ConfigureAwait(false);
 
-            if (room.IsSuccess)
+            if (roomCreatedOrError.IsSuccess)
             {
                 return Json(id.GetGuid());
             }
 
-            return BadRequest();
+            return BadRequest(roomCreatedOrError);
         }
 
         [HttpGet]

@@ -104,6 +104,7 @@ namespace Infi.DojoEventSourcing.Domain.Reservations
 
         public void AssignRoom(Room.RoomId roomId)
         {
+            CheckStateIs(State.Reserved);
             Emit(new RoomAssigned(Id, roomId));
         }
 
@@ -123,6 +124,7 @@ namespace Infi.DojoEventSourcing.Domain.Reservations
 
         public void Apply(ReservationCreated aggregateEvent)
         {
+            _state = State.Reserved;
         }
 
         public void Apply(ContactInformationUpdated aggregateEvent)
@@ -149,7 +151,6 @@ namespace Infi.DojoEventSourcing.Domain.Reservations
 
         public void Apply(RoomAssigned aggregateEvent)
         {
-            _state = State.Reserved;
         }
 
         public void Apply(RoomOccupyRequested aggregateEvent)

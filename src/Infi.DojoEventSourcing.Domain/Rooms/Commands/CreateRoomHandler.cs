@@ -2,6 +2,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using EventFlow.Aggregates.ExecutionResults;
 using EventFlow.Commands;
+using LanguageExt;
 
 namespace Infi.DojoEventSourcing.Domain.Rooms.Commands
 {
@@ -12,9 +13,15 @@ namespace Infi.DojoEventSourcing.Domain.Rooms.Commands
             CreateRoom command,
             CancellationToken cancellationToken)
         {
-            room.Create(command.Number);
-
-            return Task.FromResult((IExecutionResult)new SuccessExecutionResult());
+            try
+            {
+                room.Create(command.Number);
+                return ExecutionResult.Success().AsTask();
+            }
+            catch (RoomAlreadyOccupiedException e)
+            {
+                return ExecutionResult.Failed(e.Message).AsTask();
+            }
         }
     }
 }
