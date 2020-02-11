@@ -66,7 +66,7 @@ namespace Infi.DojoEventSourcing.Domain.Reservations
 
         public void UpdateContactInformation(string name, string email)
         {
-            Emit(new ContactInformationUpdated(Id, name, email));
+            Emit(new ContactInformationUpdated(name, email));
         }
 
         public void MakeReservation(DateTime arrival, DateTime departure)

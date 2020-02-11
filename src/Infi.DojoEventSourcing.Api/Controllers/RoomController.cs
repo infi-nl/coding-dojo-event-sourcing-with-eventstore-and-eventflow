@@ -29,9 +29,8 @@ namespace DojoEventSourcing.Controllers
         {
             var id = RoomId.New;
 
-            var roomCreatedOrError = await _commandBus
-                .PublishAsync(new CreateRoom(id, createRoom.Number), CancellationToken.None)
-                .ConfigureAwait(false);
+            var roomCreatedOrError =
+                await _commandBus.PublishAsync(new CreateRoom(id, createRoom.Number), CancellationToken.None);
 
             if (roomCreatedOrError.IsSuccess)
             {
@@ -43,9 +42,7 @@ namespace DojoEventSourcing.Controllers
 
         [HttpGet]
         public async Task<IReadOnlyList<RoomReadModel>> GetAllRooms() =>
-            await _queryProcessor
-                .ProcessAsync(new GetAllRooms(), CancellationToken.None)
-                .ConfigureAwait(false);
+            await _queryProcessor.ProcessAsync(new GetAllRooms(), CancellationToken.None);
 
         [HttpGet("GetAvailabilityByDateRange")]
         public async Task<IActionResult> GetAvailabilityByDateRange([FromQuery] string startDate, string endDate)

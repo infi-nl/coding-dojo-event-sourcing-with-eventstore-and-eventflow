@@ -23,8 +23,7 @@ namespace Infi.DojoEventSourcing.ReadModels.Api.Rooms.Queries
         {
             // FIXME Actually use query parameters to filter
             var rooms = await _dbReadContext
-                .RunAsync(f => f.CreateRoomRepository().GetAll())
-                .ConfigureAwait(false);
+                .RunAsync(f => f.CreateRoomRepository().GetAll());
 
             return rooms.Select(MapToRoomAvailabilityDto).ToArray();
         }

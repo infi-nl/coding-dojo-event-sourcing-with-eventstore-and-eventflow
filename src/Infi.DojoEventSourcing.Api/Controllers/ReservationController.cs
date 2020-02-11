@@ -50,8 +50,7 @@ namespace DojoEventSourcing.Controllers
 
             var id = ReservationId.With(reservationId);
             var offersCreatedOrError = await _commandBus
-                .PublishAsync(new CreateOffer(id, arrival, departure), CancellationToken.None)
-                .ConfigureAwait(false);
+                .PublishAsync(new CreateOffer(id, arrival, departure), CancellationToken.None);
 
             if (!offersCreatedOrError.IsSuccess)
             {

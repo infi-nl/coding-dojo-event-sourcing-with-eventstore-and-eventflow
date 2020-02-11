@@ -22,4 +22,12 @@
         <ProjectReference Include="..\Infi.DojoEventSourcing.ReadModels.Api\Infi.DojoEventSourcing.ReadModels.Api.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <Content Update="appsettings.json">
+            <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+        <Content Remove="appsettings.Example.json" />
+    </ItemGroup>
+
 </Project>

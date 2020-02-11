@@ -1,7 +1,10 @@
 # DojoEventSourcing
-This dojo is targeted at a people that are somewhat experienced in C#, and have some knowledge about what Event Sourcing is and how it works, but never got around to applying it in practice.
+This dojo is targeted at people that are somewhat experienced in C#, and have some knowledge about what Event Sourcing is and how it works, but never got around to applying it in practice.
 
 We've made a basic assignment for you that implements a simple Hotel booking system. You'll learn to think in terms of events instead of state. This assignment uses [EventStore](https://eventstore.com/) as a datastore for events. We also use the [EventFlow](https://github.com/eventflow/EventFlow) framework.
+
+**Requirements**
+* dotnet core 3.0
 
 **Some useful EventSourcing articles**
 * https://dev.to/barryosull/event-sourcing-what-it-is-and-why-its-awesome
@@ -10,14 +13,13 @@ We've made a basic assignment for you that implements a simple Hotel booking sys
 This application is largely inspired by: https://github.com/luontola/cqrs-hotel
 
 ## Getting started
-1. Create the `appsetting.json` files by copying the `appsetting.Example.json` files in 
+1. Create the `appsettings.json` files by copying the `appsettings.Example.json` files in 
     * `Infi.DojoEventSourcing.Api`
     * `Infi.DojoEventSourcing.ReadModelDbMigrator`
-2. We'll be working with [EventStore](https://eventstore.com/). You'll need an instance to write our events to. 
-    * The easiest way to do this is running `docker-compose up` from the root directory in this repository. 
-    * You can also manually install EventStore by following the instuctions [here](https://eventstore.com/docs/getting-started/?tabs=tabid-3%2Ctabid-dotnet-client%2Ctabid-dotnet-client-connect%2Ctabid-4).
-    * We also provide a shared instance. Ask us for the credentials. This is less ideal, because you'll see the events of other participants mixed up with yours.
-    * EventStores comes with a GUI, which can be found at http://localhost:2113. You can login with the default username _admin_  and password _changeit_
+2. We'll be working with [EventStore](https://eventstore.com/). You'll need an instance to write our events to. Choose one of the following options:
+    * OR: Run `docker-compose up` from the root directory in this repository. 
+    * OR: Install EventStore manually by following the instuctions [here](https://eventstore.com/docs/getting-started/?tabs=tabid-3%2Ctabid-dotnet-client%2Ctabid-dotnet-client-connect%2Ctabid-4).
+EventStore comes with a GUI, which can be found at http://localhost:2113. You can login with the default username _admin_  and password _changeit_
 3. Once you have an EventStore instance running, you must provide the connection credentials in the `Infi.DojoEventSourcing.Api/appsettings.json`. If you've used the default settings, you're ok already.
 4. Besides EventStore we'll also need a database for our read models. In this exercise we'll use SQLite.
     * Create a `readmodel.db` file somewhere
@@ -28,6 +30,7 @@ This application is largely inspired by: https://github.com/luontola/cqrs-hotel
 7. Build and run the `Infi.DojoEventSourcing.Api` program, you sould be ready for the exercise now.
 
 n.b. To use the api something like [Postman](https://www.postman.com/) could come in handy.
+You can find the collection and environment files in the root of this repository
 
 ## Getting familiar with EventStore
 1. Go to the EventStore GUI http://localhost:2113
@@ -49,20 +52,16 @@ EventFlow is a CQRS + EventSourcing framework that can use a variety of event st
 1. Open the `RoomController` and go to the `CreateRoom` method.
    We use the EF `CommandBus` to publish a `CreateRoom` _command_ with a newly generated room command.
    If this command succeeds, we return the id, otherwise something went wrong and we return a BadRequest
-2. Let's find out where this command is processed. Go to the `CreateRoomHandler`.
-   Everytime the `CommandBus` retrieves a `CreateRoom` command it will:
+2. Let's find out how this command is processed. Everytime the `CommandBus` retrieves a `CreateRoom` command it will:
       * Instantiate a new `Room` object with that room id
-      * Retrieve and apply all existing events for that room id from ES, none in this case
+      * Retrieve and apply all existing events for that room id from ES, none in this case. This process is called hydrating.
       * Instantiate a `CreateRoomHandler` and call `ExecuteAsync` with the hydrated `Room` object and the published command.
-3. Follow the `room.Create` call into the Room aggregate, you'll see there's a `RoomCreated` event emitted here. Typically this is the place where you'd first do some validation. Emitting the event won't be committed to the event store yet. This will only happen once the calling command handler end with a succesful result.
+3. Go to the `CreateRoomHandler` and follow the `room.Create` call into the Room aggregate, you'll see there's a `RoomCreated` event emitted here. Typically this is the place where you'd first do some validation. Emitting the event won't be committed to the event store yet. This will only happen once the calling command handler end with a succesful result.
 4. Open the `RoomCreated` event. This class corresponds with the data that we found in the EventStore GUI.
-
-## Getting familiar with the application
-This application is a simple booking system for a Hotel. In this step we'll explain the booking flow, so you can start with the real assignements afterwards.
-1. As you've seen you can create rooms. These are of course required in order to make any reservations
-2. You start a new reservation by calling `[GET]  http://localhost:5000/Reservation/New`. This won't do anything except returning a newly generated `reservationId` that you can use in subsequent calls.
-3. Call `[GET] http://localhost:5000/Reservation/Offers?reservationId=<guid>&&arrival=YYYY-MM-dd&departure=YYYY-MM-dd` to get a priceoffer for the requested period. This will generate a price offer event for each day in that period. You can locate it in the ES GUI. The offer will be valid for 30 minutes.
-4. If you created offers for every day of your intended stay, you can make the reservation final by calling:
+5. As you've seen you can create rooms. These are of course required in order to make any reservations
+6. You start a new reservation by calling `[GET]  http://localhost:5000/Reservation/New`. This won't do anything except returning a newly generated `reservationId` that you can use in subsequent calls.
+7. Call `[GET] http://localhost:5000/Reservation/Offers?reservationId=<guid>&arrival=YYYY-MM-dd&departure=YYYY-MM-dd` to get a price offer for the requested period. This will generate a price offer event for each day in that period. You can locate it in the ES GUI. The offer will be valid for 30 minutes.
+8. If you created offers for every day of your intended stay, you can make the reservation final by calling:
 ```
 [POST] http://localhost:5000/Reservation
 {
@@ -73,5 +72,67 @@ This application is a simple booking system for a Hotel. In this step we'll expl
    "Email": "<string>"
 }
 ```
-This will generate some more events that you can explore.
-5. TODO !!!!!! Something about the room saga here? 
+This will generate more events that you can explore.
+
+## Assignments
+The following assignments will show you some key event sourcing and EventFlow aspects. We advise you not to put too much effort in the details. Focus on getting familiar with the different concepts.
+
+### 1. Add a dinner option to our reservation
+We'd like to offer our customers a dinner at our hotel restaurant. The customers can choose to opt-in on the dinner deal, after their reservation is confirmed. So we need a new event on the reservation aggregate which states an opt-in for the dinner deal.
+
+**Acceptance criteria**
+* There's an api endpoint to opt in for the dinner deal
+* Customers can only opt-in if the reservation is confirmed (a.k.a. a room is assigned to the reservation)
+* Customers shouldn't be able to opt-in more than once
+* The opt-in should be stored in EventStore
+* The reservation readmodel should be updated accordingly
+
+### 2. Subscribe to events
+If a customer wants to dine at our restaurant, we'd better give the chefs a heads-up so they can a buy enough supplies.
+
+EventFlow offers async and sync subscribers, which you can use to _do_ something once an event has happend. Synchronous subscribers are blocking and commandbus execution will wait until all sync subscribers are done. Async subscribers will not wait.
+
+You can find more information about subscribers [here](https://eventflow.readthedocs.io/Subscribers.html).
+
+n.b. You need to register the subscriber in the api startup.
+
+**Acceptance criteria**
+* Use a subscriber that will log a message for the chefs when someone opts-in for dinner
+
+### 3. Upgrade existing events
+We got some complaints from the PR-department, we send e-mails to customers with their full name. Apparently it's policy to address them only by their first name. So we need to split the name field into two separate first name and last name fields.
+
+As you might have seen, the customer details are stored in the `ContactInformationUpdated` event on the reservation aggregate. We could simply change this event by adding the new fields, but this would create a problem for all the existing events in the store. If we change the properties in this event, we won't be able to parse all previous events back to the new event.
+
+This is a very important part of event sourcing. You should be able to parse the event stream at all times. It's ok to change events due to new insights, but you must provide a way to parse to old events. Remember that we need all the past events to determine the current state of an aggregate. 
+
+Fortunately EventFlow provides a way to deal with this. We'll be using [event upgraders](https://eventflow.readthedocs.io/EventUpgrade.html). We'll keep the first version of the `ContactInformationUpdated` in our code base. Rename it to `ContactInformationUpdatedV1`, and  create a new class `ContactInformationUpdated` to represent our current idea on the `ContactInformationUpdated` event. Write an upgrader which can transform a version 1 event to a version 2 event.
+
+**Acceptance criteria**
+* `[POST] /Reservation` requires first and last name instead of only name
+* `[POST] /Reservation/UpdateContactInformation` requires first and last name instead of only name
+* New fields get stored in EventFlow
+* Existing reservations can still be hydrated
+** You can test it by calling `[POST] /Reservation/UpdateContactInformation` on an existing reservation. 
+* Update the readmodel to the new situation.
+* The e-mail only uses the customers first name.
+
+## Bonus assignments
+If you have some time left you can choose to do one or more of the following assignments. The order doesn't matter.
+
+### Send a confirmation e-mail using sagas
+We'd like to send a confirmation e-mail to the customer when the reservation is successfully placed.
+
+We could use a subscriber here again. But Another way is using a _process manager_ for _saga_. A process manager coordinates messages between different aggregates. Take a look at the `ReservationSaga`, it starts when a `ReservationCreated` event has happened and then starts a procedure to occupy a room. We could add sending the confirmation e-mail here as well.
+
+**Acceptance criteria**
+* An e-mail is send as soon as a reservation is completed, a.k.a. when a room is assigned to the reservation. Logging the recipient (name + email) with some dummy text will be sufficient for this exercise.
+* Use the `ReservationSaga`
+
+### Rebuilding the readmodel database
+TODO!!
+
+### How to deal with GDPR
+In event sourcing it's not really possible to delete certain events. So whatever you put on the event stream will basicly stay there forever. That means that we have to think very carefully about what we store in the event store, and how te deal with "forget me" request from customers.
+
+There're (as far as we know) a few options. And they all have their pro's and cons. In this assignment we'd like you to think about how to handle such a "forget me" request. What options do you have? And why would you choose one over the other? If you'd like you could make a proof of concept.

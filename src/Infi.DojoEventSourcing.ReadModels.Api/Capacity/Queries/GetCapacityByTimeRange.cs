@@ -41,9 +41,7 @@ namespace Infi.DojoEventSourcing.ReadModels.Api.Capacity.Queries
         {
             var reservations =
                 await _dbReadContext.RunAsync(f =>
-                        f.CreateReservationRepository()
-                            .GetByRange(arrival, departure))
-                    .ConfigureAwait(false);
+                    f.CreateReservationRepository().GetByRange(arrival, departure));
 
 
             // TODO ED Consider creating dedicated CapacityPerDate-RM

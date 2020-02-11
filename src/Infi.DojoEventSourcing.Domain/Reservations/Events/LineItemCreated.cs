@@ -9,7 +9,7 @@ namespace Infi.DojoEventSourcing.Domain.Reservations.Events
     [EventVersion("LineItemCreated", 1)]
     public class LineItemCreated : AggregateEvent<Reservation, ReservationId>
     {
-        public LineItemCreated(ReservationId id, int lineItems, in DateTime offerDate, Money offerPrice)
+        public LineItemCreated(ReservationId id, int lineItems, DateTime offerDate, Money offerPrice)
         {
             Id = id;
             LineItems = lineItems;

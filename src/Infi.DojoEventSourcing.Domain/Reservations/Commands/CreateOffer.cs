@@ -6,7 +6,7 @@ namespace Infi.DojoEventSourcing.Domain.Reservations.Commands
 {
     public class CreateOffer : Command<Reservation, ReservationId>
     {
-        public CreateOffer(ReservationId id, in DateTime arrival, in DateTime departure) : base(id)
+        public CreateOffer(ReservationId id, DateTime arrival, DateTime departure) : base(id)
         {
             Id = id;
             Arrival = arrival;

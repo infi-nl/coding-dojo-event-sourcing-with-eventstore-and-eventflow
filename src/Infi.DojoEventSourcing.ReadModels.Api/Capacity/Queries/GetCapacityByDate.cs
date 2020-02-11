@@ -34,10 +34,8 @@ namespace Infi.DojoEventSourcing.ReadModels.Api.Capacity.Queries
 
         private async Task<CapacityDto> GetCapacityByDate(DateTime date)
         {
-            var reservations =
-                await _dbReadContext
-                    .RunAsync(f => f.CreateReservationRepository().GetByDate(date))
-                    .ConfigureAwait(false);
+            var reservations = await _dbReadContext
+                .RunAsync(f => f.CreateReservationRepository().GetByDate(date));
 
             var dateToReservationCountLookup = BuildReservationCountLookup(reservations);
 
