@@ -1,18 +1,18 @@
 # DojoEventSourcing
 This dojo is targeted at people that are somewhat experienced in C#, and have some knowledge about what Event Sourcing is and how it works, but never got around to applying it in practice.
 
-We've made a basic assignment for you that implements a simple Hotel booking system. You'll learn to think in terms of events instead of state. This assignment uses [EventStore](https://eventstore.com/) as a datastore for events. We also use the [EventFlow](https://github.com/eventflow/EventFlow) framework.
+We've made a basic assignment for you that implements a simple Hotel booking system. You'll learn to think in terms of events instead of state. This assignment uses [EventStore](https://eventstore.com/) as a data store for events. We also use the [EventFlow](https://github.com/eventflow/EventFlow) framework.
 
 ## Acknowledgements
 This application is largely inspired by: https://github.com/luontola/cqrs-hotel
 
-## Background and useful articles on EventSourcing
+## Background and useful articles on event sourcing
 * https://dev.to/barryosull/event-sourcing-what-it-is-and-why-its-awesome
 * https://arkwright.github.io/event-sourcing.html
 
 ## Requirements
 - dotnet core 3.0
-- docker
+- optional: docker
 - optional: docker-compose
 
 ## Getting started
@@ -21,15 +21,15 @@ This application is largely inspired by: https://github.com/luontola/cqrs-hotel
     * `Infi.DojoEventSourcing.ReadModelDbMigrator`
 2. We'll be working with [EventStore](https://eventstore.com/). You'll need an instance to write our events to. Choose one of the following options:
     * OR: Run `docker-compose up` from the root directory in this repository.
-    * OR: Install EventStore manually by following the instuctions [here](https://eventstore.com/docs/getting-started/).
+    * OR: Install EventStore manually by following the instructions [here](https://eventstore.com/docs/getting-started/).
 3. Make sure you start EventStore with projections enabled -- **for all non-Docker-installations**, this requires adding one or two command line parameters when starting the instance. This is described [here](https://eventstore.com/docs/getting-started/projections/), under _Setting up projections_.
-EventStore comes with a GUI, which can be found at http://localhost:2113. You can login with the default username _admin_  and password _changeit_
+EventStore comes with a GUI, which can be found at http://localhost:2113. You can log in with the default username _admin_  and password _changeit_
 4. Once you have an EventStore instance running, you must provide the connection credentials in the `Infi.DojoEventSourcing.Api/appsettings.json`. If you've used the default settings, you're ok already.
 5. Besides EventStore we'll also need a database for our read models. In this exercise we'll use SQLite.
     * Create a `readmodel.db` file somewhere
     * Add the db file path to the `Infi.DojoEventSourcing.Api/appsettings.json`
     * Add the db file path to the `Infi.DojoEventSourcing.ReadModelDbMigrator/appsettings.json`
-6. Build and run the `Infi.DojoEventSourcing.ReadModelDbMigrator` program to generate the required schema for your readmodels.
+6. Build and run the `Infi.DojoEventSourcing.ReadModelDbMigrator` program to generate the required schema for your read models.
 7. It would be nice if you could inspect the database somehow. Rider has build in support for SQLite databases. Another client can be found [here](https://sqlitebrowser.org/).
 8. Build and run the `Infi.DojoEventSourcing.Api` program, you should be ready for the exercises now.
 
@@ -37,7 +37,7 @@ n.b. To use the api something like [Postman](https://www.postman.com/) could com
 You can find Postman collection and environment files in the `postman` folder in the root of this repository.
 
 ## Getting familiar with EventStore
-1. Go to the EventStore GUI http://localhost:2113, where you can login with username _admin_ and password _changeit_. You'll see the dashboard, which shows some technical information and the current open connections.
+1. Go to the EventStore GUI http://localhost:2113, where you can log in with username _admin_ and password _changeit_. You'll see the dashboard, which shows some technical information and the current open connections.
 2. Go to the Stream Browser page. You won't see much here yet, but this will be your main entry point to peek inside the EventStore.
     * If the _Stream Browser_ menu link is grayed out, your EventStore instance needs to be restarted with projections. See step 3 of Getting started :point_up:.
 3. Go to the Projections page. In order to browse streams, we first need to enable the `$streams` projection, by clicking on `$streams` and then on `start` in the right corner.
@@ -61,9 +61,9 @@ EventFlow is a CQRS + EventSourcing framework that can use a variety of event st
       * Instantiate a new `Room` object with that room id
       * Retrieve and apply all existing events for that room id from ES, none in this case. This process is called hydrating.
       * Instantiate a `CreateRoomHandler` and call `ExecuteAsync` with the hydrated `Room` object and the published command.
-3. Go to the `CreateRoomHandler` and follow the `room.Create` call into the Room aggregate, you'll see there's a `RoomCreated` event emitted here. Typically this is the place where you'd first do some validation. Emitting the event won't be committed to the event store yet. This will only happen once the calling command handler ends with a succesful result.
+3. Go to the `CreateRoomHandler` and follow the `room.Create` call into the Room aggregate, you'll see there's a `RoomCreated` event emitted here. Typically this is the place where you'd first do some validation. Emitting the event won't be committed to the event store yet. This will only happen once the calling command handler ends with a successful result.
 4. Open the `RoomCreated` event. This class corresponds with the data that we found in the EventStore GUI.
-5. As you've seen you can create rooms. These are of course required in order to make any reservations.
+5. We've seen you can create rooms. These are of course required in order to make any reservations.
 6. You start a new reservation by calling `[GET]  http://localhost:5000/Reservation/New`. This won't do anything except returning a newly generated `reservationId` that you can use in subsequent calls.
 7. Call `[GET] http://localhost:5000/Reservation/Offers?reservationId=<guid>&arrival=YYYY-MM-dd&departure=YYYY-MM-dd` to get a price offer for the requested period. This will generate a price offer event for each day in that period. You can locate it in the ES GUI. The offer will be valid for 30 minutes.
 8. If you created offers for every day of your intended stay, you can make the reservation final by calling:
@@ -90,12 +90,12 @@ We'd like to offer our customers a dinner at our hotel restaurant. The customers
 * Customers can only opt-in if the reservation is confirmed (i.e. a room is assigned to the reservation)
 * Customers shouldn't be able to opt-in more than once
 * The opt-in should be stored in EventStore
-* The reservation readmodel should be updated accordingly
+* The `ReservationReadModel` should be updated accordingly
 
 ### 2. Subscribe to events
 If a customer wants to dine at our restaurant, we'd better give the chefs a heads-up so they can buy enough supplies.
 
-EventFlow offers async and sync subscribers, which you can use to _do_ something once an event has happend. Synchronous subscribers are blocking and commandbus execution will wait until all sync subscribers are done. Async subscribers will not wait.
+EventFlow offers async and sync subscribers, which you can use to _do_ something once an event has happend. Synchronous subscribers are blocking and `CommandBus` execution will wait until all sync subscribers are done. Async subscribers will not wait.
 
 You can find more information about subscribers [here](https://eventflow.readthedocs.io/Subscribers.html).
 
@@ -104,10 +104,10 @@ n.b. You need to register the subscriber in the api startup.
 **Acceptance criteria**
 * Use a subscriber that will log a message for the chefs when someone opts-in for dinner
 
-### 3. Rebuilding the readmodel database
-When you store everything as an event, you can still produce the current state of properties you weren't interested in at first. So if you shape your events well, you can answer any question regarding the data. Even for past comitted data. This is different from convential databses, because you can only retrieve the current state. You can read more about the business value of an event log [here](https://eventstore.com/docs/event-sourcing-basics/business-value-of-the-event-log/index.html).
+### 3. Rebuilding the read model database
+When you store everything as an event, you can still produce the current state of properties you weren't interested in at first. So if you shape your events well, you can answer any question regarding the data. Even for past committed data. This is different from conventional databases, because you can only retrieve the current state. You can read more about the business value of an event log [here](https://eventstore.com/docs/event-sourcing-basics/business-value-of-the-event-log/index.html).
 
-For this assignment we'll be making a simple adjustment to our existing `ReservationReadModel`. We're intrested in the total costs of each stay. We can calculate this by taking the sum of `OfferPrice` in all the `LineItemCreated` events. We've already setup a `ReadModelRebuilder` application, which you can use to rebuild the redamodel for al previous made reservations.
+For this assignment we'll be making a simple adjustment to our existing `ReservationReadModel`. We're interested in the total costs of each stay. We can calculate this by taking the sum of `OfferPrice` in all the `LineItemCreated` events. We've already setup a `ReadModelRebuilder` application, which you can use to rebuild the read model for all previous made reservations.
 
 **Acceptance criteria**
 * Extend the `ReservationReadModel` with a `TotalPrice` field
@@ -116,7 +116,7 @@ For this assignment we'll be making a simple adjustment to our existing `Reserva
 
 n.b. Make sure you made a few reservations before you make any adjustments to the `ReservationReadModel` in order to see the effects of rebuilding properly.
 
-Can you think of more use cases that require readmodel rebuilds?
+Can you think of more use cases that require read model rebuilds?
 - Maybe we can find out if there's a correlation between the duration of a stay and opting in for the dinner deal?
 - How does the amount of generated offers relate to the total costs of a reservation?
 
@@ -129,7 +129,7 @@ We'd like to send a confirmation e-mail to the customer when the reservation is 
 We could use a subscriber here again. But another way is using a _process manager_ for _saga_. A process manager coordinates messages between different aggregates. Take a look at the `ReservationSaga`, it starts when a `ReservationCreated` event has happened and then starts a procedure to occupy a room. We could add sending the confirmation e-mail here as well.
 
 **Acceptance criteria**
-* An e-mail is send as soon as a reservation is completed, a.k.a. when a room is assigned to the reservation. Logging the recipient (name + email) with some dummy text will be sufficient for this exercise.
+* An e-mail is sent as soon as a reservation is completed, a.k.a. when a room is assigned to the reservation. Logging the recipient (name + email) with some dummy text will be sufficient for this exercise.
 * Use the `ReservationSaga`
 
 ### Upgrade existing events
@@ -146,8 +146,8 @@ Fortunately EventFlow provides a way to deal with this. We'll be using [event up
 * `[POST] /Reservation/UpdateContactInformation` requires first and last name instead of only name
 * New fields get stored in EventFlow
 * Existing reservations can still be hydrated
-** You can test it by calling `[POST] /Reservation/UpdateContactInformation` on an existing reservation. 
-* Update the readmodel to the new situation. You can write a new migration in the `ReadModelDbMigrator` project
+	* You can test it by calling `[POST] /Reservation/UpdateContactInformation` on an existing reservation. 
+* Update the read model to the new situation. You can write a new migration in the `ReadModelDbMigrator` project
 * The e-mail only uses the customers first name.
 
 ### How to deal with GDPR
