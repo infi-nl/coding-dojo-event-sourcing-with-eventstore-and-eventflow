@@ -104,7 +104,35 @@ n.b. You need to register the subscriber in the api startup.
 **Acceptance criteria**
 * Use a subscriber that will log a message for the chefs when someone opts-in for dinner
 
-### 3. Upgrade existing events
+### 3. Rebuilding the readmodel database
+When you store everything as an event, you can still produce the current state of properties you weren't interested in at first. So if you shape your events well, you can answer any question regarding the data. Even for past comitted data. This is different from convential databses, because you can only retrieve the current state. You can read more about the business value of an event log [here](https://eventstore.com/docs/event-sourcing-basics/business-value-of-the-event-log/index.html).
+
+For this assignment we'll be making a simple adjustment to our existing `ReservationReadModel`. We're intrested in the total costs of each stay. We can calculate this by taking the sum of `OfferPrice` in all the `LineItemCreated` events. We've already setup a `ReadModelRebuilder` application, which you can use to rebuild the redamodel for al previous made reservations.
+
+**Acceptance criteria**
+* Extend the `ReservationReadModel` with a `TotalPrice` field
+* Make sure the `TotalPrice` is calculated from now on
+* Rebuild the `ReservationReadModel`, so the `TotalPrice` gets calculated for existing reservations
+
+n.b. Make sure you made a few reservations before you make any adjustments to the `ReservationReadModel` in order to see the effects of rebuilding properly.
+
+Can you think of more use cases that require readmodel rebuilds?
+- Maybe we can find out if there's a correlation between the duration of a stay and opting in for the dinner deal?
+- How does the amount of generated offers relate to the total costs of a reservation?
+
+## Bonus assignments
+If you have some time left you can choose to do one or more of the following assignments. The order doesn't matter.
+
+### Send a confirmation e-mail using sagas
+We'd like to send a confirmation e-mail to the customer when the reservation is successfully placed.
+
+We could use a subscriber here again. But another way is using a _process manager_ for _saga_. A process manager coordinates messages between different aggregates. Take a look at the `ReservationSaga`, it starts when a `ReservationCreated` event has happened and then starts a procedure to occupy a room. We could add sending the confirmation e-mail here as well.
+
+**Acceptance criteria**
+* An e-mail is send as soon as a reservation is completed, a.k.a. when a room is assigned to the reservation. Logging the recipient (name + email) with some dummy text will be sufficient for this exercise.
+* Use the `ReservationSaga`
+
+### Upgrade existing events
 We got some complaints from the PR-department, we send e-mails to customers with their full name. Apparently it's policy to address them only by their first name. So we need to split the name field into two separate first name and last name fields.
 
 As you might have seen, the customer details are stored in the `ContactInformationUpdated` event on the reservation aggregate. We could simply change this event by adding the new fields, but this would create a problem for all the existing events in the store. If we change the properties in this event, we won't be able to parse all previous events back to the new event.
@@ -119,23 +147,8 @@ Fortunately EventFlow provides a way to deal with this. We'll be using [event up
 * New fields get stored in EventFlow
 * Existing reservations can still be hydrated
 ** You can test it by calling `[POST] /Reservation/UpdateContactInformation` on an existing reservation. 
-* Update the readmodel to the new situation.
+* Update the readmodel to the new situation. You can write a new migration in the `ReadModelDbMigrator` project
 * The e-mail only uses the customers first name.
-
-## Bonus assignments
-If you have some time left you can choose to do one or more of the following assignments. The order doesn't matter.
-
-### Send a confirmation e-mail using sagas
-We'd like to send a confirmation e-mail to the customer when the reservation is successfully placed.
-
-We could use a subscriber here again. But another way is using a _process manager_ for _saga_. A process manager coordinates messages between different aggregates. Take a look at the `ReservationSaga`, it starts when a `ReservationCreated` event has happened and then starts a procedure to occupy a room. We could add sending the confirmation e-mail here as well.
-
-**Acceptance criteria**
-* An e-mail is send as soon as a reservation is completed, a.k.a. when a room is assigned to the reservation. Logging the recipient (name + email) with some dummy text will be sufficient for this exercise.
-* Use the `ReservationSaga`
-
-### Rebuilding the readmodel database
-TODO!!
 
 ### How to deal with GDPR
 In event sourcing it's not really possible to delete certain events. So whatever you put on the event stream will basically stay there forever. That means that we have to think very carefully about what we store in the event store, and how to deal with "forget me" requests from customers.

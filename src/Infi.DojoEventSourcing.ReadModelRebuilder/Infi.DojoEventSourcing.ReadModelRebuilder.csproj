@@ -1,25 +1,32 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <OutputType>Exe</OutputType>
         <TargetFramework>netcoreapp3.0</TargetFramework>
-        <RootNamespace>DojoEventSourcing</RootNamespace>
+        <RootNamespace>ReadModelRebuilder</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="EventFlow" Version="0.77.4077" />
         <PackageReference Include="EventFlow.AspNetCore" Version="0.77.4077" />
         <PackageReference Include="EventFlow.DependencyInjection" Version="0.77.4077" />
         <PackageReference Include="EventFlow.EventStores.EventStore" Version="0.77.4077" />
-        <PackageReference Include="Microsoft.Data.Sqlite" Version="3.1.1" />
-        <PackageReference Include="Serilog.AspNetCore" Version="3.2.0" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.0" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.0.0" />
+        <PackageReference Include="Serilog" Version="2.9.0" />
         <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
+        <PackageReference Include="System.Data.SQLite" Version="1.0.112" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\Infi.DojoEventSourcing.Configuration\Infi.DojoEventSourcing.Configuration.csproj" />
         <ProjectReference Include="..\Infi.DojoEventSourcing.Domain\Infi.DojoEventSourcing.Domain.csproj" />
-        <ProjectReference Include="..\Infi.DojoEventSourcing.ReadModels.Api.DAL\Infi.DojoEventSourcing.ReadModels.Api.DAL.csproj" />
-        <ProjectReference Include="..\Infi.DojoEventSourcing.ReadModels.Api\Infi.DojoEventSourcing.ReadModels.Api.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="appsettings.json" />
+        <Content Include="appsettings.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
 </Project>

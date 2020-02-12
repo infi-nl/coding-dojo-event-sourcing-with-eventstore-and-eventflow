@@ -1,9 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 using EventFlow.Aggregates;
 using EventFlow.ReadStores;
-using EventFlow.Sql.ReadModels.Attributes;
 using Infi.DojoEventSourcing.Domain.Reservations.Events;
 using Infi.DojoEventSourcing.Domain.Reservations.ValueObjects;
 

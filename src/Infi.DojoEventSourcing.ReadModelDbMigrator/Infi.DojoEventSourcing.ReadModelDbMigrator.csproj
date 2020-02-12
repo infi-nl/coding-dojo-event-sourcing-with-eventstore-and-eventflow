@@ -18,14 +18,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Update="appsettings.json">
-            <CopyToPublishDirectory>Never</CopyToPublishDirectory>
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Remove="appsettings.Example.json" />
-    </ItemGroup>
-
-    <ItemGroup>
       <None Update="appsettings.json">
         <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       </None>

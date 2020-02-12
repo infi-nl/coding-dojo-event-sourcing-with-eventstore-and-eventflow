@@ -19,8 +19,8 @@ namespace DojoEventSourcing.Controllers
         }
 
         [HttpGet("{date}")]
-        public async Task<CapacityDto> GetByDate(DateTime date) =>
-            await _queryProcessor.ProcessAsync(new GetCapacityByDate(date), CancellationToken.None);
+        public async Task<CapacityDto> GetByDate(DateTime byDate) =>
+            await _queryProcessor.ProcessAsync(new GetCapacityByDate(byDate), CancellationToken.None);
 
         [HttpGet("{arrival}/{departure}")]
         public async Task<CapacityDto[]> GetByDateRange(DateTime arrival, DateTime departure) =>

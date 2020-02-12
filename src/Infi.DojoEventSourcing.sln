@@ -26,6 +26,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{FA2EA7DA
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infi.DojoEventSourcing.UnitTests", "Tests\Infi.DojoEventSourcing.UnitTests\Infi.DojoEventSourcing.UnitTests.csproj", "{9962D88D-CBDB-4ECA-8C52-1CBFA8DB0192}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infi.DojoEventSourcing.ReadModelRebuilder", "Infi.DojoEventSourcing.ReadModelRebuilder\Infi.DojoEventSourcing.ReadModelRebuilder.csproj", "{EDDCD9BD-708E-4839-8F38-26FC75AA3045}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infi.DojoEventSourcing.Tools", "Infi.DojoEventSourcing.Tools", "{A832E19E-51D3-47D0-9582-38C45D073465}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -64,6 +68,10 @@ Global
 		{9962D88D-CBDB-4ECA-8C52-1CBFA8DB0192}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9962D88D-CBDB-4ECA-8C52-1CBFA8DB0192}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9962D88D-CBDB-4ECA-8C52-1CBFA8DB0192}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDDCD9BD-708E-4839-8F38-26FC75AA3045}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDDCD9BD-708E-4839-8F38-26FC75AA3045}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDDCD9BD-708E-4839-8F38-26FC75AA3045}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDDCD9BD-708E-4839-8F38-26FC75AA3045}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{FAE50023-02F8-4BB1-8ADA-977738B01643} = {B9B18429-1994-454F-A60B-31D8FE2AB2D8}
@@ -74,5 +82,6 @@ Global
 		{2EA44894-0184-41EC-AB1F-2823C507A577} = {6D0DFBFA-BCBD-4060-A3EA-670DFEB162D9}
 		{EA0346AF-9A14-4F04-977D-E8E62A732FA3} = {3877938D-D04B-4038-B830-BF93E3566E99}
 		{9962D88D-CBDB-4ECA-8C52-1CBFA8DB0192} = {FA2EA7DA-B13C-4347-A587-40C9A156E84F}
+		{EDDCD9BD-708E-4839-8F38-26FC75AA3045} = {A832E19E-51D3-47D0-9582-38C45D073465}
 	EndGlobalSection
 EndGlobal

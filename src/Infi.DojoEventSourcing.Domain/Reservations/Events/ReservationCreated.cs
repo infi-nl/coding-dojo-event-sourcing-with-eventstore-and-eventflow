@@ -10,8 +10,8 @@ namespace Infi.DojoEventSourcing.Domain.Reservations.Events
     {
         public ReservationCreated(
             ReservationId id,
-            in DateTime arrival,
-            in DateTime departure,
+            DateTime arrival,
+            DateTime departure,
             DateTime checkInTime,
             DateTime checkOutTime)
         {
