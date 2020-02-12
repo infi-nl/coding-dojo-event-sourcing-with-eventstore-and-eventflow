@@ -3,14 +3,17 @@ This dojo is targeted at people that are somewhat experienced in C#, and have so
 
 We've made a basic assignment for you that implements a simple Hotel booking system. You'll learn to think in terms of events instead of state. This assignment uses [EventStore](https://eventstore.com/) as a datastore for events. We also use the [EventFlow](https://github.com/eventflow/EventFlow) framework.
 
-**Requirements**
-* dotnet core 3.0
+## Acknowledgements
+This application is largely inspired by: https://github.com/luontola/cqrs-hotel
 
-**Some useful EventSourcing articles**
+## Background and useful articles on EventSourcing
 * https://dev.to/barryosull/event-sourcing-what-it-is-and-why-its-awesome
 * https://arkwright.github.io/event-sourcing.html
 
-This application is largely inspired by: https://github.com/luontola/cqrs-hotel
+## Requirements
+- dotnet core 3.0
+- docker
+- optional: docker-compose
 
 ## Getting started
 1. Create the `appsettings.json` files by copying the `appsettings.Example.json` files in 
@@ -34,15 +37,14 @@ n.b. To use the api something like [Postman](https://www.postman.com/) could com
 You can find Postman collection and environment files in the `postman` folder in the root of this repository.
 
 ## Getting familiar with EventStore
-1. Go to the EventStore GUI http://localhost:2113
-You'll see the dashboard, which shows some technical information and the current open connections.
+1. Go to the EventStore GUI http://localhost:2113, where you can login with username _admin_ and password _changeit_. You'll see the dashboard, which shows some technical information and the current open connections.
 2. Go to the Stream Browser page. You won't see much here yet, but this will be your main entry point to peek inside the EventStore.
     * If the _Stream Browser_ menu link is grayed out, your EventStore instance needs to be restarted with projections. See step 3 of Getting started :point_up:.
 3. Go to the Projections page. In order to browse streams, we first need to enable the `$streams` projection, by clicking on `$streams` and then on `start` in the right corner.
     * If the _Projections_ menu link is grayed out, your EventStore instance needs to be restarted with projections. See step 3 of Getting started :point_up:.
 4. Now it's time to create our first stream. Make sure you started the `Infi.DojoEventSourcing.Api` and make the following call 
 ```
-[POST] http://localhost:5000/Room/CreateRoom
+[POST] http://localhost:5000/Room
 {
    "Number": "1"
 }
@@ -91,7 +93,7 @@ We'd like to offer our customers a dinner at our hotel restaurant. The customers
 * The reservation readmodel should be updated accordingly
 
 ### 2. Subscribe to events
-If a customer wants to dine at our restaurant, we'd better give the chefs a heads-up so they can a buy enough supplies.
+If a customer wants to dine at our restaurant, we'd better give the chefs a heads-up so they can buy enough supplies.
 
 EventFlow offers async and sync subscribers, which you can use to _do_ something once an event has happend. Synchronous subscribers are blocking and commandbus execution will wait until all sync subscribers are done. Async subscribers will not wait.
 
