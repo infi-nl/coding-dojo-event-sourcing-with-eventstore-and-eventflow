@@ -1,4 +1,4 @@
-# DojoEventSourcing
+# Coding Dojo Event Sourcing with EventStore and EventFlow
 This dojo is targeted at people that are somewhat experienced in C#, and have some knowledge about what Event Sourcing is and how it works, but never got around to applying it in practice.
 
 We've made a basic assignment for you that implements a simple Hotel booking system. You'll learn to think in terms of events instead of state. This assignment uses [EventStore](https://eventstore.com/) as a data store for events. We also use the [EventFlow](https://github.com/eventflow/EventFlow) framework.
