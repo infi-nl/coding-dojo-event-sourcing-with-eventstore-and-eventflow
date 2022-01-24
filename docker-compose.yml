@@ -3,6 +3,8 @@ version: '2'
 services:
   eventstore:
     image: eventstore/eventstore
+    environment:
+      - EVENTSTORE_INSECURE=true
     restart: always
     volumes:
       - eventstore-data:/var/lib/eventstore

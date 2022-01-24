@@ -24,6 +24,7 @@ This application is largely inspired by: https://github.com/luontola/cqrs-hotel
 1. Create the `appsettings.json` files by copying the `appsettings.Example.json` files in 
     * `Infi.DojoEventSourcing.Api`
     * `Infi.DojoEventSourcing.ReadModelDbMigrator`
+    * `Infi.DojoEventSourcing.ReadModelRebuilder`
 2. We'll be working with [EventStore](https://eventstore.com/). You'll need an instance to write our events to. Choose one of the following options:
     * OR: Run `docker-compose up` from the root directory in this repository.
     * OR: Install EventStore manually by following the instructions [here](https://eventstore.com/docs/getting-started/).
